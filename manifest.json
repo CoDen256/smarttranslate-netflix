@@ -13,6 +13,9 @@
       "matches": [ "*://*.netflix.com/*" ],
       "run_at": "document_end"
    }],
+   "web_accessible_resources": [
+      "main.js", "another.js"
+   ],
    "description": "Netflix Enhanced Subtitle Tool allows translate every word with different dictionaries and save them in context.",
    "icons": {
       "128": "icon-large.png",
