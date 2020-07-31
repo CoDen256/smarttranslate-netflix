@@ -1,2 +1,4 @@
-# NetflixEnhancedSubtitleTool
-Netflix Enhanced Subtitle Tool is a chrome extension, that allows you to translate words of subtitle even more effectively.
+# Netflix Enhanced Subtitle Tool
+
+This Tool allows you to translate every word with different dictionaries and save them in context.
+The context is the primary key to memorizing the word.
