@@ -1,0 +1,5 @@
+const query = "{QUERY}"
+const source = "{SOURCE}"
+const target = "{TARGET}"
+const source_full = "{SOURCE_FULL}"
+const target_full = "{TARGET_FULL}"
