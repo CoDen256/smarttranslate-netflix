@@ -1,31 +1,32 @@
 {
    "background": {
-      "scripts": [ "background.js"]
+      "scripts": [ "/src/background.js"]
    },
 	"browser_action": {
-		"default_icon": "icon-small.png"
+		"default_icon": "/resources/icon-small.png"
 	},
 	"options_page": "options.html",
 	"content_scripts": [{
-      "js": [ "content-script.js"],
+      "js": [ "/src/content-script.js"],
      "css": [ "style.css" ],
-     "html": ["test.html"],
       "matches": [ "*://*.netflix.com/*" ],
       "run_at": "document_end"
    }],
    "web_accessible_resources": [
-      "main.js", "another.js"
+      "/src/*",
+      "/src/services/*",
+      "/src/core/*"
    ],
    "description": "Netflix Enhanced Subtitle Tool allows translate every word with different dictionaries and save them in context.",
    "icons": {
-      "128": "icon-large.png",
-      "16": "icon-bitty.png",
-      "48": "icon-small.png"
+      "128": "/resources/icon-large.png",
+      "16": "/resources/icon-bitty.png",
+      "48": "/resources/icon-small.png"
    },
    "manifest_version": 2,
    "name": "Netflix Enhanced Subtitle Tool",
    "permissions": [ "contextMenus", "tabs", "storage" ],
    "short_name": "Netflix Subtitle Tool",
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "0.1.0"
+   "version": "0.1.2"
 }
