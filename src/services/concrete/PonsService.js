@@ -27,9 +27,9 @@ class PonsService {
 	parse(normalized){ // Array<String> - translations
         let doc = new DOMParser().parseFromString(normalized, 'text/html')
         let translations = []
-        doc.querySelector(".entry .first").querySelectorAll(".target").forEach((cl) => {
-            cl.querySelectorAll("span").forEach(span => span.remove())
-            translations.push(cl.textContent.trim())
+        doc.querySelector(".entry .first").querySelectorAll(".target").forEach((target) => {
+            target.querySelectorAll("span").forEach(span => span.remove())
+            translations.push(target.textContent.trim())
             
         })
         return translations;
