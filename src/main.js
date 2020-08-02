@@ -47,19 +47,44 @@ let n = 0;
 		console.log("Testing Wiktionary Service")
 
 		let service = new WiktionaryService(word)
-		service.getMeaningWord().then(word => {
-			console.log(word);
+		return service.getMeaningWord().then(word => {
+			console.log("Parsed word from Wiktionary:", word);
+			return word;
 		})
 	}
 
-	function testGoogle(){
+	function testGoogle(word){
 		console.log("Testing Google Sevice")
 		
-		let service = new GoogleService(extendedWord);
+		let service = new GoogleService(word);
+		service.getTranslatedWord().then((data) => {
+			console.log("Translated from Google:", data)
+		})
+	}
+
+	
+	function testMultitran(word){
+		console.log("Testing Multitran Sevice")
+		
+		let service = new MultitranService(extendedWord);
 		service.getData().then((data) => {
+			return data.text()
+		}).then((data) => {
 			console.log(data);
 		})
 	}
+
+	function ponsTest(word){
+		console.log("Testing Pons Sevice")
+		
+		let service = new PonsService(extendedWord);
+		service.getData().then((data) => {
+			return data.text()
+		}).then((data) => {
+			console.log(data);
+		});
+	}
+
 
 	function testReverso(){
 		console.log("Testing Reverso Context Sevice")
@@ -72,16 +97,6 @@ let n = 0;
 		})
 	}
 
-	function testMultitran(){
-		console.log("Testing Multitran Sevice")
-		
-		let service = new MultitranService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
-		})
-	}
 
 	function testDuden(){
 		console.log("Testing Duden Sevice")
@@ -117,27 +132,18 @@ let n = 0;
 		});
 	}
 
-	function ponsTest(){
-		console.log("Testing Pons Sevice")
-		
-		let service = new PonsService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
-		});
-	}
+
 
 
 
 
 	
-	testWik();
+	let meaningWord = testWik();
+	let extended = meaningWord.then((word) => word.extendedWord)
 	
-	
-	//testGoogle();
+	testGoogle(extended);
+	testMultitran(extended)
 	//testReverso();
-	//testMultitran();
 	//testDuden();
 	//testGlosbe();
 	//lingueeTest();

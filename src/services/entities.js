@@ -20,6 +20,18 @@ class TranslatedWord{
 	getTranslations(){ // Array<String> of translations
 		return this.translations;
 	}
+
+	addTranslations(newTranslations = []){
+		if (newTranslations === []) return;
+		this.translations = this.translations.concat(newTranslations)
+		return this;
+	}
+
+	addTranslation(newTranslation = ""){
+		if (newTranslation == null || newTranslation === "") return;
+		this.translations.push(newTranslation)
+		return this;
+	}
 }
 
 class MeaningWord {
@@ -34,11 +46,13 @@ class MeaningWord {
 	addMeanings(newMeanings = []){
 		if (newMeanings === []) return;
 		this.meanings = this.meanings.concat(newMeanings)
+		return this;
 	}
 
 	addMeaning(newMeaning = ""){
 		if (newMeaning == null || newMeaning === "") return;
 		this.meanings.push(newMeaning)
+		return this;
 	}
 }
 
@@ -54,6 +68,7 @@ class ContextWord {
 	addContext(sentence = "", translation = ""){
 		if (sentence == null || sentence === "" || translation == null || translation === "") return;
 		this.contexts.push(new Context(sentence, translation))
+		return this;
 	}
 }
 

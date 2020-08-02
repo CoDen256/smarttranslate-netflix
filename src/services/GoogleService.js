@@ -8,27 +8,20 @@ const googleApiUrl = "https://translate.googleapis.com/translate_a/single";
 
 class GoogleService {
 	constructor(extendedWord){
-		console.log("Google Service created")
 		this.extendedWord = extendedWord;
-		this.wordMainForm = extendedWord.mainForm;
-		/* 
-		this.translatedWord = new TranslatedWord(
-			this.extendedWord,
-			this.parse(this.translate(extendedWord.mainForm, 
-									  config.sourceLang,
-									  config.targetLang)));
-*/	
+		this.translatedWord = extendedWord.then((extWord) => new TranslatedWord(extWord))
+										  .then((translated) => this.updateTranslated(translated))
 	}
 
-	getData(){
-		console.log(`Getting data for '${this.wordMainForm}'`)
+	getData(word){
+		console.log(`Google is getting data for '${word}'`)
 		let api = new Request(googleApiUrl, "GET")
 		let params = {
 			"client":"gtx",
 			"sl" : config.sourceLang,
 			"tl" : config.targetLang,
 			"dt": "t",
-			"q": this.wordMainForm,
+			"q": word,
 		}
 
 		api.appendAll(params)
@@ -36,22 +29,19 @@ class GoogleService {
 		return api.loadJson()
 	}
 
-	parse(json){
-		return json[0][0][0];
+	parseResult(data){
+		return data[0][0][0];
 	}
 
-	getOriginal(){
-		return this.extendedWord.original;
+	updateTranslated(translatedWord){
+		return this.getData(translatedWord.extendedWord.mainForm)
+				.then((data) => this.parseResult(data))
+				.then((result) => translatedWord.addTranslation(result));
 	}
 
 	getTranslatedWord(){
 		return this.translatedWord;
 	}
-
-	getAllTranslations(){ // Array<TranslatedWord>
-		return new Array(this.translatedWord)
-	}
-
 }
 
 export {GoogleService, googleURL};
