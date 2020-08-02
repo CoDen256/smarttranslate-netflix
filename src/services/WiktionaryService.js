@@ -39,13 +39,16 @@ class WiktionaryService{ //TODO put extended word from outside
 			return this.getData(mainForm).then((data) => this.initializeMeaningWord(data))
 		}
 
+		let type = this.parseWordType(data)
+		if (type === "FAILED_WORDTYPE") throw "Can't parse word"
 
 		let extendedWord = new ExtendedWord(this.originalWord);
+		extendedWord.type = type
 		extendedWord.mainForm = this.getTitle(data);
-		extendedWord.type = this.parseWordType(data)
 
-		if (extendedWord.type === "FAILED_WORDTYPE") throw "Can't parse word"
-
+		if (extendedWord.type === "Substantiv"){
+			extendedWord.gender = this.parseGender(data)
+		}
 
 
 		let meaningWord = new MeaningWord(extendedWord);
@@ -83,8 +86,10 @@ class WiktionaryService{ //TODO put extended word from outside
 
 	}
 
-	getTitle(data) {
-		return data.split(" ")[1];
+	getTitle(raw) {
+		let title = this.parseByRegex(raw, /== (?<result>[A-Za-zäöüß]+) \({{Sprache\|Deutsch}}\) ==/g)
+		if (title == false) throw "UNABLE TO PARSE TITLE"
+		return title
 	}
 
 	parseMeaning(raw, lines){
@@ -101,6 +106,12 @@ class WiktionaryService{ //TODO put extended word from outside
 			items.push(item.trim())
 		})
 		return items
+	}
+
+	parseGender(raw){
+		let gender = this.parseByRegex(raw, /{{Wortart\|Substantiv\|Deutsch}}, {{(?<result>\w)}}/g)
+		if (gender == false) return null;
+		return gender
 	}
 
 }

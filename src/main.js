@@ -24,7 +24,7 @@ function main(){
 }
 
 
-let n = 0;
+let n = 5;
 
 	import {WiktionaryService} from './services/WiktionaryService.js'
 	import {GoogleService} from './services/GoogleService.js'
@@ -36,8 +36,8 @@ let n = 0;
 	import {ExtendedWord} from './services/entities.js'
 	import {PonsService} from './services/PonsService.js'
 
-	const word = ["beobachtet", "Sprachen", "besser", "objektiven"][n]
-	const mainForm = ["beobachten", "Sprache", "gut", "objektiv"][n]
+	const word = ["beobachtet", "Sprachen", "besser", "objektiven", "ausgehen", "Hündinnen"][n]
+	const mainForm = ["beobachten", "Sprache", "gut", "objektiv", "ausgehen", "Hündin"][n]
 
 	let extendedWord = new ExtendedWord(word);
 	extendedWord.mainForm = mainForm;
@@ -45,7 +45,6 @@ let n = 0;
 
 	function testWik(){
 		console.log("Testing Wiktionary Service")
-
 		let service = new WiktionaryService(word)
 		return service.getMeaningWord().then(word => {
 			console.log("Parsed word from Wiktionary:", word);
@@ -72,15 +71,13 @@ let n = 0;
 		})
 	}
 
-	function ponsTest(word){
+	function testPons(word){
 		console.log("Testing Pons Sevice")
 		
-		let service = new PonsService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
-		});
+		let service = new PonsService(word);
+		service.getTranslatedWord().then((data) => {
+			console.log("Translated from Pons:", data)
+		})
 	}
 
 
@@ -141,10 +138,10 @@ let n = 0;
 	
 	testGoogle(extended);
 	testMultitran(extended)
+	testPons(extended)
 	//testReverso();
 	//testDuden();
 	//testGlosbe();
 	//lingueeTest();
-	//ponsTest();
 
 
