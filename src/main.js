@@ -47,10 +47,8 @@ let n = 0;
 		console.log("Testing Wiktionary Service")
 
 		let service = new WiktionaryService(word)
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
+		service.getMeaningWord().then(word => {
+			console.log(word);
 		})
 	}
 
@@ -135,7 +133,7 @@ let n = 0;
 
 	
 
-	//testWik();
+	testWik();
 	//testGoogle();
 	//testReverso();
 	//testMultitran();
