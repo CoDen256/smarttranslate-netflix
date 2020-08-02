@@ -23,7 +23,7 @@ class Request{
 		let request = this
 
 		return fetch(resultUrl, {method:"GET"}).catch((e) =>{
-			console.log("Error while fetching", proxy+this.url, error)
+			console.log("Error while fetching", proxy+this.url, e)
 			request.proxyProvider.fail()
 			return request.loadRaw()
 		})
@@ -49,6 +49,9 @@ class ProxyProvider{
 	fail(){
 		console.log("Proxy failed", this.currentProxy)
 		this.currentProxy = this.proxyList[(++this.pointer)%this.proxyList.length];
+		if (this.pointer === proxies.length-1){
+			throw Error("Proxies are exceeded")
+		}
 		console.log("Trying next:", this.currentProxy)
 	}
 }
