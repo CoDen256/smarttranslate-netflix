@@ -11,7 +11,9 @@ class PopupBuilder{
 		this.adjustStyle(popup)
 		this.createCloseDiv(popup)
 		this.createScrollBar(popup) // TODO: Create tabs for  each one;s
-		this.createFooter(popup)
+		this.createFooter(popup) 
+
+		// TODO: while loading just initialy let it display something like "loading", and then it will be replaced
 
 		document.body.appendChild(popup);
 	}

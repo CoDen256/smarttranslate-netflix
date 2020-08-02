@@ -1,9 +1,8 @@
 import {proxies} from '../core/config.js'
 
 class Request{
-	constructor(url, method){
+	constructor(url){
 		this.url = url
-		this.method = method
 		this.proxyProvider = new ProxyProvider(proxies)
 	}
 
@@ -21,12 +20,12 @@ class Request{
 		console.log("Fetching url", this.url)
 		let proxy = this.proxyProvider.getNextProxy();
 		let resultUrl = proxy+this.url;
-		self = this
+		let request = this
 
 		return fetch(resultUrl, {method:"GET"}).catch((e) =>{
 			console.log("Error while fetching", proxy+this.url, error)
-			self.proxyProvider.fail()
-			return self.loadRaw()
+			request.proxyProvider.fail()
+			return request.loadRaw()
 		})
 	}
 
