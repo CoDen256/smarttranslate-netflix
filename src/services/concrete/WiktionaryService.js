@@ -20,7 +20,7 @@ class WiktionaryService{ //TODO put extended word from outside
 
 
 	getData(word){
-		console.log(`Wiktionart is getting data for '${word}'`)
+		console.log(`Wiktionary is getting data for '${word}'`)
 		let api = new Request(wiktionaryApi, {
 			query:word,
 			source:config.sourceLang

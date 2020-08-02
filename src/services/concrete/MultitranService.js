@@ -27,8 +27,8 @@ class MultitranService {
 	parse(normalized){ // Array<String> - translations
         let doc = new DOMParser().parseFromString(normalized, 'text/html')
         let translations = []
-        doc.querySelectorAll(".trans").forEach((cl) => {
-            cl.querySelectorAll("a").forEach(a => {
+        doc.querySelectorAll(".trans").forEach((trans) => {
+            trans.querySelectorAll("a").forEach(a => {
                 if (a.parentNode.nodeName === "TD") {
                     translations.push(a.textContent)
                 }

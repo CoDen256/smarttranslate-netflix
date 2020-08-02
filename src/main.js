@@ -32,9 +32,8 @@ let n = 0;
 	import {MultitranService} from './services/concrete/MultitranService.js'
 	import {DudenService } from './services/concrete/DudenService.js';
 	import {GlosbeService} from './services/concrete/GlosbeService.js';
-	import {LingueeService} from './services/concrete/LingueeService.js';
 	import {PonsService} from './services/concrete/PonsService.js'
-	
+
 	import {ExtendedWord} from './services/entities.js'
 	
 
@@ -83,51 +82,38 @@ let n = 0;
 	}
 
 
-	function testReverso(){
+	function testReverso(word){
 		console.log("Testing Reverso Context Sevice")
 		
-		let service = new ReversoService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
+		let service = new ReversoService(word);
+		service.getContextWord().then((data) => {
+			console.log("Context from Reverso:", data)
+		})
+	}
+
+	function testGlosbe(word){
+		console.log("Testing Glosbe Sevice")
+		
+		let service = new GlosbeService(word);
+		service.getContextWord().then((data) => {
+			console.log("Context from Glosbe:", data)
 		})
 	}
 
 
-	function testDuden(){
+	function testDuden(word){
 		console.log("Testing Duden Sevice")
 		
-		let service = new DudenService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
-		});
+		let service = new DudenService(word);
+		service.getMeaningWord().then((data) => {
+			console.log("Meaning from Duden:", data)
+		})
 	}
 
 
-	function testGlosbe(){
-		console.log("Testing Glosbe Sevice")
-		
-		let service = new GlosbeService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
-		});
-	}
 
-	function lingueeTest(){
-		console.log("Testing Linguee Sevice")
-		
-		let service = new LingueeService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
-		});
-	}
+
+
 
 
 
@@ -137,13 +123,16 @@ let n = 0;
 	
 	let meaningWord = testWik();
 	let extended = meaningWord.then((word) => word.extendedWord)
+	testDuden(extended);
+	// testGoogle(extended);
+	// testMultitran(extended)
+	// testPons(extended)
+
+
+	//testReverso(extended);
+	//testGlosbe(extended);
+
 	
-	testGoogle(extended);
-	testMultitran(extended)
-	testPons(extended)
-	//testReverso();
-	//testDuden();
-	//testGlosbe();
-	//lingueeTest();
+
 
 

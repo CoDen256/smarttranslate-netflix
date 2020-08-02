@@ -34,7 +34,7 @@ class TranslatedWord{
 	}
 }
 
-class MeaningWord {
+class MeaningWord {// TODO: synonyme
 	constructor(extendedWord){
 		this.extendedWord = extendedWord;
 		this.meanings = [];
@@ -66,8 +66,15 @@ class ContextWord {
 	}
 
 	addContext(sentence = "", translation = ""){
-		if (sentence == null || sentence === "" || translation == null || translation === "") return;
+		if (sentence == null || sentence === "") return;
 		this.contexts.push(new Context(sentence, translation))
+		return this;
+	}
+	
+	addContexts(newContexts){ // Array<Array<String, String>>
+		newContexts.forEach(pair => {
+			this.addContext(pair[0], pair[1])
+		})
 		return this;
 	}
 }
