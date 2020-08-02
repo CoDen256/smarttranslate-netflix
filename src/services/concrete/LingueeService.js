@@ -1,6 +1,4 @@
-import {Request} from '../core/requests.js'
-import {ExtendedWord} from './entities.js'
-import {config} from '../core/config.js'
+import {Request} from '../../core/requests.js'
 
 const lingueeUrl = "https://www.linguee.de/deutsch-englisch/search?source=auto&query={QUERY}"
 const lingueeApi = lingueeUrl;
