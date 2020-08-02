@@ -14,7 +14,7 @@ class ExtendedWord {// TODO: Maybe will contain full parsed data in itself
 class TranslatedWord{ 
 	constructor(extendedWord){ // normilized Word: ExtendedWord
 		this.extendedWord = extendedWord // each service fives own translation, maybe even several translations
-		this.translations = [];
+		this.translations = []; //TODO: Maybe Translation - class
 	}
 
 	getTranslations(){ // Array<String> of translations

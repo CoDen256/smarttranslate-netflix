@@ -38,7 +38,7 @@ class WordTranslationService {
 	}
 
 	updateTranslated(translatedWord){
-        return this.getData(translatedWord.extendedWord.mainForm)
+        return this.getData(translatedWord.extendedWord.mainForm) // ONLY FOR TRANSLATIONS mainForm
                     .then((raw) => this.client.normalize(raw))
 				    .then((normalized) => this.client.parse(normalized))
 				    .then((result) => translatedWord.addTranslations(result));

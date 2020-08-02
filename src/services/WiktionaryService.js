@@ -5,7 +5,7 @@ import {config} from '../core/config.js'
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
 const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&title={QUERY}";
 
-class WiktionaryService{
+class WiktionaryService{ //TODO put extended word from outside
 
 	constructor(originalWord){
 		this.originalWord = originalWord
