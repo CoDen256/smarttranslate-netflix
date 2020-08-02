@@ -1,6 +1,6 @@
-import {Request} from '../core/requests.js'
-import {ExtendedWord} from './entities.js'
-import {config} from '../core/config.js'
+import {Request} from '../../core/requests.js'
+import {ExtendedWord} from '../entities.js'
+import {config} from '../../core/config.js'
 
 const reversoUrl = "https://context.reverso.net/translation/{SOURCE}-{TARGET}/{QUERY}"
 const reversoApi = reversoUrl

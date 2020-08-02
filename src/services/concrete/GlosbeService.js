@@ -1,6 +1,5 @@
-import {Request} from '../core/requests.js'
-import {ExtendedWord} from './entities.js'
-import {config} from '../core/config.js'
+import {Request} from '../../core/requests.js'
+import {config} from '../../core/config.js'
 
 const glosbeUrl = "https://{SOURCE}.glosbe.com/{SOURCE}/{TARGET}/{QUERY}"
 const glosbeApi = glosbeUrl;

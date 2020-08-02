@@ -1,5 +1,5 @@
-import {config} from '../core/config.js'
-import {WordTranslationService} from './WordTranslationService.js'
+import {config} from '../../core/config.js'
+import {WordTranslationService} from '../WordTranslationService.js'
 
 //TODO: MAYBE USE THIS INSTEAD OF API TOO
 const googleURL = "https://translate.google.com/?hl=de#view=home&op=translate&sl={SOURCE}&tl={TARGET}&text={QUERY}" 
@@ -29,7 +29,7 @@ class GoogleService {
 	}
 
 	getTranslatedWord(){
-		return this.service.translatedWord;
+		return this.service.getTranslatedWord();
 	}
 }
 

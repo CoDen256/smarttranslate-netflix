@@ -24,17 +24,19 @@ function main(){
 }
 
 
-let n = 5;
+let n = 0;
 
-	import {WiktionaryService} from './services/WiktionaryService.js'
-	import {GoogleService} from './services/GoogleService.js'
-	import {ReversoService} from './services/ReversoService.js'
-	import {MultitranService} from './services/MultitranService.js'
-	import {DudenService } from './services/DudenService.js';
-	import {GlosbeService} from './services/GlosbeService.js';
-	import {LingueeService} from './services/LingueeService.js';
+	import {WiktionaryService} from './services/concrete/WiktionaryService.js'
+	import {GoogleService} from './services/concrete/GoogleService.js'
+	import {ReversoService} from './services/concrete/ReversoService.js'
+	import {MultitranService} from './services/concrete/MultitranService.js'
+	import {DudenService } from './services/concrete/DudenService.js';
+	import {GlosbeService} from './services/concrete/GlosbeService.js';
+	import {LingueeService} from './services/concrete/LingueeService.js';
+	import {PonsService} from './services/concrete/PonsService.js'
+	
 	import {ExtendedWord} from './services/entities.js'
-	import {PonsService} from './services/PonsService.js'
+	
 
 	const word = ["beobachtet", "Sprachen", "besser", "objektiven", "ausgehen", "Hündinnen"][n]
 	const mainForm = ["beobachten", "Sprache", "gut", "objektiv", "ausgehen", "Hündin"][n]

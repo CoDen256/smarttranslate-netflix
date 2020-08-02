@@ -1,5 +1,5 @@
-import {WordTranslationService} from './WordTranslationService.js'
-import {config} from '../core/config.js'
+import {WordTranslationService} from '../WordTranslationService.js'
+import {config} from '../../core/config.js'
 
 const multitranUrl = "https://www.multitran.com/m.exe?l1={SOURCE}&l2={TARGET}&s={QUERY}"
 const multitranApi = multitranUrl
@@ -39,7 +39,7 @@ class MultitranService {
 	}
 
 	getTranslatedWord(){
-		return this.service.translatedWord;
+		return this.service.getTranslatedWord();
 	}
 
 }

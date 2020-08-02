@@ -1,6 +1,6 @@
-import {Request} from '../core/requests.js'
-import {ExtendedWord, MeaningWord} from './entities.js'
-import {config} from '../core/config.js'
+import {Request} from '../../core/requests.js'
+import {ExtendedWord, MeaningWord} from '../entities.js'
+import {config} from '../../core/config.js'
 
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
 const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&title={QUERY}";

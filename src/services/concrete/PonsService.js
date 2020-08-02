@@ -1,5 +1,5 @@
-import {WordTranslationService} from './WordTranslationService.js'
-import {config} from '../core/config.js'
+import {WordTranslationService} from '../WordTranslationService.js'
+import {config} from '../../core/config.js'
 
 const ponsUrl = "https://en.pons.com/translate/{SOURCE_FULL}-{TARGET_FULL}/{QUERY}"
 const ponsApi = ponsUrl
@@ -36,7 +36,7 @@ class PonsService {
 	}
 
 	getTranslatedWord(){
-		return this.service.translatedWord;
+		return this.service.getTranslatedWord();
 	}
 }
 
