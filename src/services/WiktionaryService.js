@@ -1,15 +1,17 @@
 import {Request} from '../core/requests.js'
 import {ExtendedWord, MeaningWord} from './entities.js'
+import {config} from '../core/config.js'
 
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
-const wiktionaryApi = "https://de.wiktionary.org/w/index.php";
+const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&title={QUERY}";
 
 class WiktionaryService{
 
 	constructor(originalWord){
 		this.originalWord = originalWord
 
-		this.meainingWord = this.getData(originalWord).then((data) => this.initializeMeaningWord(data));
+		this.meainingWord = this.getData(originalWord).then((data) => this.initializeMeaningWord(data))
+													  .catch(e => this.defaultValue(e))
 	}
 
 	getMeaningWord(){
@@ -19,15 +21,12 @@ class WiktionaryService{
 
 	getData(word){
 		console.log(`Wiktionart is getting data for '${word}'`)
-		let api = new Request(wiktionaryApi)
-		let params = {
-			"title" : word,
-			"action" : "raw",
-		}
+		let api = new Request(wiktionaryApi, {
+			query:word,
+			source:config.sourceLang
+		})
 
-		api.appendAll(params)
-
-		return api.loadRaw().then((data) => data.text())
+		return api.fetchData().then((data) => data.text())
 	}
 
 	/** 
@@ -40,15 +39,25 @@ class WiktionaryService{
 			return this.getData(mainForm).then((data) => this.initializeMeaningWord(data))
 		}
 
+
 		let extendedWord = new ExtendedWord(this.originalWord);
 		extendedWord.mainForm = this.getTitle(data);
 		extendedWord.type = this.parseWordType(data)
+
+		if (extendedWord.type === "FAILED_WORDTYPE") throw "Can't parse word"
+
+
 
 		let meaningWord = new MeaningWord(extendedWord);
 		meaningWord.addMeanings(this.parseMeaning(data, 3));
 		return meaningWord;
 	}
 
+	defaultValue(error){
+		console.log("Error while creating Meaning word beacause:\n", error)
+		console.log("Default value will be returned by", this)
+		return new MeaningWord(new ExtendedWord(this.originalWord));
+	}
 
 
 	parseByRegex(string, regex){

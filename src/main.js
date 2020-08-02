@@ -142,7 +142,7 @@ let n = 0;
 	let extended = meaningWord.then((word) => word.extendedWord)
 	
 	testGoogle(extended);
-	testMultitran(extended)
+	//testMultitran(extended)
 	//testReverso();
 	//testDuden();
 	//testGlosbe();
