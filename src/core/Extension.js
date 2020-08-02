@@ -1,5 +1,5 @@
 import {config} from './config.js'
-import {Translator} from '../services/Translator.js'
+import {Translator} from './Translator.js'
 import {replaceWithSpans} from './Utils.js'
 
 class Extension {

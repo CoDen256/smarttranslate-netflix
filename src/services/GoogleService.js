@@ -1,46 +1,37 @@
 import {Request} from '../core/requests.js'
 import {TranslatedWord} from './entities.js'
 import {config} from '../core/config.js'
+import {WordTranslationService} from './WordTranslationService.js'
 
-//TODO: MAYBE USE THIS INSTEAD OF API TO 
+//TODO: MAYBE USE THIS INSTEAD OF API TOO
 const googleURL = "https://translate.google.com/?hl=de#view=home&op=translate&sl={SOURCE}&tl={TARGET}&text={QUERY}" 
-const googleApiUrl = "https://translate.googleapis.com/translate_a/single";
+const googleApiUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={SOURCE}&tl={TARGET}&dt=t&q={QUERY}";
+
+const params = {
+	source : config.sourceLang,
+	target : config.targetLang,
+}
 
 class GoogleService {
 	constructor(extendedWord){
-		this.extendedWord = extendedWord;
-		this.translatedWord = extendedWord.then((extWord) => new TranslatedWord(extWord))
-										  .then((translated) => this.updateTranslated(translated))
+		this.service = new WordTranslationService(
+			googleApiUrl,
+			params,
+			extendedWord,
+			this
+		)
 	}
 
-	getData(word){
-		console.log(`Google is getting data for '${word}'`)
-		let api = new Request(googleApiUrl, "GET")
-		let params = {
-			"client":"gtx",
-			"sl" : config.sourceLang,
-			"tl" : config.targetLang,
-			"dt": "t",
-			"q": word,
-		}
-
-		api.appendAll(params)
-
-		return api.loadJson()
+	normalize(raw) {
+		return raw.json()
 	}
 
-	parseResult(data){
-		return data[0][0][0];
-	}
-
-	updateTranslated(translatedWord){
-		return this.getData(translatedWord.extendedWord.mainForm)
-				.then((data) => this.parseResult(data))
-				.then((result) => translatedWord.addTranslation(result));
+	parse(normalized){
+		return [normalized[0][0][0]];
 	}
 
 	getTranslatedWord(){
-		return this.translatedWord;
+		return this.service.translatedWord;
 	}
 }
 

@@ -1,38 +1,28 @@
-import {proxies} from '../core/config.js'
+import {proxies} from './config.js'
+import {URL} from './URL.js'
 
 class Request{
-	constructor(url){
-		this.url = url
+	constructor(url, params){
+		this.url = URL.replaceAll(url, params)
 		this.proxyProvider = new ProxyProvider(proxies)
 	}
 
-	append(key, value){
-		if (!this.url.endsWith("&")) this.url += "?"
-		this.url += key+"="+value+"&";
-	}
-
-	loadJson(){	
-		return this.loadRaw().then((data) => data.json())
-	}
 	
 
-	loadRaw(){	
+	fetchData(){	
 		console.log("Fetching url", this.url)
 		let proxy = this.proxyProvider.getNextProxy();
 		let resultUrl = proxy+this.url;
 		let request = this
 
+		console.log(resultUrl)
 		return fetch(resultUrl, {method:"GET"}).catch((e) =>{
 			console.log("Error while fetching", proxy+this.url, e)
 			request.proxyProvider.fail()
-			return request.loadRaw()
+			return request.fetchData()
 		})
 	}
 
-
-	appendAll(params){
-		Object.keys(params).forEach(key => this.append(key, params[key]))
-	}
 }
 
 class ProxyProvider{
@@ -50,7 +40,7 @@ class ProxyProvider{
 		console.log("Proxy failed", this.currentProxy)
 		this.currentProxy = this.proxyList[(++this.pointer)%this.proxyList.length];
 		if (this.pointer === proxies.length-1){
-			throw Error("Proxies are exceeded")
+			throw "Proxies are exceeded"
 		}
 		console.log("Trying next:", this.currentProxy)
 	}

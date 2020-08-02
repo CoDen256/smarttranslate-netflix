@@ -1,7 +1,7 @@
 // TYPES: https://de.wiktionary.org/wiki/Hilfe:Wortart
 // GENDER : "f", "m", "n"
 
-class ExtendedWord {
+class ExtendedWord {// TODO: Maybe will contain full parsed data in itself
 	constructor(original){// parses all info from wiktionary or another resource
 		this.original = original;
 		this.mainForm = original; // main form of word
@@ -11,7 +11,7 @@ class ExtendedWord {
 
 }
 
-class TranslatedWord{
+class TranslatedWord{ 
 	constructor(extendedWord){ // normilized Word: ExtendedWord
 		this.extendedWord = extendedWord // each service fives own translation, maybe even several translations
 		this.translations = [];
