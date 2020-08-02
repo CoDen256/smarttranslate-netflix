@@ -9,7 +9,7 @@ const params = {
     source: langMap[config.sourceLang],
     target: langMap[config.targetLang]
 }
-
+//TODO: different translations je nach WortArt
 class MultitranService {
     constructor(extendedWord){
 		this.service = new WordTranslationService(
