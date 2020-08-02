@@ -66,11 +66,9 @@ let n = 0;
 	function testMultitran(word){
 		console.log("Testing Multitran Sevice")
 		
-		let service = new MultitranService(extendedWord);
-		service.getData().then((data) => {
-			return data.text()
-		}).then((data) => {
-			console.log(data);
+		let service = new MultitranService(word);
+		service.getTranslatedWord().then((data) => {
+			console.log("Translated from Multitran:", data)
 		})
 	}
 
@@ -142,7 +140,7 @@ let n = 0;
 	let extended = meaningWord.then((word) => word.extendedWord)
 	
 	testGoogle(extended);
-	//testMultitran(extended)
+	testMultitran(extended)
 	//testReverso();
 	//testDuden();
 	//testGlosbe();

@@ -4,24 +4,42 @@ import {config} from '../core/config.js'
 
 const ponsUrl = "https://en.pons.com/translate/{SOURCE_FULL}-{TARGET_FULL}/{QUERY}"
 const ponsApi = ponsUrl
+const params = {
+    sourceFull: config.sourceLangFull,
+    targetFull: config.targetLangFull,
+}
 
 class PonsService {
     constructor(extendedWord){
-        console.log("Pons Service created")
-		this.extendedWord = extendedWord;
-		this.mainForm = extendedWord.mainForm;
+		this.service = new WordTranslationService(
+			ponsApi,
+			params,
+			extendedWord,
+			this
+		)
 	}
 
-	getData(){
-        console.log(`Getting data for '${this.mainForm}'`)
-        let api = new Request(ponsApi.replace("{SOURCE_FULL}", config.sourceLangFull)
-                                      .replace("{TARGET_FULL}", config.targetLangFull)
-                                      .replace("{QUERY}", this.mainForm),
-                                      "GET")
-
-		return api.loadRaw() // DOM HTML or something
+	normalize(raw) {
+		return raw.text()
 	}
 
+	parse(normalized){ // Array<String> - translations
+        let doc = new DOMParser().parseFromString(normalized, 'text/html')
+        let translations = []
+        doc.querySelectorAll(".trans").forEach((cl) => {
+            cl.querySelectorAll("a").forEach(a => {
+                if (a.parentNode.nodeName === "TD") {
+                    translations.push(a.textContent)
+                }
+            })
+            
+        })
+        return translations;
+	}
+
+	getTranslatedWord(){
+		return this.service.translatedWord;
+	}
 }
 
 export {PonsService, ponsUrl}

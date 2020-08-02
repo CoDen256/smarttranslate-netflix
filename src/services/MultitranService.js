@@ -1,5 +1,4 @@
-import {Request} from '../core/requests.js'
-import {ExtendedWord} from './entities.js'
+import {WordTranslationService} from './WordTranslationService.js'
 import {config} from '../core/config.js'
 
 const multitranUrl = "https://www.multitran.com/m.exe?l1={SOURCE}&l2={TARGET}&s={QUERY}"
@@ -22,11 +21,21 @@ class MultitranService {
 	}
 
 	normalize(raw) {
-		return raw.json()
+		return raw.text()
 	}
 
-	parse(normalized){
-		return [normalized[0][0][0]];
+	parse(normalized){ // Array<String> - translations
+        let doc = new DOMParser().parseFromString(normalized, 'text/html')
+        let translations = []
+        doc.querySelectorAll(".trans").forEach((cl) => {
+            cl.querySelectorAll("a").forEach(a => {
+                if (a.parentNode.nodeName === "TD") {
+                    translations.push(a.textContent)
+                }
+            })
+            
+        })
+        return translations;
 	}
 
 	getTranslatedWord(){

@@ -1,5 +1,3 @@
-import {Request} from '../core/requests.js'
-import {TranslatedWord} from './entities.js'
 import {config} from '../core/config.js'
 import {WordTranslationService} from './WordTranslationService.js'
 
