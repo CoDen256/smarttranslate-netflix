@@ -1,9 +1,6 @@
 .player-timedtext-text-container{z-index:100!important;}
 .player-timedtext .player-timedtext-text-container:hover{cursor:pointer;}
 
-
-body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:auto!important;}
-
 .hoverable:hover{
     background: #116ce4;
     border-radius: 15%;
@@ -11,7 +8,7 @@ body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:
 
 .translation-popup {
 	visibility: hidden;
-    opacity: 0;
+    opacity: 0.95;
     transition: opacity 0.3s, visibility 0.3s;
     z-index: 80000;
     background: #282828;
@@ -27,14 +24,16 @@ body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:
     position: absolute;
     padding: 0 !important;
     margin: 0 !important;
-	pointer-events: all;
+    left: 112.5px; 
+    pointer-events: all;
+    top: 510px;
 	right: auto;
-	top: auto;
     transform: translateY(-100%);
     /* box-shadow: 0 0.2em 0.1em 0 #000; */
 }
 
 .translation-scrollbar{
+    height: 381px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 0;
@@ -43,7 +42,6 @@ body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:
     border-top-right-radius: 6px;
     box-sizing: border-box;
     position: relative;
-    height: 230px;
     border-bottom: 1px solid #666;
 }
 
@@ -74,12 +72,39 @@ body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:
     
     
 }
+
+.popup-main{
+    min-width: 400px;
+    width: 400px;
+}
+
+
 .translation-header{
     color: #fff;
     font-weight: 500;
     margin-left: 5px;
     padding-left: 35px;
     position: relative;
+}
+
+#title{
+    color: rgb(189, 189, 0); 
+    font-weight: bold;
+}
+
+#translation-info {
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    line-break: auto;
+    pointer-events: all;
+    line-height: 1.35em;
+    list-style: none;
+    user-select: text;
+    color: #4682b4;
+    cursor: default;
+    font-weight: 700;
 }
 
 
@@ -97,10 +122,67 @@ body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:
 }
 
 .section-full{
-    padding: 10px 35px 5px 10px;
+    /*padding: 10px 35px 5px 10px;*/
     background: #0b344c;
 }
 
+.dict-list {
+    list-style: none;
+    padding-inline-start: 5px;
+    color: #fff;
+    margin: 0;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+}
+
+.dictionary-item {
+    padding-bottom: 8px;
+    user-select: text;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+}
+
+.dictionary-title{
+    font-weight: 700;
+    color: rgb(189, 189, 0);
+    padding-left: 5px;
+}
+.dictionary-content{
+    padding-inline-start: 10px;
+    list-style: none;
+    padding-top: 2px;
+    padding-inline-end: 10px;
+    word-wrap: break-word;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+.tabs-row {
+    display: block;
+}
+.tabs-row button {
+    background-color: inherit;
+    outline: none;
+    border: 0;
+    cursor: pointer;
+    padding: 9px;
+    transition: 0.3s;
+    font-size: 13px;
+    border-radius: 8%;
+  }
+
+.tabs-row button:hover {
+    background-color: #ddd;
+}
+
+.tabs-row button.active {
+    background-color: #ccc;
+}
 .external-dicts-row {
     text-align: center;
     /*
@@ -110,9 +192,11 @@ body.open-tr-panel .sizing-wrapper{width:80vw!important;right:0!important; left:
     padding-left: 35px;
     margin: 0 -15px;
     */
+
     color: rgb(106, 167, 231);
     border-top: 1px solid #666;
     min-height: 32px;
+    display: block;
 }
 
 .translation-popup::after {

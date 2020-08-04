@@ -15,7 +15,6 @@ class URL {
 
     static replaceAll(pattern, params){
         this.checkParams(params) 
-        console.log(params.query, encodeURI(params.query))
         return pattern.replace(this.regex(query), encodeURI(params.query))
                       .replace(this.regex(source), params.source)
                       .replace(this.regex(target), params.target)

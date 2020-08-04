@@ -7,7 +7,17 @@ function run() {
 	mainScript.src = chrome.extension.getURL('./src/main.js');
 	mainScript.setAttribute("type", "module");
 	scriptsToPrepend.push(mainScript);
-  
+
+
+	var mainDiv = document.createElement("div");
+	mainDiv.id = "main";
+
+	document.body.append(mainDiv);
+
+	fetch(chrome.extension.getURL("./src/translationPopup.html"))
+		.then((data) => data.text())
+		.then(data => mainDiv.innerHTML = data)
+
 	document.documentElement.prepend.apply(document.documentElement, scriptsToPrepend);
 
 	// Main chrome handler

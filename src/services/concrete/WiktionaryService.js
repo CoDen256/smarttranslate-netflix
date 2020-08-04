@@ -8,8 +8,8 @@ const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&ti
 class WiktionaryService{ //TODO put extended word from outside
 
 	constructor(originalWord){
+		this.redirects = 0;
 		this.originalWord = originalWord
-
 		this.meainingWord = this.getData(originalWord).then((data) => this.initializeMeaningWord(data))
 													  .catch(e => this.defaultValue(e))
 	}
@@ -34,10 +34,13 @@ class WiktionaryService{ //TODO put extended word from outside
 	 */
 	initializeMeaningWord(data){ 
 		let mainForm = this.parseMainForm(data)
-
 		if (mainForm !== "FAILED_MAINFORM"){ // MAIN_FORM exsited, thus not main form
+			this.redirects++;
+			if (this.redirects === 2) throw "Wiktionary was redirected 2 times, ABORTED"
 			return this.getData(mainForm).then((data) => this.initializeMeaningWord(data))
 		}
+
+		
 
 		let type = this.parseWordType(data)
 		if (type === "FAILED_WORDTYPE") throw "Can't parse word"
@@ -112,6 +115,11 @@ class WiktionaryService{ //TODO put extended word from outside
 		let gender = this.parseByRegex(raw, /{{Wortart\|Substantiv\|Deutsch}}, {{(?<result>\w)}}/g)
 		if (gender == false) return null;
 		return gender
+	}
+
+	isMainForm(raw){
+		let regex = /{{Bedeutungen}}/g
+		return raw.match(regex)
 	}
 
 }

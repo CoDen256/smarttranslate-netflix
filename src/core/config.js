@@ -1,23 +1,4 @@
 const config = {
-	popupWidth : 270,
-	popupTop: 510,
-	activationOpacity : "0.95",
-	popupClass : "translation-popup",
-	
-	closePopupClass : "close-popup",
-
-	scrollBarHeight : 381,
-	translationScrollBarClass: "translation-scrollbar",
-	translationPanelClass: "translation-panel",
-
-	headerClass : "translation-header",
-	headerSectionClass : "translation-header-section",
-
-	fullSectionClass: "section-full",
-
-	externalDictsClass: "external-dicts-row",
-	externalDictsContainerClass: "external-dicts-container",
-
 	wordEditedId : "edited",
 	hoverableWordClass :"hoverable",
 
