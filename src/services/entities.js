@@ -9,6 +9,14 @@ class ExtendedWord {// TODO: Maybe will contain full parsed data in itself
 		this.gender = null;
 	}
 
+	clone(){
+		let cloned = new ExtendedWord(this.original);
+		cloned.mainForm = this.mainForm
+		cloned.type = this.type;
+		cloned.gender = this.gender;
+		return cloned;
+	}
+
 }
 
 class TranslatedWord{ 

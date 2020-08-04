@@ -13,6 +13,7 @@
       "run_at": "document_end"
    }],
    "web_accessible_resources": [
+      "/src/translationPopup.html",
       "/src/*",
       "/src/services/*",
       "/src/core/*"

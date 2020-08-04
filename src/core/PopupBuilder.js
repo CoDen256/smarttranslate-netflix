@@ -3,109 +3,108 @@ import {pixel, toClass} from './Utils.js'
 class PopupBuilder{
 
 	createTranslationPopup(translator){
-		let popup = this.create("div", config.popupClass)
+		//this.translator = translator;
 
-		//popup.textContent = word
-		this.translator = translator;
+		this.removeTranslationPopup()
+		this.showTranslationPopup()
 
-		this.adjustStyle(popup)
-		this.createCloseDiv(popup)
-		this.createScrollBar(popup) // TODO: Create tabs for  each one;s
-		this.createFooter(popup) 
+		this.createCloseDiv()
+		//this.fillHeaderSection()
+
+
+		this.createFooter() 
 
 		// TODO: while loading just initialy let it display something like "loading", and then it will be replaced
 
-		document.body.appendChild(popup);
 	}
 
-	createCloseDiv(popup){
-		let closeDiv = this.create("div", config.closePopupClass)
-		closeDiv.addEventListener("click", (e) => this.removeTranslationPopup())
-		popup.appendChild(closeDiv)
-	}
-
-	createScrollBar(popup){
-		let scrollBar = this.create("div", config.translationScrollBarClass)
-
-		scrollBar.style.height = pixel(config.scrollBarHeight)
-		scrollBar.style.minWidth = pixel(config.popupWidth)
-
-		this.createTranslationPanel(scrollBar);
-
-		popup.appendChild(scrollBar)
-	}
-
-	createTranslationPanel(scrollBar){
-		let translationPanel = this.create("div", config.translationPanelClass)
-
-		let headerSection = this.create("div", config.headerSectionClass)	
-		this.populateHeaderSection(headerSection);
-
-		let fullSection = this.create("div", config.fullSectionClass)
-		this.populateTranslations(fullSection)
-
-		translationPanel.appendChild(headerSection)
-		translationPanel.appendChild(fullSection)
-		scrollBar.appendChild(translationPanel)
+	createCloseDiv(){
+		this.select(".close-popup").addEventListener("click", (e) => this.hideTranslationPopup())
 	}
 
 
-	populateHeaderSection(headerSection){
 
-		let header = this.create("div", config.headerClass)
+	fillHeaderSection(){
+		this.select("#title").textContent = this.translator.original; 
 
-		let wordSpan = document.createElement("span")
-		wordSpan.style.color = "rgb(189, 189, 0)"
-		wordSpan.style.fontWeight = "bold"
-		wordSpan.textContent = this.translationService.initialWord;
+		let infoSpan = this.select("#translation-info")
 
-		let translationSpan = document.createElement("span")
-		translationSpan.textContent = this.translationService.simpleTranslate();
+		this.translator.getInfo().then((info) => {
+			infoSpan.textContent = "   "+info;	//TODO: der/die/das
+		})
 
-		header.appendChild(wordSpan)
-		header.appendChild(document.createElement("br"))
-		header.appendChild(translationSpan)
+		let translationSpan = this.select("#short-translation")
 
-		headerSection.appendChild(header)
+
+		this.translator.simpleTranslate().then((translation) => {
+			translationSpan.textContent = translation;
+		})
 
 	}
 
-	populateTranslations(full){
 
+	populateMainPage(full){
+		let tabList = document.createElement("ul")
+		tabList.className = config.tabListClass;
+
+		let multitran = this.createMultitran(full);
+		//let reverso = this.createReverso(full)
+
+		tabList.appendChild(multitran);
+		//tabList.appendChild(reverso);
+		full.appendChild(tabList)
+	}
+
+
+	createDictionarySection(titleName, getContent){
+		let dictionary = document.createElement("li")
+		dictionary.className = config.dictionaryItem;
+
+		let title = document.createElement("div")
+		title.className = config.dictionaryTitle
+
+		title.textContent = titleName
+
+		let content = document.createElement("ol")
+		content.className = config.dictionaryContent;
+
+
+		let createItem = (parent, text) => {
+			let item = document.createElement("li")
+			item.className = config.dictionaryContentItem;
+			item.textContent = text;
+			parent.appendChild(item)
+		}
+
+		getContent.then((arr) => {
+			arr.forEach((translation) => createItem(content, translation))
+		})
+
+	
+		dictionary.appendChild(title)
+		dictionary.appendChild(content)
+		return dictionary;
 	}
 
 	createFooter(popup){
-		let externalDicstRow = this.create("div", config.externalDictsClass)
-		let externalContainer = this.create("span", config.externalDictsContainerClass)
-		
-		externalDicstRow.style.minWidth = pixel(config.popupWidth)
-		externalContainer.textContent = "Re Po Gl" // TODO: for each translator each color
-
-		externalDicstRow.appendChild(externalContainer)
-		popup.appendChild(externalDicstRow)
-	}
-
-
-
-	adjustStyle(popup){
-		popup.style.width = pixel(config.popupWidth);
-		popup.style.left = pixel((maxWidth-config.popupWidth)/2)
-		popup.style.top = pixel(config.popupTop);
+		this.select(".external-dicts-container").textContent = "Re Po Gl" 
+		// TODO: for each translator each color	
 	}
 
 	
 	removeTranslationPopup(){
-		let popup = document.querySelector(toClass(config.popupClass))
-		if (popup != null){
-			popup.remove()
-		}
-		
+		console.log("hiding")
+		this.select(".translation-popup").style.visibility = 'hidden';
 	}
 
-	activateTranslationPopup(){
-		let popup = document.querySelector(toClass(config.popupClass))
-		popup.style.visibility = 'visible'
-		popup.style.opacity = config.activationOpacity
+	showTranslationPopup(){
+		console.log("showing")
+		this.select(".translation-popup").style.visibility = 'visible';
+	}
+
+
+	select(query){
+		return document.querySelector(query)
 	}
 
 	create(element, cl){

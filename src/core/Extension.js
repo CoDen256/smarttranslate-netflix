@@ -12,13 +12,10 @@ class Extension {
 	wordClicked(event, builder){
 		console.log("Word is clicked", event.target, event.target.textContent)
 
-		let translator = new Translator(event.target.textContent)
+		//let translator = new Translator(event.target.textContent)
 
-		builder.removeTranslationPopup()
-		builder.createTranslationPopup(translator);
-		builder.activateTranslationPopup()
+		builder.createTranslationPopup(null);
 
-	
 	};
 
 	wrapWordsWithSpans(span){

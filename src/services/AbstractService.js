@@ -7,7 +7,7 @@ class AbstractService {
         this.concreteService = concreteService;
         this.apiUrl = apiUrl;
         this.params = params;
-        this.extendedWord = extendedWord;
+        this.extendedWord = extendedWord.then((w) => w.clone());
 
         this.client = client
 
