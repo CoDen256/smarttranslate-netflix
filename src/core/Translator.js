@@ -23,13 +23,13 @@ class Translator{
 	initializePrimary(){
 		this.google = new GoogleService(this.extended);
 		this.multitran = new MultitranService(this.extended);
-		this.reverso = new ReversoService(this.extended);
+		//this.reverso = new ReversoService(this.extended);
 	}
 
 	initializeSecondary(){
-		this.pons = new PonsService(this.extended);
-		this.glosbe = new GlosbeService(this.extended);
-		this.duden = new DudenService(this.extended)
+		//this.pons = new PonsService(this.extended);
+		//this.glosbe = new GlosbeService(this.extended);
+		//this.duden = new DudenService(this.extended)
 	}
 
 	simpleTranslate(){
@@ -38,7 +38,7 @@ class Translator{
 
 	getInfo(){
 		return this.extended.then((word) => {
-			return (word.gender == null ? '' : `(${word.gender}) `) + word.type.toLowerCase()
+			return (word.gender == null ? '' : `(${word.gender}) `) + word.type
 		})
 	}
 
@@ -49,5 +49,4 @@ class Translator{
 	}
 
 }
-
 export {Translator};

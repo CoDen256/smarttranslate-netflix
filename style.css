@@ -47,8 +47,8 @@
 
 .close-popup {
     position: absolute;
-    top: 2px;
-    right: 5px;
+    top: 1px;
+    right: 10px;
     background-image: url(https://img.icons8.com/cotton/2x/cancel.png);
     background-size : 26px 26px;
     width: 26px;
@@ -123,10 +123,11 @@
 
 .section-full{
     /*padding: 10px 35px 5px 10px;*/
+    display: none;
     background: #0b344c;
 }
 
-.dict-list {
+.dict-list { /* deprecated */
     list-style: none;
     padding-inline-start: 5px;
     color: #fff;
@@ -140,15 +141,29 @@
 .dictionary-item {
     padding-bottom: 8px;
     user-select: text;
+    padding-inline-start: 5px;
+    color: #fff;
     border-top: 1px solid #666;
-    border-bottom: 1px solid #666;
+    margin: 0;
+    display: block;
+    margin-inline-start: 0px;
 }
 
 .dictionary-title{
     font-weight: 700;
     color: rgb(189, 189, 0);
     padding-left: 5px;
+    padding-top: 5px;
 }
+
+.dict-link {
+    text-decoration: underline;
+    float: right;
+    opacity: 50%;
+    color: #fff;
+    padding-right: 10px;
+}
+
 .dictionary-content{
     padding-inline-start: 10px;
     list-style: none;
@@ -168,7 +183,8 @@ li {
 .tabs-row button {
     background-color: inherit;
     outline: none;
-    border: 0;
+    border: 0px;
+    border-top: 0px;
     cursor: pointer;
     padding: 9px;
     transition: 0.3s;
@@ -176,12 +192,14 @@ li {
     border-radius: 8%;
   }
 
+
 .tabs-row button:hover {
-    background-color: #ddd;
+    background-color: rgb(23, 87, 170);
 }
 
 .tabs-row button.active {
-    background-color: #ccc;
+    background-color:#0b344c;
+    color: #ddd;
 }
 .external-dicts-row {
     text-align: center;

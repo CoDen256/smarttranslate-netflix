@@ -21,9 +21,20 @@ function main(){
 		
 		
 	},1000);
-}
+}        
 
+var performance = window.performance || window.mozPerformance
+				|| window.msPerformance || window.webkitPerformance || {};
+
+			let	per=  performance.getEntries() || {};
+
+var netData = per;
+netData.forEach(data => console.log(data.name)) 
+
+
+ 
 main()
-/* 
+/*
 import {test} from './test.js';
-test("STÖHNT")*/
+test("STÖHNT")
+*/

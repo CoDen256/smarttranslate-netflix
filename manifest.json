@@ -16,7 +16,8 @@
       "/src/translationPopup.html",
       "/src/*",
       "/src/services/*",
-      "/src/core/*"
+      "/src/core/*",
+      "/resources/morphy.xml"
    ],
    "description": "Netflix Enhanced Subtitle Tool allows translate every word with different dictionaries and save them in context.",
    "icons": {
