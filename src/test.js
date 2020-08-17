@@ -5,6 +5,8 @@ import {MultitranService} from './services/concrete/MultitranService.js'
 import {DudenService } from './services/concrete/DudenService.js';
 import {GlosbeService} from './services/concrete/GlosbeService.js';
 import {PonsService} from './services/concrete/PonsService.js'
+import {Request} from './core/requests.js';
+import {Lemmatizer} from "./services/concrete/Lemmatizer.js"
 
 function test(original){
     const words = ["beobachtet", "Sprachen", "besser", "objektiven", "ausgehen", "Hündinnen"]
@@ -73,16 +75,30 @@ function test(original){
         })
     }
 
-    let meaningWord = testWik(original);
-    let extended = meaningWord.then((word) => word.extendedWord)
-        
+    function measure(func, word){
+        var t0 = performance.now()
 
-    testDuden(extended);
-    testGoogle(extended);
-    testMultitran(extended)
-    testPons(extended)
-    testReverso(extended);
-    testGlosbe(extended);
+        func(word)   
+        
+        var t1 = performance.now()
+        console.log("Call  took " + (t1 - t0) + " milliseconds.")
+    }
+
+    //let meaningWord = testWik(original);
+    //let extended = meaningWord.then((word) => word.extendedWord)
+    let sent = "Die Sozialdemokraten haben ersten Prognosen zufolge die Europawahl in den Niederlanden gewonnen."+
+                "Ich dachte darüber nach, dass es sich lohnt"
+
+    sent = "Wir haben uns angemeldet"
+    let lem = new Lemmatizer(sent).getLemmas().then((lemmas) => {
+        console.log(lemmas);
+    })
+    //testDuden(extended);
+    //testGoogle(extended);
+    //testMultitran(extended)
+    //testPons(extended)
+    //testReverso(extended);
+    //testGlosbe(extended);
 }
 
 export {test}

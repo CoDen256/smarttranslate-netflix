@@ -32,6 +32,13 @@ chrome.tabs.onActivated.addListener(function(info){
 		return urlChanged(tab);		
 	});
 });
+
+
+
+/*chrome.devtools.network.onRequestFinished.addListener(
+	function(request) {
+		  console.log(request.request.url)
+});*/
 /* 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {    
     if (request.contentScriptQuery == "getData") {

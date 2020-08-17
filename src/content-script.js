@@ -9,6 +9,7 @@ function run() {
 	scriptsToPrepend.push(mainScript);
 
 
+	
 	var mainDiv = document.createElement("div");
 	mainDiv.id = "main";
 
@@ -17,6 +18,7 @@ function run() {
 	fetch(chrome.extension.getURL("./src/translationPopup.html"))
 		.then((data) => data.text())
 		.then(data => mainDiv.innerHTML = data)
+
 
 	document.documentElement.prepend.apply(document.documentElement, scriptsToPrepend);
 

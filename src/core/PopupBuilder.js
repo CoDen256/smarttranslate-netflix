@@ -2,26 +2,48 @@ import {maxWidth, config} from './config.js'
 import {pixel, toClass} from './Utils.js'
 class PopupBuilder{
 
-	createTranslationPopup(translator){
-		//this.translator = translator;
-
+	constructor(){
+		this.applyEventListeners();
+		
+	}
+	createTranslationPopup(translator){ //TODO: Checkbox near verb, if it is reflexiv, so user decides
+		this.translator = translator;
 		this.removeTranslationPopup()
 		this.showTranslationPopup()
-
-		this.createCloseDiv()
-		//this.fillHeaderSection()
-
-
-		this.createFooter() 
+		this.fillHeaderSection()
+		this.fillTabs();
+		this.activate("#tab-multitran", this.select("#button-multi"))
 
 		// TODO: while loading just initialy let it display something like "loading", and then it will be replaced
 
 	}
 
-	createCloseDiv(){
-		this.select(".close-popup").addEventListener("click", (e) => this.hideTranslationPopup())
+	applyEventListeners(){
+		this.select(".close-popup").addEventListener("click", (e) => this.removeTranslationPopup())
+		let map = {
+			"#button-multi" : "#tab-multitran",
+			"#button-pons" : "#tab-pons",
+			"#button-reverso" : "#tab-reverso",
+			"#button-glosbe" : "#tab-glosbe",
+			"#button-duden" : "#tab-duden",
+			"#button-wik" : "#tab-wik",
+		}
+		for (const [key, value] of Object.entries(map)) {
+			this.select(key).addEventListener("click", e => this.activate(value, e.target))
+		}
+		
 	}
 
+
+	activate(id, button){
+		document.querySelectorAll(".section-full").forEach(e => e.style.display="none")
+		this.select(id).style.display = "block"
+
+		document.querySelector(".tabs-row").querySelectorAll("button").forEach(b => {
+			b.className = ""
+		})
+		button.className ="active"
+	}
 
 
 	fillHeaderSection(){
@@ -42,63 +64,57 @@ class PopupBuilder{
 
 	}
 
-
-	populateMainPage(full){
-		let tabList = document.createElement("ul")
-		tabList.className = config.tabListClass;
-
-		let multitran = this.createMultitran(full);
-		//let reverso = this.createReverso(full)
-
-		tabList.appendChild(multitran);
-		//tabList.appendChild(reverso);
-		full.appendChild(tabList)
+	fillTabs(){
+		this.fillMultitran()
+		this.fillPons()
+		this.fillReverso()
+		this.fillGlosbe()
+		this.fillDuden()
+		this.fillWiktionary()
 	}
 
-
-	createDictionarySection(titleName, getContent){
-		let dictionary = document.createElement("li")
-		dictionary.className = config.dictionaryItem;
-
-		let title = document.createElement("div")
-		title.className = config.dictionaryTitle
-
-		title.textContent = titleName
-
-		let content = document.createElement("ol")
-		content.className = config.dictionaryContent;
-
-
-		let createItem = (parent, text) => {
-			let item = document.createElement("li")
-			item.className = config.dictionaryContentItem;
-			item.textContent = text;
-			parent.appendChild(item)
-		}
-
-		getContent.then((arr) => {
-			arr.forEach((translation) => createItem(content, translation))
+	fillMultitran(){
+		this.select("#tab-multitran").querySelector("a").href = "https://www.multitran.com/"
+		
+		let content = this.select(".dictionary-content")
+		this.translator.getMultitranTranslations().then((translations) => {
+			translations.forEach((t) => {
+				// <li class="dictionary-content-item">
+				let item = this.create("li", "dictionary-content-item")
+				item.textContent = t;
+				content.appendChild(item)
+			})
 		})
-
-	
-		dictionary.appendChild(title)
-		dictionary.appendChild(content)
-		return dictionary;
 	}
 
-	createFooter(popup){
-		this.select(".external-dicts-container").textContent = "Re Po Gl" 
-		// TODO: for each translator each color	
+	fillPons(){
+		this.select("#tab-pons").querySelector("a").href = "pons.com"
+	}
+
+	fillReverso(){
+		this.select("#tab-reverso").querySelector("a").href = "context.reverso.net"
+	}
+
+	fillGlosbe(){
+		this.select("#tab-glosbe").querySelector("a").href = "glosbe.com"
+	}
+
+	fillDuden(){
+		this.select("#tab-duden").querySelector("a").href = "duden.de"
+	}
+
+	fillWiktionary(){
+		this.select("#tab-wik").querySelector("a").href = "wiktionary.org"
 	}
 
 	
 	removeTranslationPopup(){
-		console.log("hiding")
+		console.log("Hiding Translation Popup")
 		this.select(".translation-popup").style.visibility = 'hidden';
 	}
 
 	showTranslationPopup(){
-		console.log("showing")
+		console.log("Showing Translation Popup")
 		this.select(".translation-popup").style.visibility = 'visible';
 	}
 
