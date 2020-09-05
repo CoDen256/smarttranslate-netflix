@@ -3,22 +3,21 @@ import {Translator} from './Translator.js'
 import {replaceWithSpans} from './Utils.js'
 
 class Extension {
-	constructor(builder){
+	constructor(builder, subtitleProvider){
 		console.log("Extension created")
 		this.launched = false;
 		this.builder = builder;
-		this.script = "";
-		this.wordMap = {
-			// word: Translator
-		}
-
-		// TODO: CACHE
-		this.lastSentece = ""
-		this.sentences = []
+		this.subtitleProvider = subtitleProvider;
 	}
 
 	wordClicked(event, builder){
+		debugger
 		console.log("Word is clicked", event.target, event.target.textContent)
+
+		let lemma = this.findWord(event.target.textContent, this.subtitleProvider.getSubtitle());
+
+
+
 		//console.log(this.wordMap)
 
 		//if (!this.wordMap[word]){
@@ -32,8 +31,16 @@ class Extension {
 
 	};
 
+	findWord(wordToFind, ltc_sentence) {
+		for (let word of ltc_sentence) {
+			if (word.original.toLowerCase() === wordToFind.toLowerCase()) {
+				return word;
+			}
+		}
+	}
+
 	addSentence(sent){
-		if (this.lastSentece == sent) return;
+		if (this.lastSentece === sent) return;
 		this.lastSentece = sent;
 		this.sentences.push(sent)
 		console.log(this.sentences)
@@ -52,13 +59,13 @@ class Extension {
 
 	addSubtitle(span){
 		if (span.id === config.wordEditedId) return false;
-
-		
 	}
 
 	update(newItem){
 		const wrapWordsWithSpansReference = (span) => this.wrapWordsWithSpans(span);
 		const addSubtitleReference = (span) => this.addSubtitle(span)
+
+		console.log("Current subtitle line:", this.subtitleProvider.getSubtitle())
 
 		this.launched = true;
 		let wait = false;
