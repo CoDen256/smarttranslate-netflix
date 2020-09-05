@@ -5,6 +5,7 @@ import {MultitranService} from './services/concrete/MultitranService.js'
 import {DudenService } from './services/concrete/DudenService.js';
 import {GlosbeService} from './services/concrete/GlosbeService.js';
 import {PonsService} from './services/concrete/PonsService.js'
+import {SublemService} from './services/concrete/SubtitleLemmatizerService.js'
 import {Request} from './core/requests.js';
 import {Lemmatizer} from "./services/concrete/Lemmatizer.js"
 
@@ -84,21 +85,25 @@ function test(original){
         console.log("Call  took " + (t1 - t0) + " milliseconds.")
     }
 
+    function testSublem() {
+        let service = new SublemService( 898266, 1, 1)
+
+        service.getData().then(json => {
+            console.log(json)
+        })
+
+    }
+
     //let meaningWord = testWik(original);
     //let extended = meaningWord.then((word) => word.extendedWord)
-    let sent = "Die Sozialdemokraten haben ersten Prognosen zufolge die Europawahl in den Niederlanden gewonnen."+
-                "Ich dachte darüber nach, dass es sich lohnt"
-
-    sent = "Wir haben uns angemeldet"
-    let lem = new Lemmatizer(sent).getLemmas().then((lemmas) => {
-        console.log(lemmas);
-    })
     //testDuden(extended);
     //testGoogle(extended);
     //testMultitran(extended)
     //testPons(extended)
     //testReverso(extended);
     //testGlosbe(extended);
+
+    //testSublem()
 }
 
 export {test}

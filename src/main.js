@@ -1,9 +1,15 @@
 import {PopupBuilder} from './core/PopupBuilder.js';
 import {Extension} from './core/Extension.js';
+import {SublemService} from "./services/concrete/SubtitleLemmatizerService.js";
+import {TimedSubtitleProvider} from "./core/TimedSubtitleProvider.js";
 import {textItemClass, playerControlClass} from './core/config.js'
 
 
-function main(){
+async function main() {
+	console.log("Loading subtitle script...")
+	let service = new SublemService(898266, 1, 1)
+	let script = await service.getData();
+	console.log("Subtitle script is loaded, starting SubtitleProvider and Extension...", script)
 
 	let extension = new Extension(new PopupBuilder());
 
