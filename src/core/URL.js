@@ -9,11 +9,11 @@ class URL {
     constructor(pattern, params){
         this.pattern = pattern;
         this.params = params;
-        
         this.result = this.replaceAll(pattern, params)
     }
 
     static replaceAll(pattern, params){
+        if (params === undefined) return pattern
         this.checkParams(params) 
         return pattern.replace(this.regex(query), encodeURI(params.query))
                       .replace(this.regex(source), params.source)
