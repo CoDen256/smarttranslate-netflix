@@ -11,36 +11,39 @@ async function main() {
 	let script = await service.getData();
 	console.log("Subtitle script is loaded, starting SubtitleProvider and Extension...", script)
 
-	let extension = new Extension(new PopupBuilder());
 
-	setInterval(function(){
+	let subtitleProvider = new TimedSubtitleProvider(script);
+	let extension = new Extension(new PopupBuilder(), subtitleProvider);
+
+	setInterval(function () {
 
 		let newItem = document.querySelector(textItemClass);
-	
-		if(newItem && document.querySelector(playerControlClass)){
+		if (newItem && document.querySelector(playerControlClass)) {
 
-			if(!extension.launched) extension.update(newItem);
-	
-		}else {
-			extension.launched = false;	
+			if (!extension.launched) {
+				subtitleProvider.update(getCurrentTime())
+				extension.update(newItem);
+			}
+
+		} else {
+			extension.launched = false;
 		}
-		
-		
-	},1000);
-}        
 
-var performance = window.performance || window.mozPerformance
-				|| window.msPerformance || window.webkitPerformance || {};
 
-			let	per=  performance.getEntries() || {};
+	}, 1000);
+}
 
-var netData = per;
-netData.forEach(data => console.log(data.name)) 
+function getCurrentTime() {
+	let time = document.querySelector(".scrubber-bar")
+		.querySelector(".scrubber-head")
+		.getAttribute("aria-valuetext")
+	let scrubber = time.split(" ")
 
+	return {current:scrubber[0], total:scrubber[2]}
+}
 
  
 main()
-/*
-import {test} from './test.js';
-test("STÖHNT")
-*/
+
+//import {test} from './test.js';
+//test("STÖHNT")
