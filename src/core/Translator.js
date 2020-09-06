@@ -5,6 +5,7 @@ import {MultitranService} from '../services/concrete/MultitranService.js'
 import {DudenService } from '../services/concrete/DudenService.js';
 import {GlosbeService} from '../services/concrete/GlosbeService.js';
 import {PonsService} from '../services/concrete/PonsService.js'
+import {Verb, Substantiv, PoS} from "../services/entities.js";
 
 class Translator{
 	constructor (lemma){
@@ -13,18 +14,14 @@ class Translator{
 		this.initializePrimary()
 	}
 
-	getLemma() {
-		return this.lemma
-	}
-
 	initializePrimary(){
-		this.google = new GoogleService(this.extended);
-		this.multitran = new MultitranService(this.extended);
+		this.google = new GoogleService(Promise.resolve(this.getExtended()));
+		this.multitran = new MultitranService(Promise.resolve(this.getExtended()));
+		this.wiktionary = new WiktionaryService(this.getOriginal())
 		//this.reverso = new ReversoService(this.extended);
 	}
 
 	initializeSecondary(){
-		//this.wiktionary = new Wiktionary(this.extended)
 		//this.pons = new PonsService(this.extended);
 		//this.glosbe = new GlosbeService(this.extended);
 		//this.duden = new DudenService(this.extended)
@@ -34,16 +31,58 @@ class Translator{
 		return this.google.getTranslatedWord().then((word) => word.getTranslations().join(", "));
 	}
 
-	getInfo(){
-		return this.extended.then((word) => {
-			return (word.gender == null ? '' : `(${word.gender}) `) + word.type
-		})
-	}
-
 	getMultitranTranslations(){
 		return this.multitran.getTranslatedWord().then((word) => {
 			return word.getTranslations()[0];
 		})
+	}
+
+	getInfo(){
+		return Promise.resolve(this.getLemma().info())
+		//return this.wiktionary.getMeaningWord().then((word) => {
+		//	return word.info()
+		//})
+	}
+
+
+	getLemma() {
+		return this.lemma
+	}
+
+	getExtended() {
+		return this.lemma.extendedWord
+	}
+
+	isDefault(){
+		return this.lemma.isDefault()
+	}
+
+	getOriginal() {
+		return this.getExtended().original
+	}
+
+	getMainForm() {
+		return this.getExtended().mainForm
+	}
+
+	getPrefix() {
+		return this.lemma.prefix
+	}
+
+	isReflex() {
+		return this.lemma.reflex
+	}
+
+	getGender() {
+		return this.lemma.gender
+	}
+
+	isVerb() {
+		return this.lemma instanceof Verb
+	}
+
+	isSubstantiv() {
+		return this.lemma instanceof Substantiv
 	}
 
 }

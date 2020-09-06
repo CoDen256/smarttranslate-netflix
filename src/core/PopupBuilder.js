@@ -47,7 +47,7 @@ class PopupBuilder{
 
 
 	fillHeaderSection(){
-		this.select("#title").textContent = this.translator.original; 
+		this.select("#title").textContent = this.translator.lemma.render();
 
 		let infoSpan = this.select("#translation-info")
 
@@ -77,6 +77,7 @@ class PopupBuilder{
 		this.select("#tab-multitran").querySelector("a").href = "https://www.multitran.com/"
 		
 		let content = this.select(".dictionary-content")
+		content.innerHTML = ""
 		this.translator.getMultitranTranslations().then((translations) => {
 			translations.forEach((t) => {
 				// <li class="dictionary-content-item">
