@@ -1,33 +1,44 @@
 import {config} from './config.js'
 import {Translator} from './Translator.js'
-import {replaceWithSpans} from './Utils.js'
-
+import {convertToSeconds, replaceWithSpans, timeOfSeconds, joinLemma, similarity} from './Utils.js'
+import {PoSConverter} from "./Converter.js";
+import {TimedSubtitleProvider} from "./TimedSubtitleProvider.js"
 class Extension {
-	constructor(builder, subtitleProvider){
+	constructor(builder, script){
 		console.log("Extension created")
 		this.launched = false;
 		this.builder = builder;
-		this.subtitleProvider = subtitleProvider;
+		this.script = script;
+
+		this.subtitleProvider = new TimedSubtitleProvider(script);
 	}
 
 	wordClicked(event, builder){
-		debugger
-		console.log("Word is clicked", event.target, event.target.textContent)
+		let word = event.target.textContent;
 
-		let lemma = this.findWord(event.target.textContent, this.subtitleProvider.getSubtitle());
+		let shift = 1 + 0.845322
+		let current_time = timeOfSeconds(this.getCurrentTimeCode())
+		let netflix_time = convertToSeconds(current_time)+ shift
+
+		let netflix_line = this.getLine(event.target)
+
+		console.log("[WORD]", event.target, word)
+		console.log("[LINE]", netflix_line)
+		console.log("[TIME]:", current_time)
+		console.log("[ESTIMATED TIME]:", timeOfSeconds(netflix_time))
 
 
 
-		//console.log(this.wordMap)
+		let subtitle_lemma = this.subtitleProvider.getSubtitleByTime(timeOfSeconds(netflix_time));
+		let lemma_line = joinLemma(subtitle_lemma)
+		console.log("[SRT LINE]", lemma_line, subtitle_lemma.start, "-->", subtitle_lemma.end)
+		console.log("[SIMILARITY]", similarity(lemma_line, netflix_line))
+		//let lemma = this.findWord(word, subtitle_line.lemmas);
 
-		//if (!this.wordMap[word]){
-		//	console.log("new translator after clicked");
-		//	this.wordMap[word] = new Translator(event.target.textContent)
-		//}
+		//let converted = PoSConverter.convert(lemma, word)
 //
-		//let translator = wordMap[event.target.textContent]
-
-		builder.createTranslationPopup(null);
+		//console.log("Building popup for...", converted)
+		//builder.createTranslationPopup(new Translator(converted));
 
 	};
 
@@ -37,13 +48,7 @@ class Extension {
 				return word;
 			}
 		}
-	}
-
-	addSentence(sent){
-		if (this.lastSentece === sent) return;
-		this.lastSentece = sent;
-		this.sentences.push(sent)
-		console.log(this.sentences)
+		return null;
 	}
 
 	wrapWordsWithSpans(span){
@@ -57,19 +62,25 @@ class Extension {
 		span.querySelectorAll('span').forEach((span) => span.addEventListener('click', wordHandlerReference))
 	}
 
-	addSubtitle(span){
-		if (span.id === config.wordEditedId) return false;
+	getCurrentTimeCode() {
+		return document.querySelectorAll('video')[0].currentTime
 	}
 
-	update(newItem){
+	getLine(word) {
+		let spans =  word.parentElement.parentElement.children
+		let line = ""
+		for (let i = 0; i < spans.length; i++) {
+			line += spans[i].textContent + " ";
+		}
+		return line
+	}
+
+	start(targetItem){
 		const wrapWordsWithSpansReference = (span) => this.wrapWordsWithSpans(span);
-		const addSubtitleReference = (span) => this.addSubtitle(span)
-
-		console.log("Current subtitle line:", this.subtitleProvider.getSubtitle())
-
-		this.launched = true;
+		const time = () => timeOfSeconds(this.getCurrentTimeCode())
+ 		this.launched = true;
 		let wait = false;
-		newItem.addEventListener("DOMNodeInserted", function (e) {
+		targetItem.addEventListener("DOMNodeInserted", function (e) {
 			if(wait){return false;}
 			wait = true;
 			setTimeout(function(){
@@ -77,11 +88,9 @@ class Extension {
 				try{ //TODO: may be add each word to sentece and to TranslatorService as well and only then wrap with spans
 					  // TODO: Akkusativ/Dativ adverbs or somtehing else for verbs
 					  // TODO: English translations
-
-
-					let spans = newItem.querySelectorAll('span')
-					spans.forEach(addSubtitleReference)
-					spans.forEach(wrapWordsWithSpansReference);		
+					let spans = targetItem.querySelectorAll('span')
+					console.log("[NETFLIX]:", time())
+					spans.forEach(wrapWordsWithSpansReference);
 				}catch(e){
 					console.log(e)
 					return false;

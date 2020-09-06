@@ -2,8 +2,6 @@
 // GENDER : "f", "m", "n"
 
 
-
-
 function check(param){
 	return param !== "undefined" ? param : null;
 }
@@ -12,54 +10,44 @@ class ExtendedWord {// TODO: Maybe will contain full parsed data in itself
 	constructor(original){// parses all info from wiktionary or another resource
 		this.original = original;
 		this.mainForm = original; // main form of word
-		this.type = null;  
+		this.extendedType = null;
 	}
 
 	clone(){
 		let cloned = new ExtendedWord(this.original);
 		cloned.mainForm = this.mainForm
-		cloned.type = this.type;
+		cloned.extendedType = this.extendedType;
 		return cloned;
 	}
 
 	isDefault(){
-		return this.type == null && this.mainForm == this.original;
+		return this.extendedType == null && this.mainForm === this.original;
 	}
 
 }
 
 class Substantiv { // Substantiv
-	constructor(extendedWord, gender, extendedType){
+	constructor(extendedWord, gender){
 		this.extendedWord = extendedWord;
 		this.gender = check(gender);
-		this.extendedType = check(extendedType)
-	}
-	isDefault(){
-		return this.extendedType == null && this.extendedWord.isDefault();
 	}
 }
 
 class Verb { // Verb with it prefix(? may sometimes be without)
-	constructor(extendedWord, prefix, reflex, extendedType){
+	constructor(extendedWord, prefix, reflex){
 		this.extendedWord = extendedWord;
 		this.prefix = check(prefix)
 		this.reflex = check(reflex) // VERY UNSTABLE
-		this.extendedType = check(extendedType)
-	}
-
-	isDefault(){
-		return this.extendedType == null && this.extendedWord.isDefault();
 	}
 }
 
 class PoS { // any other part of speech, concrete specified in extendedType
-	constructor(extendedWord, extendedType){
+	constructor(extendedWord){
 		this.extendedWord = extendedWord;
-		this.extendedType = check(extendedType)
 	}
 
 	isDefault(){
-		return this.extendedType == null && this.extendedWord.isDefault();
+		return this.extendedWord.isDefault();
 	}
 }
 
