@@ -58,26 +58,26 @@ class Lemmatizer {
 
 			let extendedWord = new ExtendedWord(orig);
 			extendedWord.mainForm = main;
-			extendedWord.type = IGN; // by default
+			extendedWord.extendedType = IGN; // by default
 			let pos = null;
 
 			if (this.isAdj(type)){
-				extendedWord.type = ADJ;
+				extendedWord.extendedType = ADJ;
 				pos = this.parseAdjektiv(extendedWord, type)
 
 			}else if (this.isAdv(type)){
-				extendedWord.type = ADV;
+				extendedWord.extendedType = ADV;
 				pos = this.parseAdverb(extendedWord, type)
 
 			}else if (this.isVerb(type)){
-				extendedWord.type = VER
+				extendedWord.extendedType = VER
 				pos = this.parseVerb(extendedWord, type)
 				if (!grundWords.includes(pos.extendedWord.mainForm)){
 					lastVerb = pos;
 				}
 
 			}else if (this.isSub(type)){
-				extendedWord.type = SUB
+				extendedWord.extendedType = SUB
 				pos = this.parseSub(extendedWord, type)
 
 			}else if (this.isRefl(type)){

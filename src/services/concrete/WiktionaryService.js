@@ -46,10 +46,10 @@ class WiktionaryService{ //TODO put extended word from outside
 		if (type === "FAILED_WORDTYPE") throw "Can't parse word"
 
 		let extendedWord = new ExtendedWord(this.originalWord);
-		extendedWord.type = type
+		extendedWord.extendedType = type
 		extendedWord.mainForm = this.getTitle(data);
 
-		if (extendedWord.type === "Substantiv"){
+		if (extendedWord.extendedType === "Substantiv"){
 			extendedWord.gender = this.parseGender(data)
 		}
 

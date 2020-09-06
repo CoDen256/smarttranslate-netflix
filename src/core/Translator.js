@@ -7,17 +7,14 @@ import {GlosbeService} from '../services/concrete/GlosbeService.js';
 import {PonsService} from '../services/concrete/PonsService.js'
 
 class Translator{
-	constructor (original){
-		this.original = original;
-		if (original === original.toUpperCase()){
-			this.original = original.toLowerCase();
-		}
-		this.wiktionary = new WiktionaryService(original);
-
-		this.meaningWord = this.wiktionary.getMeaningWord()
-		this.extended = this.meaningWord.then((word) => word.extendedWord)
-		
+	constructor (lemma){
+		this.lemma = lemma;
+		this.extended = Promise.resolve(lemma.extendedWord);
 		this.initializePrimary()
+	}
+
+	getLemma() {
+		return this.lemma
 	}
 
 	initializePrimary(){
@@ -27,6 +24,7 @@ class Translator{
 	}
 
 	initializeSecondary(){
+		//this.wiktionary = new Wiktionary(this.extended)
 		//this.pons = new PonsService(this.extended);
 		//this.glosbe = new GlosbeService(this.extended);
 		//this.duden = new DudenService(this.extended)
