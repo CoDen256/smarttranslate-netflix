@@ -24,18 +24,20 @@ class Extension {
 		console.log("[ACTUAL]", netflix_line)
 		console.log("[PREDICTED]", ltc_sentence, "\t[probability]:", probability)
 
-		//console.log("[SRT TIME]", ltc.start, "-->", ltc.end)
+		//console.log("[SRT TIME]", ltc.start || null, "-->", ltc.end || null)
 
-		let lemma = this.findWord(word, ltc.lemmas);
+		let lemma = this.findWord(word, ltc.lemmas || null);
 
 		let converted = PoSConverter.convert(lemma, word)
-//
+		console.assert(converted !== undefined && converted != null)
 		console.log("Building popup for...", converted)
-		//builder.createTranslationPopup(new Translator(converted));
+		builder.createTranslationPopup(new Translator(converted));
 
 	};
 
 	findWord(wordToFind, ltc_sentence) {
+		if (ltc_sentence == null) return null;
+
 		for (let word of ltc_sentence) {
 			if (word.original.toLowerCase() === wordToFind.toLowerCase()) {
 				return word;
@@ -81,6 +83,7 @@ class Extension {
 				try{ //TODO: may be add each word to sentece and to TranslatorService as well and only then wrap with spans
 					  // TODO: Akkusativ/Dativ adverbs or somtehing else for verbs
 					  // TODO: English translations
+					// TODO: consider the time() at which element was firstly created, to go back to it
 					let spans = targetItem.querySelectorAll('span')
 					//console.log("[NETFLIX]:", time())
 					spans.forEach(wrapWordsWithSpansReference);

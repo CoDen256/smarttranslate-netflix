@@ -31,6 +31,14 @@ class Substantiv { // Substantiv
 		this.extendedWord = extendedWord;
 		this.gender = check(gender);
 	}
+
+	render() {
+		return this.extendedWord.mainForm
+	}
+
+	info() {
+		return this.gender != null ? "(" + this.gender + ")" : "?"
+	}
 }
 
 class Verb { // Verb with it prefix(? may sometimes be without)
@@ -38,6 +46,14 @@ class Verb { // Verb with it prefix(? may sometimes be without)
 		this.extendedWord = extendedWord;
 		this.prefix = check(prefix)
 		this.reflex = check(reflex) // VERY UNSTABLE
+	}
+
+	render() {
+		return (this.reflex != null ? this.reflex +" " : "") + (this.prefix || "") + this.extendedWord.mainForm
+	}
+
+	info() {
+		return (this.reflex != null ? "refl." : "")
 	}
 }
 
@@ -48,6 +64,14 @@ class PoS { // any other part of speech, concrete specified in extendedType
 
 	isDefault(){
 		return this.extendedWord.isDefault();
+	}
+
+	render() {
+		return this.extendedWord.mainForm
+	}
+
+	info() {
+		return "(" + (this.extendedWord.extendedType.toLowerCase() || "?") + ")"
 	}
 }
 

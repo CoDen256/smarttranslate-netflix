@@ -18,6 +18,7 @@ async function main() {
 	var el = document.querySelector("#button-multi")
 	var i = 0;
 	var interval = setInterval(function() {
+		return
 		if (document.querySelectorAll('video')[0] === undefined) return
 		el.style.visibility = "visible";
 		let duration = document.querySelectorAll('video')[0].currentTime
