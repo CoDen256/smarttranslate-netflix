@@ -37,11 +37,12 @@ class TimedSubtitleProvider{
         let possible_line = null;
 
         const computeSim = (s1, s2) => computeSimilarity(s1, s2)
+        const adjust = (s) => this.adjustLine(s)
 
         this.script.forEach( lemma => {
             if (lemma !== undefined && lemma != null){
                 let joined = joinLemma(lemma)
-                let similarity = computeSim(joined, line);
+                let similarity = computeSim(joined, adjust(line));
 
                 if (similarity >= max_similarity){
                     max_similarity = similarity
@@ -58,7 +59,13 @@ class TimedSubtitleProvider{
     }
 
 
-
+    adjustLine(s) {
+        return s.replaceAll("-", " ")
+            .replaceAll(/\d/g, "")
+            .replaceAll(/<\\?\w>/g, "")
+            .replaceAll(/[\,\.\!\?]/g, "")
+            .replaceAll(/\s{2,}/g, " ")
+    }
 }
 
 export {TimedSubtitleProvider}
