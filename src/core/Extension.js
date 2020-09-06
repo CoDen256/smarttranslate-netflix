@@ -1,6 +1,6 @@
 import {config} from './config.js'
 import {Translator} from './Translator.js'
-import {convertToSeconds, replaceWithSpans, timeOfSeconds, joinLemma, similarity} from './Utils.js'
+import {convertToSeconds, replaceWithSpans, timeOfSeconds, joinLemma} from './Utils.js'
 import {PoSConverter} from "./Converter.js";
 import {TimedSubtitleProvider} from "./TimedSubtitleProvider.js"
 class Extension {
@@ -15,29 +15,22 @@ class Extension {
 
 	wordClicked(event, builder){
 		let word = event.target.textContent;
-
-		let shift = 1 + 0.845322
-		let current_time = timeOfSeconds(this.getCurrentTimeCode())
-		let netflix_time = convertToSeconds(current_time)+ shift
-
 		let netflix_line = this.getLine(event.target)
-
 		console.log("[WORD]", event.target, word)
-		console.log("[LINE]", netflix_line)
-		console.log("[TIME]:", current_time)
-		console.log("[ESTIMATED TIME]:", timeOfSeconds(netflix_time))
 
+		let {ltc, probability} = this.subtitleProvider.getSubtitleByLine(netflix_line);
+		let ltc_sentence = joinLemma(ltc)
 
+		console.log("[ACTUAL]", netflix_line)
+		console.log("[PREDICTED]", ltc_sentence, "\t[probability]:", probability)
 
-		let subtitle_lemma = this.subtitleProvider.getSubtitleByTime(timeOfSeconds(netflix_time));
-		let lemma_line = joinLemma(subtitle_lemma)
-		console.log("[SRT LINE]", lemma_line, subtitle_lemma.start, "-->", subtitle_lemma.end)
-		console.log("[SIMILARITY]", similarity(lemma_line, netflix_line))
-		//let lemma = this.findWord(word, subtitle_line.lemmas);
+		//console.log("[SRT TIME]", ltc.start, "-->", ltc.end)
 
-		//let converted = PoSConverter.convert(lemma, word)
+		let lemma = this.findWord(word, ltc.lemmas);
+
+		let converted = PoSConverter.convert(lemma, word)
 //
-		//console.log("Building popup for...", converted)
+		console.log("Building popup for...", converted)
 		//builder.createTranslationPopup(new Translator(converted));
 
 	};
@@ -89,7 +82,7 @@ class Extension {
 					  // TODO: Akkusativ/Dativ adverbs or somtehing else for verbs
 					  // TODO: English translations
 					let spans = targetItem.querySelectorAll('span')
-					console.log("[NETFLIX]:", time())
+					//console.log("[NETFLIX]:", time())
 					spans.forEach(wrapWordsWithSpansReference);
 				}catch(e){
 					console.log(e)

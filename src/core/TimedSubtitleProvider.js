@@ -1,4 +1,4 @@
-import {convertToSeconds, similarity, joinLemma} from './Utils.js'
+import {convertToSeconds, computeSimilarity, joinLemma} from './Utils.js'
 
 class TimedSubtitleProvider{
     constructor(script) {
@@ -36,19 +36,25 @@ class TimedSubtitleProvider{
         let max_similarity = 0;
         let possible_line = null;
 
-        this.script.forEach( lemma => {
-            let joined = joinLemma(lemma)
-            let similarity = similarity(joined, line);
+        const computeSim = (s1, s2) => computeSimilarity(s1, s2)
 
-            if (similarity >= max_similarity){
-                max_similarity = similarity
-                possible_line = lemma
-                if (similarity === max_similarity){
-                    // TODO compare time codes
+        this.script.forEach( lemma => {
+            if (lemma !== undefined && lemma != null){
+                let joined = joinLemma(lemma)
+                let similarity = computeSim(joined, line);
+
+                if (similarity >= max_similarity){
+                    max_similarity = similarity
+                    possible_line = lemma
+                    //console.log(lemma, max_similarity)
+                    if (similarity === max_similarity){
+                        // TODO compare time codes
+                    }
                 }
             }
         })
-        return {possible_line, max_similarity};
+        //console.log("RESULT", possible_line, max_similarity)
+        return {ltc: possible_line, probability: max_similarity};
     }
 
 
