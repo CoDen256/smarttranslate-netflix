@@ -29,6 +29,7 @@ function timeOfSeconds(duration) {
 }
 
 function joinLemma(ltc) {
+    if (ltc === undefined) return  ""
     let result = ""
     ltc.lemmas.forEach(l => {
         result += l.original + " "
@@ -36,7 +37,7 @@ function joinLemma(ltc) {
     return result
 }
 
-function similarity(s1, s2) {
+function computeSimilarity(s1, s2) {
     var longer = s1.toLowerCase();
     var shorter = s2.toLowerCase();
     if (s1.length < s2.length) {
@@ -77,4 +78,4 @@ function editDistance(s1, s2) {
     return costs[s2.length];
 }
 
-export {replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, similarity}
+export {replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity}
