@@ -5,19 +5,18 @@ import {MultitranService} from '../services/concrete/MultitranService.js'
 import {DudenService } from '../services/concrete/DudenService.js';
 import {GlosbeService} from '../services/concrete/GlosbeService.js';
 import {PonsService} from '../services/concrete/PonsService.js'
-import {Verb, Substantiv, PoS} from "../services/entities.js";
+import {Verb, Substantiv, SimplePartOfSpeech} from "../services/entities.js";
 
 class Translator{
 	constructor (lemma){
 		this.lemma = lemma;
-		this.extended = Promise.resolve(lemma.extendedWord);
 		this.initializePrimary()
 	}
 
 	initializePrimary(){
-		this.google = new GoogleService(Promise.resolve(this.getExtended()));
-		this.multitran = new MultitranService(Promise.resolve(this.getExtended()));
-		this.wiktionary = new WiktionaryService(this.getOriginal())
+		this.google = new GoogleService(this.getExtended());
+		this.multitran = new MultitranService(this.getExtended());
+		this.wiktionary = new WiktionaryService(this.getExtended())
 		//this.reverso = new ReversoService(this.extended);
 	}
 

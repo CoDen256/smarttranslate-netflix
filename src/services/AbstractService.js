@@ -3,19 +3,19 @@ import {Request} from '../core/requests.js'
 
 class AbstractService {
 	constructor(apiUrl, params, extendedWord, client, concreteService){
-
+        // TODO cache
         this.concreteService = concreteService;
         this.apiUrl = apiUrl;
         this.params = params;
-        this.extendedWord = extendedWord.then((w) => w.clone());
+        this.extendedWord = extendedWord.clone();
 
         this.client = client
 
-        if (!typeof client.normalize === 'function'){
+        if (!(typeof client.normalize === 'function')){
             client.normalize = this.identity;
             console.log(`normalize() of ${client} is not specified`)
         }
-        if (!typeof client.parse === 'function'){
+        if (!(typeof client.parse === 'function')){
             client.parse = this.identity;
             console.log(`parse() of ${client} is not specified`)
         }
@@ -23,17 +23,16 @@ class AbstractService {
         //client.parse      // parse(Any normalized) => Array<String> - translations
 
 
-        if (!typeof concreteService.toSpecifiedWord === 'function') throw "toSpecifiedWord() is not specified"
-        if (!typeof concreteService.mapToString === 'function') throw "mapToString() is not specified"
-        if (!typeof concreteService.onResult === 'function') throw "onResult() is not specified"
+        if (!(typeof concreteService.toSpecifiedWord === 'function')) throw "toSpecifiedWord() is not specified"
+        if (!(typeof concreteService.mapToString === 'function')) throw "mapToString() is not specified"
+        if (!(typeof concreteService.onResult === 'function')) throw "onResult() is not specified"
 
         //service.toSpecifiedWord // toSpecifiedWord(ext) => new Specified(ext)
         //sevice.mapToString //mapToString(specified) => string to search
         //service.onResult   // onResult(specified, result) => Specified
 
 
-		this.specifiedWord = extendedWord.then((extWord) => this.concreteService.toSpecifiedWord(extWord))
-                                          .then((specified) => this.update(specified))
+        this.specifiedWord = this.update(this.concreteService.toSpecifiedWord(extendedWord))
                                           .catch((error) => this.defaultValue(error))
 	}
 
