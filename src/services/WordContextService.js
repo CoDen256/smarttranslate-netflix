@@ -21,7 +21,8 @@ class WordContextService {
     }
 
     mapToString(contextWord){
-        return contextWord.extendedWord.original
+	    let extended = contextWord.extendedWord
+        return extended.prepareToContext(extended.mainForm)
     }
 
     onResult(contextWord, result){

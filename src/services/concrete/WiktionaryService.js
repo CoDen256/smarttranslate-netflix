@@ -1,98 +1,40 @@
 import {Request} from '../../core/requests.js'
-import {ExtendedWord, MeaningWord} from '../entities.js'
+import {ExtendedWord, MeaningWord, Substantiv} from '../entities.js'
 import {config} from '../../core/config.js'
+import {WordMeaningService} from "../WordMeaningService.js";
 
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
 const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&title={QUERY}";
 
+const params = {source : config.sourceLang}
+
 class WiktionaryService{ //TODO put extended word from outside
 
-	constructor(originalWord){
-		this.redirects = 0;
-		this.originalWord = originalWord
-		this.meainingWord = this.getData(originalWord).then((data) => this.initializeMeaningWord(data))
-													  .catch(e => this.defaultValue(e))
+	constructor(extendedWord){
+		this.service = new WordMeaningService(
+			wiktionaryApi,
+			params,
+			extendedWord,
+			this
+		)
+		this.parsed_gender = null;
+	}
+
+
+	normalize(raw) {return raw.text()}
+
+	parse(normalized){ // => Array<String> - meanings
+		return this.parseMeaning(normalized, 3)
 	}
 
 	getMeaningWord(){
-		return this.meainingWord;
+		return this.service.getMeaningWord().then(meaningWord => this.applyGender(meaningWord));
 	}
-
-
-	getData(word){
-		console.log(`Wiktionary is getting data for '${word}'`)
-		let api = new Request(wiktionaryApi, {
-			query:word,
-			source:config.sourceLang
-		})
-
-		return api.fetchData().then((data) => data.text())
-	}
-
-	/** 
-	 * Returns ExtendedWord wrapped by MeaningWord
-	 */
-	initializeMeaningWord(data){ 
-		let mainForm = this.parseMainForm(data)
-		if (mainForm !== "FAILED_MAINFORM"){ // MAIN_FORM exsited, thus not main form
-			this.redirects++;
-			if (this.redirects === 2) throw "Wiktionary was redirected 2 times, ABORTED"
-			return this.getData(mainForm).then((data) => this.initializeMeaningWord(data))
-		}
-
-		
-
-		let type = this.parseWordType(data)
-		if (type === "FAILED_WORDTYPE") throw "Can't parse word"
-
-		let extendedWord = new ExtendedWord(this.originalWord);
-		extendedWord.extendedType = type
-		extendedWord.mainForm = this.getTitle(data);
-
-		if (extendedWord.extendedType === "Substantiv"){
-			extendedWord.gender = this.parseGender(data)
-		}
-
-
-		let meaningWord = new MeaningWord(extendedWord);
-		meaningWord.addMeanings(this.parseMeaning(data, 3));
-		return meaningWord;
-	}
-
-	defaultValue(error){
-		console.log("Error while creating Meaning word beacause:\n", error)
-		console.log("Default value will be returned by", this)
-		return new MeaningWord(new ExtendedWord(this.originalWord));
-	}
-
 
 	parseByRegex(string, regex){
 		if (!string.match(regex)) return false;
 		let result = [...string.matchAll(regex)][0]
 		return result.groups.result
-	}
-
-
-	parseWordType(raw){
-		let type = this.parseByRegex(raw, /{{Wortart\|(?<result>.+)\|Deutsch}}/g);
-		if (type == false) return "FAILED_WORDTYPE"
-		console.log("Type Of word:", type)
-		return type;
-		
-	}
-
-	parseMainForm(raw){
-		let main = this.parseByRegex(raw, /{{Grundformverweis.+\|(?<result>.+)\}}/g);
-		if (main == false) return "FAILED_MAINFORM"
-		console.log("Main Form of word:", main)
-		return main;
-
-	}
-
-	getTitle(raw) {
-		let title = this.parseByRegex(raw, /== (?<result>[A-Za-zäöüß]+) \({{Sprache\|Deutsch}}\) ==/g)
-		if (title == false) throw "UNABLE TO PARSE TITLE"
-		return title
 	}
 
 	parseMeaning(raw, lines){
@@ -108,20 +50,25 @@ class WiktionaryService{ //TODO put extended word from outside
 			//console.log("Item of meaning", item.toString());
 			items.push(item.trim())
 		})
+
+		this.parsed_gender = this.parseGender(raw);
 		return items
 	}
 
 	parseGender(raw){
 		let gender = this.parseByRegex(raw, /{{Wortart\|Substantiv\|Deutsch}}, {{(?<result>\w)}}/g)
-		if (gender == false) return null;
+		if (!["f", "m", "n"].includes(gender)) return null;
+		if (gender === false) return null;
 		return gender
 	}
 
-	isMainForm(raw){
-		let regex = /{{Bedeutungen}}/g
-		return raw.match(regex)
+	applyGender(meaningWord) {
+		let pos = meaningWord.extendedWord.pos
+		if (pos instanceof Substantiv) {
+			pos.gender = this.parsed_gender
+		}
+		return meaningWord
 	}
-
 }
 
 export {WiktionaryService, wiktionaryURL};

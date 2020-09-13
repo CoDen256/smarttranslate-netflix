@@ -51,7 +51,7 @@ class GlosbeService {
 			return original.textContent.trim()
 		}
 
-		return original.textContent.trim().replace(toHighlight.textContent, `{${toHighlight.textContent}}`)
+		return original.textContent.trim().replace(toHighlight.textContent, `{{${toHighlight.textContent}}}`)
 	}
 
 }

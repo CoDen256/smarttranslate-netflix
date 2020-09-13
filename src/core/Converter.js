@@ -1,4 +1,4 @@
-import {ExtendedWord, PoS, Verb, Substantiv} from '../services/entities.js'
+import {ExtendedWord, SimplePartOfSpeech, Substantiv, Verb} from '../services/entities.js'
 
 
 // APPO zufolge
@@ -16,30 +16,33 @@ class PoSConverter{
 
         let extended = new ExtendedWord(original)
         extended.mainForm = main
-        extended.extendedType = type
 
 
         if (PoSConverter.isVerb(type)){
-            let verb = new Verb(extended)
-            verb.prefix = PoSConverter.extractArgument(args, "prefix")
-            verb.reflex = PoSConverter.extractArgument(args, "reflex")
+            let prefix = PoSConverter.extractArgument(args, "prefix")
+            let reflex = PoSConverter.extractArgument(args, "reflex")
 
-            return verb;
+            extended.pos = new Verb(type, prefix, reflex);
+            return extended;
         }
 
         if (PoSConverter.isSub(type)) {
-            return new Substantiv(extended)
+            extended.pos = new Substantiv(type)
+            return extended
         }
 
         if (PoSConverter.isAdj(type) || PoSConverter.isAdv(type)) {
-            return new PoS(extended)
+            extended.pos = new SimplePartOfSpeech(type)
+            return extended
         }
 
         return PoSConverter.createDefault(defaultWord);
     }
 
     static createDefault(defaultWord) {
-        return new PoS(new ExtendedWord(defaultWord))
+        let defaultPoS = new ExtendedWord(defaultWord)
+        defaultPoS.pos = new SimplePartOfSpeech(null);
+        return defaultPoS
     }
 
     static extractArgument(args, argument) {

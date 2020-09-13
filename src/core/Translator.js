@@ -8,8 +8,8 @@ import {PonsService} from '../services/concrete/PonsService.js'
 import {Verb, Substantiv, SimplePartOfSpeech} from "../services/entities.js";
 
 class Translator{
-	constructor (lemma){
-		this.lemma = lemma;
+	constructor (extended){
+		this.extended = extended;
 		this.initializePrimary()
 	}
 
@@ -17,13 +17,13 @@ class Translator{
 		this.google = new GoogleService(this.getExtended());
 		this.multitran = new MultitranService(this.getExtended());
 		this.wiktionary = new WiktionaryService(this.getExtended())
-		//this.reverso = new ReversoService(this.extended);
 	}
 
 	initializeSecondary(){
-		//this.pons = new PonsService(this.extended);
-		//this.glosbe = new GlosbeService(this.extended);
-		//this.duden = new DudenService(this.extended)
+		this.reverso = new ReversoService(this.extended);
+		this.pons = new PonsService(this.getExtended())
+		this.duden = new DudenService(this.getExtended())
+		this.glosbe = new GlosbeService(this.extended);
 	}
 
 	simpleTranslate(){
@@ -49,7 +49,7 @@ class Translator{
 	}
 
 	getExtended() {
-		return this.lemma.extendedWord
+		return this.extended
 	}
 
 	isDefault(){

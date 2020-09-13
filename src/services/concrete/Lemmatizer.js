@@ -1,5 +1,5 @@
 import {Request} from '../../core/requests.js'
-import {ExtendedWord, PoS, Verb, Substantiv} from '../entities.js'
+import {ExtendedWord, SimplePartOfSpeech, Verb, Substantiv} from '../entities.js'
 import {config} from '../../core/config.js'
 
 const lemmatizerAPI = "http://netflixenhancedlanguagestorage.pythonanywhere.com/lemmatizer/?{QUERY}";
@@ -110,7 +110,7 @@ class Lemmatizer {
 	}
 
 	parseDefault(extendedWord, type){
-		return new PoS(extendedWord, type)
+		return new SimplePartOfSpeech(extendedWord, type)
 	}
 
 	parseAdjektiv(extendedWord, type){
@@ -156,7 +156,7 @@ class Lemmatizer {
 	defaultValue(error){
 		console.log("FATAL ERROR IN LEMMATIZER:", error);
 		let defaultValue = this.sentence.split(/\W/g).filter(w => w).map(word => {
-			return new PoS(new ExtendedWord(word), null)
+			return new SimplePartOfSpeech(new ExtendedWord(word), null)
 		})
 		console.log("Returning:\n", defaultValue)
 		return defaultValue

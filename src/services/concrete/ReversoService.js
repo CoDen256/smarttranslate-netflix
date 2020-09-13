@@ -44,11 +44,11 @@ class ReversoService {
 
 	highlight(original, toHighlight){
 		if (toHighlight == null) {
-			console.log("Tohighlight from reverso", toHighlight)
+			console.log("Tohighlight from reverso", toHighlight, original)
 			return original.textContent.trim();
 		}
 
-		return original.textContent.trim().replace(toHighlight.textContent, `{${toHighlight.textContent}}`)
+		return original.textContent.trim().replace(toHighlight.textContent, `{{${toHighlight.textContent}}}`)
 	}
 
 }

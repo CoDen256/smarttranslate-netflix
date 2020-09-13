@@ -9,7 +9,7 @@ import {SublemService} from './services/concrete/SubtitleLemmatizerService.js'
 import {Request} from './core/requests.js';
 import {Lemmatizer} from "./services/concrete/Lemmatizer.js"
 
-function test(original){
+function test(extended){
     const words = ["beobachtet", "Sprachen", "besser", "objektiven", "ausgehen", "Hündinnen"]
     const mainForms = ["beobachten", "Sprache", "gut", "objektiv", "ausgehen", "Hündin"]
 
@@ -94,14 +94,15 @@ function test(original){
 
     }
 
-    //let meaningWord = testWik(original);
-    //let extended = meaningWord.then((word) => word.extendedWord)
-    //testDuden(extended);
-    //testGoogle(extended);
-    //testMultitran(extended)
-    //testPons(extended)
-    //testReverso(extended);
-    //testGlosbe(extended);
+    testDuden(extended);
+    testWik(extended)
+
+    testGoogle(extended);
+    testMultitran(extended)
+    testPons(extended)
+
+    testReverso(extended);
+    testGlosbe(extended);
 
     //testSublem()
 }

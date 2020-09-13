@@ -6,73 +6,93 @@ function check(param){
 	return param !== "undefined" ? param : null;
 }
 
-class ExtendedWord {// TODO: Maybe will contain full parsed data in itself
-	constructor(original){// parses all info from wiktionary or another resource
+class ExtendedWord {
+	constructor(original){
 		this.original = original;
-		this.mainForm = original; // main form of word
-		this.extendedType = null;
+		this.mainForm = original;
+		this.pos = null;
 	}
 
 	clone(){
 		let cloned = new ExtendedWord(this.original);
 		cloned.mainForm = this.mainForm
-		cloned.extendedType = this.extendedType;
+		cloned.pos = this.pos.clone()
 		return cloned;
 	}
 
 	isDefault(){
-		return this.extendedType == null && this.mainForm === this.original;
+		return this.mainForm === this.original
+			&& this.pos.type == null;
+	}
+
+	prepareToTranslation(word){
+		console.assert(word === this.original || word === this.mainForm)
+		return this.pos.prepareToTranslation(word)
+	}
+
+	prepareToMeaning(word) {
+		console.assert(word === this.original || word === this.mainForm)
+		return this.pos.prepareToMeaning(word)
+	}
+
+	prepareToContext(word) {
+		console.assert(word === this.original || word === this.mainForm)
+		return this.pos.prepareToContext(word)
 	}
 
 }
 
-class Substantiv { // Substantiv
-	constructor(extendedWord, gender){
-		this.extendedWord = extendedWord;
+class Verb {
+	constructor(type, prefix, reflex){
+		this.type = type;
+		this.prefix = check(prefix)
+		this.reflex = check(reflex)
+	}
+
+	clone() {
+		return new Verb(this.type, this.prefix, this.reflex)
+	}
+
+	prepareToTranslation(word) {
+		let reflex_part = this.reflex == null ? "" : "sich "
+		let prefix_part = this.prefix || ""
+		return `${reflex_part}${prefix_part}${word}`
+	}
+
+	prepareToMeaning(word) {
+		let prefix_part = this.prefix || ""
+		return `${prefix_part}${word}`
+	}
+
+	prepareToContext(word) {
+		return this.prepareToTranslation(word);
+	}
+}
+
+class Substantiv {
+	constructor(type, gender){
+		this.type = type;
 		this.gender = check(gender);
 	}
 
-	render() {
-		return this.extendedWord.mainForm
+	clone() {
+		return new Substantiv(this.type, this.gender)
 	}
-
-	info() {
-		return this.gender != null ? "(" + this.gender + ")" : "?"
-	}
+	prepareToTranslation(word) {return word.charAt(0).toUpperCase() + word.slice(1);}
+	prepareToMeaning(word) {return word.charAt(0).toUpperCase() + word.slice(1);}
+	prepareToContext(word) {return word.charAt(0).toUpperCase() + word.slice(1);}
 }
 
-class Verb { // Verb with it prefix(? may sometimes be without)
-	constructor(extendedWord, prefix, reflex){
-		this.extendedWord = extendedWord;
-		this.prefix = check(prefix)
-		this.reflex = check(reflex) // VERY UNSTABLE
+class SimplePartOfSpeech {
+	constructor(type) {
+		this.type = type
 	}
-
-	render() {
-		return (this.reflex != null ? this.reflex +" " : "") + (this.prefix || "") + this.extendedWord.mainForm
+	clone() {
+		return new SimplePartOfSpeech(this.type)
 	}
-
-	info() {
-		return (this.reflex != null ? "refl." : "")
-	}
-}
-
-class PoS { // any other part of speech, concrete specified in extendedType
-	constructor(extendedWord){
-		this.extendedWord = extendedWord;
-	}
-
-	isDefault(){
-		return this.extendedWord.isDefault();
-	}
-
-	render() {
-		return this.extendedWord.mainForm
-	}
-
-	info() {
-		return "(" + (this.extendedWord.extendedType.toLowerCase() || "?") + ")"
-	}
+	prepareToTranslation(word) {return word;}
+	prepareToMeaning(word) {return word;}
+	prepareToContext(word) {return word;}
 }
 
 class TranslatedWord{ 
@@ -150,4 +170,4 @@ class Context{
 	}
 }
 
-export {ExtendedWord, TranslatedWord, MeaningWord, ContextWord, Context, PoS, Verb, Substantiv}
+export {ExtendedWord, TranslatedWord, MeaningWord, ContextWord, Context, SimplePartOfSpeech, Verb, Substantiv}

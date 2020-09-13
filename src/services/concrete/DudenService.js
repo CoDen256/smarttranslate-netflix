@@ -8,15 +8,6 @@ const params = {}
 
 class DudenService { 
     constructor(extendedWord){
-		extendedWord = extendedWord.then((word) => {
-			let newWord = word.clone()
-			newWord.mainForm = newWord.mainForm
-										 .replace("ü", "ue")
-										 .replace("ä", "ae")
-										 .replace("ö", "oe")
-										 .replace("ß", "sz")
-			return newWord
-		})
 		this.service = new WordMeaningService(
 			dudenApi,
 			params,
@@ -25,9 +16,18 @@ class DudenService {
 		)
 	}
 
+	prepare(word) {
+    	return word
+			.replace("ü", "ue")
+			.replace("ä", "ae")
+			.replace("ö", "oe")
+			.replace("ß", "sz")
+	}
+
 	normalize(raw) {return raw.text()}
 
 	parse(normalized){ // => Array<String> - meanings
+    	// TODO sometimes not parsing meanings (e.g for Pizza)
         let doc = new DOMParser().parseFromString(normalized, 'text/html')
         let meanings = []
         doc.querySelectorAll(".enumeration__text").forEach((enumText) => {

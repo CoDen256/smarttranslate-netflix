@@ -21,7 +21,8 @@ class WordMeaningService {
     }
 
     mapToString(meaningWord){
-        return meaningWord.extendedWord.mainForm
+	    let extended = meaningWord.extendedWord
+        return extended.prepareToMeaning(extended.mainForm)
     }
 
     onResult(meaningWord, result){

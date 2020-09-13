@@ -21,7 +21,8 @@ class WordTranslationService {
     }
 
     mapToString(translatedWord){
-        return translatedWord.extendedWord.mainForm
+	    let extended = translatedWord.extendedWord
+        return extended.prepareToTranslation(extended.mainForm)
     }
 
     onResult(translatedWord, result){
