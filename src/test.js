@@ -94,15 +94,15 @@ function test(extended){
 
     }
 
-    testDuden(extended);
-    testWik(extended)
+    //testDuden(extended);
+    //testWik(extended)
 
-    testGoogle(extended);
-    testMultitran(extended)
-    testPons(extended)
+    //testGoogle(extended);
+    //testMultitran(extended)
+    //testPons(extended)
 
-    testReverso(extended);
-    testGlosbe(extended);
+    //testReverso(extended);
+    //testGlosbe(extended);
 
     //testSublem()
 }

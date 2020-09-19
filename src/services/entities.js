@@ -1,6 +1,8 @@
 // Tags: https://www.sketchengine.eu/german-stts-part-of-speech-tagset/
 // GENDER : "f", "m", "n"
-
+import {DefaultRenderer} from "../core/renderers/header/default.js";
+import {VerbRenderer} from "../core/renderers/header/verb.js";
+import {SubstantivRenderer} from "../core/renderers/header/substantiv.js";
 
 function check(param){
 	return param !== "undefined" ? param : null;
@@ -40,6 +42,10 @@ class ExtendedWord {
 		return this.pos.prepareToContext(word)
 	}
 
+	getHeaderRendererClass() {
+		return this.pos.getHeaderRendererClass()
+	}
+
 }
 
 class Verb {
@@ -54,7 +60,7 @@ class Verb {
 	}
 
 	prepareToTranslation(word) {
-		let reflex_part = this.reflex == null ? "" : "sich "
+		let reflex_part = this.reflex === true ? "sich " : ""
 		let prefix_part = this.prefix || ""
 		return `${reflex_part}${prefix_part}${word}`
 	}
@@ -66,6 +72,10 @@ class Verb {
 
 	prepareToContext(word) {
 		return this.prepareToTranslation(word);
+	}
+
+	getHeaderRendererClass(){
+		return VerbRenderer
 	}
 }
 
@@ -81,6 +91,10 @@ class Substantiv {
 	prepareToTranslation(word) {return word.charAt(0).toUpperCase() + word.slice(1);}
 	prepareToMeaning(word) {return word.charAt(0).toUpperCase() + word.slice(1);}
 	prepareToContext(word) {return word.charAt(0).toUpperCase() + word.slice(1);}
+
+	getHeaderRendererClass(){
+		return SubstantivRenderer
+	}
 }
 
 class SimplePartOfSpeech {
@@ -93,6 +107,10 @@ class SimplePartOfSpeech {
 	prepareToTranslation(word) {return word;}
 	prepareToMeaning(word) {return word;}
 	prepareToContext(word) {return word;}
+
+	getHeaderRendererClass(){
+		return DefaultRenderer
+	}
 }
 
 class TranslatedWord{ 

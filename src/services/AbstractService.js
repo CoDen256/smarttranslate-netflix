@@ -53,9 +53,9 @@ class AbstractService {
 
 	update(specified){
         return this.getData(this.concreteService.mapToString(specified))
-                    .then((raw) => this.client.normalize(raw))
-				    .then((normalized) => this.client.parse(normalized))
-				    .then((result) => this.concreteService.onResult(specified, result));
+            .then((raw) => this.client.normalize(raw))
+            .then((normalized) => this.client.parse(normalized))
+            .then((result) => this.concreteService.onResult(specified, result));
     }
     
     defaultValue(error){

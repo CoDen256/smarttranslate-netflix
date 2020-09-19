@@ -21,6 +21,7 @@ class WordTranslationService {
     }
 
     mapToString(translatedWord){
+	    debugger
 	    let extended = translatedWord.extendedWord
         return extended.prepareToTranslation(extended.mainForm)
     }

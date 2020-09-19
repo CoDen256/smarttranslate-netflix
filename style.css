@@ -48,7 +48,7 @@
 .close-popup {
     position: absolute;
     top: 1px;
-    right: 10px;
+    right: 12px;
     background-image: url(https://img.icons8.com/cotton/2x/cancel.png);
     background-size : 26px 26px;
     width: 26px;
@@ -86,26 +86,99 @@
     padding-left: 35px;
     position: relative;
 }
+.v-line {
+    border-left: 2px solid rgba(128, 159, 176, 0.6);
+    height: 25px;
+}
 
-#title{
-    color: rgb(189, 189, 0); 
+.translation-header #word {
+    background-color: #00639e;
+    color: #fff;
+    height: 25px;
+    width: 200px;
+    resize: vertical;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    border: 1px solid rgba(128, 159, 176, 0.6);
+    border-radius: 3px;
+    outline: none;
+}
+
+.translation-header #search-btn {
+    background: #1e8bca;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 10px;
+    float: right;
+    margin-right: 20px;
+    outline: none;
+}
+
+.translation-header #search-btn:hover{
+    background-color: #23a8f3;
+}
+
+.translation-header #reflex{
+    -webkit-appearance:none;
+    width:12px;
+    height:12px;
+    background: #f65454;
+    border-radius:6px;
+    border:2px solid #555;
+    outline: none;
+}
+
+.translation-header #reflex:checked {
+    background: #92e05d;
+    outline: none;
+}
+
+.translation-header #short-translation {
+    padding-top: 5px;
+    color: yellow;
+    text-shadow: 0 0 black;
     font-weight: bold;
 }
 
-#translation-info {
-    -webkit-font-smoothing: antialiased;
-    font-size: 15px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-style: normal;
-    line-break: auto;
-    pointer-events: all;
-    line-height: 1.35em;
-    list-style: none;
-    user-select: text;
-    color: #4682b4;
-    cursor: default;
-    font-weight: 700;
+#reflex-input{
+    display: inline-block;
+    visibility: hidden;
+    position: absolute
 }
+
+#gender {
+    display: inline-block; visibility: hidden; position: absolute;
+}
+
+#gender-label{
+    color: #00ffdc;
+}
+
+/*#title{*/
+/*    color: rgb(189, 189, 0); */
+/*    font-weight: bold;*/
+/*}*/
+
+/*#translation-info {*/
+/*    -webkit-font-smoothing: antialiased;*/
+/*    font-size: 15px;*/
+/*    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+/*    font-style: normal;*/
+/*    line-break: auto;*/
+/*    pointer-events: all;*/
+/*    line-height: 1.35em;*/
+/*    list-style: none;*/
+/*    user-select: text;*/
+/*    color: #4682b4;*/
+/*    cursor: default;*/
+/*    font-weight: 700;*/
+/*}*/
 
 
 .translation-header::before {

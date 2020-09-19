@@ -1,22 +1,32 @@
 import {maxWidth, config} from './config.js'
 import {pixel, toClass} from './Utils.js'
+import {Translator} from "./Translator.js";
 class PopupBuilder{
 
 	constructor(){
 		this.applyEventListeners();
+		window.reloadPopup = this.reload
 		
 	}
-	createTranslationPopup(translator){ //TODO: Checkbox near verb, if it is reflexiv, so user decides
+	createTranslationPopup(translator){
 		this.translator = translator;
+		this.rendererProvider = translator.getExtended().getHeaderRendererClass();
+		let renderer = new this.rendererProvider(translator, this.select(".translation-header"));
 		this.removeTranslationPopup()
 		this.showTranslationPopup()
-		this.fillHeaderSection()
+
+		// rendering all the stuff
+		this.addSimpleTranslation()
+		renderer.render()
 		this.fillTabs();
 		this.activate("#tab-multitran", this.select("#button-multi"))
-
-		// TODO: while loading just initialy let it display something like "loading", and then it will be replaced
-
 	}
+
+	reload(extended) {
+		let popup = new PopupBuilder()
+		popup.createTranslationPopup(new Translator(extended))
+	}
+
 
 	applyEventListeners(){
 		this.select(".close-popup").addEventListener("click", (e) => this.removeTranslationPopup())
@@ -46,22 +56,17 @@ class PopupBuilder{
 	}
 
 
-	fillHeaderSection(){
-		this.select("#title").textContent = this.translator.lemma.render();
+	addSimpleTranslation(){
+		let short_translation = this.select("#short-translation")
+		short_translation.textContent = "[loading]"
+		short_translation.style.color = "white"
+		short_translation.style.fontWeight = "normal"
 
-		let infoSpan = this.select("#translation-info")
-
-		this.translator.getInfo().then((info) => {
-			infoSpan.textContent = "   "+info;	//TODO: der/die/das
+		this.translator.simpleTranslate().then(translate => {
+			short_translation.textContent = translate
+			short_translation.style.color = "yellow"
+			short_translation.style.fontWeight = "bold"
 		})
-
-		let translationSpan = this.select("#short-translation")
-
-
-		this.translator.simpleTranslate().then((translation) => {
-			translationSpan.textContent = translation;
-		})
-
 	}
 
 	fillTabs(){
@@ -112,11 +117,13 @@ class PopupBuilder{
 	removeTranslationPopup(){
 		console.log("Hiding Translation Popup")
 		this.select(".translation-popup").style.visibility = 'hidden';
+		this.rendererProvider.disableExtra()
 	}
 
 	showTranslationPopup(){
 		console.log("Showing Translation Popup")
 		this.select(".translation-popup").style.visibility = 'visible';
+		this.rendererProvider.enableExtra()
 	}
 
 

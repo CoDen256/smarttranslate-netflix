@@ -7,6 +7,13 @@ import {GlosbeService} from '../services/concrete/GlosbeService.js';
 import {PonsService} from '../services/concrete/PonsService.js'
 import {Verb, Substantiv, SimplePartOfSpeech} from "../services/entities.js";
 
+let GENDERS = {
+	"m": "der",
+	"f": "die",
+	"n": "das",
+}
+
+
 class Translator{
 	constructor (extended){
 		this.extended = extended;
@@ -20,10 +27,10 @@ class Translator{
 	}
 
 	initializeSecondary(){
-		this.reverso = new ReversoService(this.extended);
+		this.reverso = new ReversoService(this.getExtended());
 		this.pons = new PonsService(this.getExtended())
 		this.duden = new DudenService(this.getExtended())
-		this.glosbe = new GlosbeService(this.extended);
+		this.glosbe = new GlosbeService(this.getExtended());
 	}
 
 	simpleTranslate(){
@@ -36,16 +43,20 @@ class Translator{
 		})
 	}
 
+	getGender() {
+		return this.wiktionary.getMeaningWord().then(meaning => meaning.extendedWord)
+			.then(extended => GENDERS[extended.pos.gender])
+	}
 	getInfo(){
-		return Promise.resolve(this.getLemma().info())
+		return Promise.resolve(this.getPoS().info())
 		//return this.wiktionary.getMeaningWord().then((word) => {
 		//	return word.info()
 		//})
 	}
 
 
-	getLemma() {
-		return this.lemma
+	getPoS() {
+		return this.getExtended().pos
 	}
 
 	getExtended() {
@@ -53,7 +64,7 @@ class Translator{
 	}
 
 	isDefault(){
-		return this.lemma.isDefault()
+		return this.getExtended().isDefault()
 	}
 
 	getOriginal() {
@@ -65,23 +76,20 @@ class Translator{
 	}
 
 	getPrefix() {
-		return this.lemma.prefix
+		return this.getPoS().prefix
 	}
 
 	isReflex() {
-		return this.lemma.reflex
+		return this.getPoS().reflex
 	}
 
-	getGender() {
-		return this.lemma.gender
-	}
 
 	isVerb() {
-		return this.lemma instanceof Verb
+		return this.getPoS() instanceof Verb
 	}
 
 	isSubstantiv() {
-		return this.lemma instanceof Substantiv
+		return this.getPoS() instanceof Substantiv
 	}
 
 }

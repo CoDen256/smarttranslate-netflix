@@ -7,9 +7,20 @@
 
             <div class="translation-header-section">
                 <div class="translation-header">
-                    <span id="title" ">Title Loading...</span>
-                    <span id="translation-info"></span>
-                    <br>
+                    <div id="title">
+                        <div id="reflex-input">
+                            <input type="checkbox" id="reflex" name="reflex">
+                            <label id="reflex-label" style="visibility: hidden">sich</label>
+                        </div>
+                        <div id="gender">
+                            <label id="gender-label">(?)</label>
+                        </div>
+                        <input style="display: inline-block" type="text" id="word" name="word">
+                        <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
+                    </div>
+<!--                    <span id="title">Title Loading...</span>-->
+<!--                    <span id="translation-info"></span>-->
+                    <span>Google:</span>
                     <span id="short-translation">Translation Loading...</span>
                 </div>
             </div>

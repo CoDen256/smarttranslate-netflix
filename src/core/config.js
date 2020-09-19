@@ -12,8 +12,7 @@ const config = {
 
 
 const proxies = ["https://cors-anywhere.herokuapp.com/",
-				 "https://cors-anywhere2.herokuapp.com/",
-				 "https://api.allorigins.win/raw?url="]
+				 "https://cors-anywhere2.herokuapp.com/"]
 const normalizationServices = [];
 const textItemClass = '.player-timedtext';
 const playerControlClass = '.PlayerControlsNeo__button-control-row'

@@ -56,21 +56,21 @@ async function main() {
  
 main()
 /*
-import {test} from './test.js';
-import {Substantiv, Verb} from "./services/entities.js";
-import {ExtendedWord} from "./services/entities.js";
+// import {test} from './test.js';
+// import {Substantiv, Verb} from "./services/entities.js";
+// import {ExtendedWord} from "./services/entities.js";
+//
+// test(createExtended())
+//
+// function createExtended() {
+// 	let extendedWord = new ExtendedWord("gibt");
+// 	extendedWord.mainForm = "geben";
+// 	extendedWord.pos = new Verb("V", "aus", true);
+//
+// 	//let extendedWord = new ExtendedWord("Pizzen")
+// 	//extendedWord.mainForm = "Pizza";
+// 	//extendedWord.pos = new Substantiv("NN")
+// 	return extendedWord
+// }
+*/
 
-test(createExtended())
-
-function createExtended() {
-	let extendedWord = new ExtendedWord("gibt");
-	extendedWord.mainForm = "geben";
-	extendedWord.pos = new Verb("V", "aus", true);
-
-	//let extendedWord = new ExtendedWord("Pizzen")
-	//extendedWord.mainForm = "Pizza";
-	//extendedWord.pos = new Substantiv("NN")
-	return extendedWord
-}
-
- */

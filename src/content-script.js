@@ -19,6 +19,10 @@ function run() {
 		.then((data) => data.text())
 		.then(data => mainDiv.innerHTML = data)
 
+	let link = document.createElement("link")
+	link.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	link.rel = "stylesheet"
+	document.head.append(link)
 
 	document.documentElement.prepend.apply(document.documentElement, scriptsToPrepend);
 
