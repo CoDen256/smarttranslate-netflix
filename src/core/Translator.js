@@ -28,9 +28,9 @@ class Translator{
 	}
 
 	initializeSecondary(){
-		this.reverso = new ReversoService(this.getExtended());
+		// this.reverso = new ReversoService(this.getExtended());
 		// this.pons = new PonsService(this.getExtended())
-		// this.duden = new DudenService(this.getExtended())
+		this.duden = new DudenService(this.getExtended())
 		// this.glosbe = new GlosbeService(this.getExtended());
 	}
 
@@ -46,7 +46,6 @@ class Translator{
 
 	getReversoContexts() {
 		return this.reverso.getContextWord().then((context) => {
-			console.warn(context)
 			return context.getContexts()
 		})
 	}
@@ -54,6 +53,18 @@ class Translator{
 	getPonsTranslations(){
 		return this.pons.getTranslatedWord().then((word) => {
 			return word.getTranslations()[0];
+		})
+	}
+
+	getGlosbeContexts(){
+		return this.glosbe.getContextWord().then((context) => {
+			return context.getContexts()
+		})
+	}
+
+	getDudenMeanings(){
+		return this.duden.getMeaningWord().then((meaning) => {
+			return meaning.getMeanings()
 		})
 	}
 

@@ -10,6 +10,7 @@ class _Renderer{
         tab.querySelector("a").href = URL.replaceAll(_Url, params)
 
         let content = tab.querySelector(".dictionary-content")
+        content.innerHTML = ""
         translator.get_<>s().then((<>s) => {
             <>s.forEach((<>) => {
                 // <li class="dictionary-content-item">

@@ -43,4 +43,4 @@ class DudenService {
 
 }
 
-export {DudenService, dudenUrl}
+export {DudenService, dudenUrl, params}

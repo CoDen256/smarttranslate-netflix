@@ -5,6 +5,8 @@ import {MultitranRenderer} from "./renderers/tab/multitran.js";
 import {GoogleRenderer} from "./renderers/header/google.js";
 import {PonsRenderer} from "./renderers/tab/pons.js";
 import {ReversoRenderer} from "./renderers/tab/reverso.js";
+import {GlosbeRenderer} from "./renderers/tab/glosbe.js";
+import {DudenRenderer} from "./renderers/tab/duden.js";
 
 class PopupBuilder{
 
@@ -24,7 +26,7 @@ class PopupBuilder{
 		GoogleRenderer.render(translator) // the simple translation from google
 		headerRenderer.render()
 		this.fillTabs();
-		this.activate("#tab-reverso", select("#button-reverso"))
+		this.activate("#tab-duden", select("#button-duden"))
 	}
 
 	reload(extended) {
@@ -64,19 +66,10 @@ class PopupBuilder{
 	fillTabs(){
 		// MultitranRenderer.render(this.translator);
 		// PonsRenderer.render(this.translator)
-		ReversoRenderer.render(this.translator)
-		this.fillGlosbe()
-		this.fillDuden()
+		// ReversoRenderer.render(this.translator)
+		// GlosbeRenderer.render(this.translator)
+		DudenRenderer.render(this.translator)
 		this.fillWiktionary()
-	}
-
-
-	fillGlosbe(){
-		select("#tab-glosbe").querySelector("a").href = "glosbe.com"
-	}
-
-	fillDuden(){
-		select("#tab-duden").querySelector("a").href = "duden.de"
 	}
 
 	fillWiktionary(){

@@ -56,4 +56,4 @@ class GlosbeService {
 
 }
 
-export {GlosbeService, glosbeUrl}
+export {GlosbeService, glosbeUrl, params}
