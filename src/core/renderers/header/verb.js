@@ -42,7 +42,6 @@ class VerbRenderer{
         let checked = document.querySelector("#reflex").checked
         let input = document.querySelector("#word").value
 
-        debugger
         let newWord = new ExtendedWord(input);
         newWord.pos = new Verb("V", null, checked)
         window.reloadPopup(newWord)

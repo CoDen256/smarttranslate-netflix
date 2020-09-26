@@ -3,9 +3,6 @@ import {convertToSeconds, computeSimilarity, joinLemma} from './Utils.js'
 class TimedSubtitleProvider{
     constructor(script) {
         this.script = script;
-        this.current_time = 0
-        this.total_time = 0;
-
         this.last_index = null;
     }
 

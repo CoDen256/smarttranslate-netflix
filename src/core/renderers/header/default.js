@@ -13,7 +13,7 @@ class DefaultRenderer{
         wordInput.value = this.translator.getMainForm();
 
         let searchButton = this.header.querySelector("#search-btn")
-        searchButton.onclick = submitNewSubstantiv
+        searchButton.onclick = submitNewWord
     }
 
 

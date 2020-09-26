@@ -43,6 +43,12 @@ class Translator{
 		})
 	}
 
+	getReversoContexts() {
+		return this.reverso.getContextWord().then((context) => {
+			return context.getContexts()
+		})
+	}
+
 	getGender() {
 		return this.wiktionary.getMeaningWord().then(meaning => meaning.extendedWord)
 			.then(extended => GENDERS[extended.pos.gender])
