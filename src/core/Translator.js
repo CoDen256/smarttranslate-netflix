@@ -23,15 +23,15 @@ class Translator{
 
 	initializePrimary(){
 		this.google = new GoogleService(this.getExtended());
-		// this.multitran = new MultitranService(this.getExtended());
+		this.multitran = new MultitranService(this.getExtended());
 		this.wiktionary = new WiktionaryService(this.getExtended())
 	}
 
 	initializeSecondary(){
-		// this.reverso = new ReversoService(this.getExtended());
-		// this.pons = new PonsService(this.getExtended())
-		// this.duden = new DudenService(this.getExtended())
-		// this.glosbe = new GlosbeService(this.getExtended());
+		this.reverso = new ReversoService(this.getExtended());
+		this.pons = new PonsService(this.getExtended())
+		this.duden = new DudenService(this.getExtended())
+		this.glosbe = new GlosbeService(this.getExtended());
 	}
 
 	simpleTranslate(){

@@ -1,5 +1,4 @@
-import {maxWidth, config} from './config.js'
-import {pixel, toClass, create, select} from './Utils.js'
+import {create, select} from './Utils.js'
 import {Translator} from "./Translator.js";
 import {MultitranRenderer} from "./renderers/tab/multitran.js";
 import {GoogleRenderer} from "./renderers/header/google.js";
@@ -27,7 +26,7 @@ class PopupBuilder{
 		GoogleRenderer.render(translator) // the simple translation from google
 		headerRenderer.render()
 		this.fillTabs();
-		this.activate("#tab-wik", select("#button-wik"))
+		this.activate("#tab-multitran", select("#button-multi"))
 	}
 
 	reload(extended) {
@@ -65,11 +64,11 @@ class PopupBuilder{
 
 
 	fillTabs(){
-		// MultitranRenderer.render(this.translator);
-		// PonsRenderer.render(this.translator)
-		// ReversoRenderer.render(this.translator)
-		// GlosbeRenderer.render(this.translator)
-		// DudenRenderer.render(this.translator)
+		MultitranRenderer.render(this.translator);
+		PonsRenderer.render(this.translator)
+		ReversoRenderer.render(this.translator)
+		GlosbeRenderer.render(this.translator)
+		DudenRenderer.render(this.translator)
 		WikiRenderer.render(this.translator)
 	}
 
