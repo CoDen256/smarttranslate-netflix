@@ -3,6 +3,8 @@ import {Translator} from './Translator.js'
 import {convertToSeconds, replaceWithSpans, timeOfSeconds, joinLemma} from './Utils.js'
 import {PoSConverter} from "./Converter.js";
 import {TimedSubtitleProvider} from "./TimedSubtitleProvider.js"
+import {NetflixPlayer} from "./Player.js";
+import {NetflixSubtitleRecorder} from "./NetflixSubtitleRecorder.js";
 class Extension {
 	constructor(builder, script){
 		console.log("Extension created")
@@ -10,7 +12,30 @@ class Extension {
 		this.builder = builder;
 		this.script = script;
 
+		this.player = new NetflixPlayer();
+		this.recorder = new NetflixSubtitleRecorder();
 		this.subtitleProvider = new TimedSubtitleProvider(script);
+
+		const pressed = (e) => this.pressed(e)
+		document.body.addEventListener("keydown", pressed)
+	}
+
+	pressed(event) {
+		if (event.code === "Escape"){
+			this.builder.removeTranslationPopup()
+			this.player.play()
+		}
+		if (event.code === "Enter"){
+			this.builder.onEnter()
+		}
+		// if (event.code === "KeyA"){
+		// 	console.log(this.recorder)
+		// 	this.player.seek(this.recorder.previous().time)
+		// }
+		// if (event.code === "KeyD"){
+		// 	console.log(this.recorder)
+		// 	this.player.seek(this.recorder.next().time)
+		// }
 	}
 
 	wordClicked(event, builder){
@@ -37,6 +62,7 @@ class Extension {
 		console.assert(converted !== undefined && converted != null)
 		console.log("Building popup for...", converted)
 		builder.createTranslationPopup(new Translator(converted));
+		this.player.pause()
 
 	};
 
@@ -54,6 +80,7 @@ class Extension {
 	wrapWordsWithSpans(span){
 		if (span.id === config.wordEditedId) return false;
 
+		this.recorder.record(this.player.getCurrentTime(), this.getFullLine(span.parentElement.children))
 		span.id = config.wordEditedId
 		span.innerHTML = "<br>"+replaceWithSpans(span.textContent, config.wordEditedId, config.hoverableWordClass);
 
@@ -62,12 +89,12 @@ class Extension {
 		span.querySelectorAll('span').forEach((span) => span.addEventListener('click', wordHandlerReference))
 	}
 
-	getCurrentTimeCode() {
-		return document.querySelectorAll('video')[0].currentTime
-	}
-
 	getLine(word) {
 		let spans =  word.parentElement.parentElement.children
+		return this.getFullLine(spans)
+	}
+
+	getFullLine(spans){
 		let line = ""
 		for (let i = 0; i < spans.length; i++) {
 			line += spans[i].textContent + " ";
@@ -77,7 +104,6 @@ class Extension {
 
 	start(targetItem){
 		const wrapWordsWithSpansReference = (span) => this.wrapWordsWithSpans(span);
-		const time = () => timeOfSeconds(this.getCurrentTimeCode())
  		this.launched = true;
 		let wait = false;
 		targetItem.addEventListener("DOMNodeInserted", function (e) {

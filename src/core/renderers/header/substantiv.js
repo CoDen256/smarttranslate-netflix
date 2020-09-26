@@ -8,7 +8,7 @@ class SubstantivRenderer {
     }
 
     render(){
-        window.submitNewSubstantiv = this.submitNewSubstantiv
+        window.submitNewSubstantiv = SubstantivRenderer.submitNew
 
         let genderLabel = this.header.querySelector("#gender-label")
         this.translator.getGender().then(gender => {
@@ -30,7 +30,7 @@ class SubstantivRenderer {
         return "substantiv"
     }
 
-    submitNewSubstantiv() {
+    static submitNew() {
         let input = select("#word").value
         let newWord = new ExtendedWord(input);
 

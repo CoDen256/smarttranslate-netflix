@@ -8,7 +8,7 @@ class DefaultRenderer{
     }
 
     render() {
-        window.submitNewWord = this.submitNewWord
+        window.submitNewWord = DefaultRenderer.submitNew
 
         let wordInput = this.header.querySelector("#word")
         wordInput.value = this.translator.getMainForm();
@@ -22,7 +22,7 @@ class DefaultRenderer{
         return "substantiv"
     }
 
-    submitNewWord() {
+    static submitNew() {
         let input = select("#word").value
         let newWord = new ExtendedWord(input);
 

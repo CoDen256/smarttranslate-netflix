@@ -113,6 +113,10 @@ class PopupBuilder{
 	async setScrollBarVisibility(visibility) {
 		select(".translation-scrollbar").style.visibility = visibility
 	}
+
+	onEnter(){
+		this.rendererProvider.submitNew()
+	}
 }
 
 export {PopupBuilder};

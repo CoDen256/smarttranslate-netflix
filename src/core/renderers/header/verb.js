@@ -9,7 +9,7 @@ class VerbRenderer{
 
 
     render() {
-        window.submitNewVerb = this.submitNewVerb
+        window.submitNewVerb = VerbRenderer.submitNew
         window.reflexChanged = this.reflexChanged
 
         this.changeReflex(this.translator.isReflex())
@@ -39,7 +39,7 @@ class VerbRenderer{
         select("#reflex-label").style.visibility = isReflex ? "visible" : "hidden"
     }
 
-    submitNewVerb() {
+    static submitNew() {
         let checked = select("#reflex").checked
         let input = select("#word").value
 
