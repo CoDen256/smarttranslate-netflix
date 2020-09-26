@@ -1,18 +1,17 @@
-import {multitranUrl, params} from "../../../services/concrete/MultitranService.js";
+import {ponsUrl, params} from "../../../services/concrete/PonsService.js";
 import {URL} from "../../URL.js";
-
 import {select, create} from "../../Utils.js";
 
-class MultitranRenderer{
+class PonsRenderer{
 
     static render(translator){
-        let tab = select("#tab-multitran")
+        let tab = select("#tab-pons")
 
-        tab.querySelector("a").href = URL.replaceAll(multitranUrl, params)
+        tab.querySelector("a").href = URL.replaceAll(ponsUrl, params)
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
-        translator.getMultitranTranslations().then((translations) => {
+        translator.getPonsTranslations().then((translations) => {
             translations.forEach((t) => {
                 // <li class="dictionary-content-item">
                 let item = create("li", "dictionary-content-item")
@@ -24,4 +23,4 @@ class MultitranRenderer{
 
 }
 
-export {MultitranRenderer}
+export {PonsRenderer}

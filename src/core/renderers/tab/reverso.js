@@ -1,22 +1,22 @@
-import {multitranUrl, params} from "../../../services/concrete/MultitranService.js";
+import {reversoUrl, params} from "../../../services/concrete/ReversoService.js";
 import {URL} from "../../URL.js";
-
 import {select, create} from "../../Utils.js";
 
-class MultitranRenderer{
+class ReversoRenderer{
 
     static render(translator){
-        let tab = select("#tab-multitran")
+        let tab = select("#tab-reverso")
 
-        tab.querySelector("a").href = URL.replaceAll(multitranUrl, params)
+        tab.querySelector("a").href = URL.replaceAll(reversoUrl, params)
 
         let content = tab.querySelector(".dictionary-content")
+
         content.innerHTML = ""
-        translator.getMultitranTranslations().then((translations) => {
-            translations.forEach((t) => {
+        translator.getReversoContexts().then((contexts) => {
+            contexts.forEach((context) => {
                 // <li class="dictionary-content-item">
                 let item = create("li", "dictionary-content-item")
-                item.textContent = t;
+                item.textContent = context;
                 content.appendChild(item)
             })
         })
@@ -24,4 +24,4 @@ class MultitranRenderer{
 
 }
 
-export {MultitranRenderer}
+export {ReversoRenderer}

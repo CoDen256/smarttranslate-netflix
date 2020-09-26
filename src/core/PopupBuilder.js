@@ -3,6 +3,8 @@ import {pixel, toClass, create, select} from './Utils.js'
 import {Translator} from "./Translator.js";
 import {MultitranRenderer} from "./renderers/tab/multitran.js";
 import {GoogleRenderer} from "./renderers/header/google.js";
+import {PonsRenderer} from "./renderers/tab/pons.js";
+import {ReversoRenderer} from "./renderers/tab/reverso.js";
 
 class PopupBuilder{
 
@@ -22,7 +24,7 @@ class PopupBuilder{
 		GoogleRenderer.render(translator) // the simple translation from google
 		headerRenderer.render()
 		this.fillTabs();
-		this.activate("#tab-multitran", select("#button-multi"))
+		this.activate("#tab-reverso", select("#button-reverso"))
 	}
 
 	reload(extended) {
@@ -60,22 +62,14 @@ class PopupBuilder{
 
 
 	fillTabs(){
-		MultitranRenderer.render(this.translator);
-
-		this.fillPons()
-		this.fillReverso()
+		// MultitranRenderer.render(this.translator);
+		PonsRenderer.render(this.translator)
+		// ReversoRenderer.render(this.translator)
 		this.fillGlosbe()
 		this.fillDuden()
 		this.fillWiktionary()
 	}
 
-	fillPons(){
-		select("#tab-pons").querySelector("a").href = "pons.com"
-	}
-
-	fillReverso(){
-		select("#tab-reverso").querySelector("a").href = "context.reverso.net"
-	}
 
 	fillGlosbe(){
 		select("#tab-glosbe").querySelector("a").href = "glosbe.com"

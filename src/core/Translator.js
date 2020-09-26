@@ -17,20 +17,21 @@ let GENDERS = {
 class Translator{
 	constructor (extended){
 		this.extended = extended;
-		this.initializePrimary()
+		this.initializePrimary();
+		this.initializeSecondary()
 	}
 
 	initializePrimary(){
 		this.google = new GoogleService(this.getExtended());
-		this.multitran = new MultitranService(this.getExtended());
+		// this.multitran = new MultitranService(this.getExtended());
 		this.wiktionary = new WiktionaryService(this.getExtended())
 	}
 
 	initializeSecondary(){
-		this.reverso = new ReversoService(this.getExtended());
+		// this.reverso = new ReversoService(this.getExtended());
 		this.pons = new PonsService(this.getExtended())
-		this.duden = new DudenService(this.getExtended())
-		this.glosbe = new GlosbeService(this.getExtended());
+		// this.duden = new DudenService(this.getExtended())
+		// this.glosbe = new GlosbeService(this.getExtended());
 	}
 
 	simpleTranslate(){
@@ -45,7 +46,14 @@ class Translator{
 
 	getReversoContexts() {
 		return this.reverso.getContextWord().then((context) => {
+			console.warn(context)
 			return context.getContexts()
+		})
+	}
+
+	getPonsTranslations(){
+		return this.pons.getTranslatedWord().then((word) => {
+			return word.getTranslations()[0];
 		})
 	}
 

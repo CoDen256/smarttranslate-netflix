@@ -13,16 +13,16 @@ class AbstractService {
 
         if (!(typeof client.normalize === 'function')){
             client.normalize = this.identity;
-            console.log(`normalize() of ${client.constructor.name} is not specified`)
+            // console.log(`normalize() of ${client.constructor.name} is not specified`)
         }
         if (!(typeof client.parse === 'function')){
             client.parse = this.identity;
-            console.log(`parse() of ${client.constructor.name} is not specified`)
+            // console.log(`parse() of ${client.constructor.name} is not specified`)
         }
 
         if (!(typeof client.prepare === 'function')){
             client.prepare = this.identity;
-            console.log(`prepare() of ${client.constructor.name} is not specified`)
+            // console.log(`prepare() of ${client.constructor.name} is not specified`)
         }
         //client.normalize  // normalize(raw) => Any normalized
         //client.parse      // parse(Any normalized) => Array<String> - translations
@@ -43,7 +43,7 @@ class AbstractService {
 
 	getData(word){
 	    let prepared = this.client.prepare(word)
-        console.log(`Getting data for '${prepared}' from ${this.apiUrl}`)
+        //console.log(`Getting data for '${prepared}' from ${this.apiUrl}`)
         
         this.params.query = prepared;
         let api = new Request(this.apiUrl, this.params)

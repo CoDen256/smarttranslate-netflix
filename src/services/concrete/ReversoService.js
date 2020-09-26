@@ -54,4 +54,4 @@ class ReversoService {
 }
 
 
-export {ReversoService, reversoUrl}
+export {ReversoService, reversoUrl, params}
