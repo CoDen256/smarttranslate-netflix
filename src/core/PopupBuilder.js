@@ -63,8 +63,8 @@ class PopupBuilder{
 
 	fillTabs(){
 		// MultitranRenderer.render(this.translator);
-		PonsRenderer.render(this.translator)
-		// ReversoRenderer.render(this.translator)
+		// PonsRenderer.render(this.translator)
+		ReversoRenderer.render(this.translator)
 		this.fillGlosbe()
 		this.fillDuden()
 		this.fillWiktionary()

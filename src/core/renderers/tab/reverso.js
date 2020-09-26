@@ -16,10 +16,19 @@ class ReversoRenderer{
             contexts.forEach((context) => {
                 // <li class="dictionary-content-item">
                 let item = create("li", "dictionary-content-item")
-                item.textContent = context;
+                let sent = this.emphasize(context.sentence)
+                let translation = this.emphasize(context.translation)
+
+                item.innerHTML =  "🞄 " + sent + "<br>🞄 " + translation +"<br><br>"
                 content.appendChild(item)
             })
         })
+    }
+
+    static emphasize(sentence){
+        return sentence
+            .replace("{{", "<span style='color:yellow'><em><strong>")
+            .replace("}}", "</strong></em></span>");
     }
 
 }

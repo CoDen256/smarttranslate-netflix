@@ -28,8 +28,8 @@ class Translator{
 	}
 
 	initializeSecondary(){
-		// this.reverso = new ReversoService(this.getExtended());
-		this.pons = new PonsService(this.getExtended())
+		this.reverso = new ReversoService(this.getExtended());
+		// this.pons = new PonsService(this.getExtended())
 		// this.duden = new DudenService(this.getExtended())
 		// this.glosbe = new GlosbeService(this.getExtended());
 	}
