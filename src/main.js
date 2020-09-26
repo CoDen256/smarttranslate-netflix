@@ -9,8 +9,13 @@ import {timeOfSeconds} from './core/Utils.js'
 async function main() {
 	console.log("Loading subtitle script...")
 	let service = new SublemService(898266, 1, 1)
-	let script = await service.getData();
-	console.log("Subtitle script is loaded, starting Extension...", script)
+	let script;
+	try{
+		script = await service.getData();
+		console.log("Subtitle script is loaded, starting Extension...", script)
+	}catch (e){
+		console.error("Failed to load subtitle script", e)
+	}
 
 	let extension = new Extension(new PopupBuilder(), script);
 

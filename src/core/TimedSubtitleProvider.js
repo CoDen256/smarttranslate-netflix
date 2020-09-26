@@ -55,6 +55,10 @@ class TimedSubtitleProvider{
         return {ltc: possible_line, probability: max_similarity};
     }
 
+    isLoaded(){
+        return this.script != null && this.script.length !== 0;
+    }
+
 
     adjustLine(s) {
         return s.replaceAll("-", " ")

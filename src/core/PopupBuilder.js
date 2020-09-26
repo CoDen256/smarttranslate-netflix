@@ -13,7 +13,6 @@ class PopupBuilder{
 	constructor(){
 		this.applyEventListeners();
 		window.reloadPopup = this.reload
-		
 	}
 	createTranslationPopup(translator){
 		this.translator = translator;
@@ -79,17 +78,41 @@ class PopupBuilder{
 	
 	removeTranslationPopup(){
 		console.log("Hiding Translation Popup")
-		select(".translation-popup").style.visibility = 'hidden';
+		this.setPopupVisibility("hidden")
 		this.rendererProvider.disableExtra()
 	}
 
 	showTranslationPopup(){
-		console.log("Showing Translation Popup")
+		let popup = select(".translation-popup")
 
-		select(".translation-popup").style.visibility = 'visible';
+		let clientHeight = window.innerHeight;
+		let videoHeight = document.querySelector(".player-timedtext").clientHeight
+		let offset = (clientHeight - videoHeight) / 2;
+
+		popup.style.left = window.innerWidth/2 - 200 + "px";
+		popup.style.top = clientHeight - offset - videoHeight*0.3 + "px"
+		console.log("Showing Translation Popup")
+		this.setPopupVisibility("visible")
 		this.rendererProvider.enableExtra()
 	}
-		
+
+	setPopupVisibility(visibility){
+		this.setTranslationPopupVisibility(visibility)
+		this.setRowVisibility(visibility)
+		this.setScrollBarVisibility(visibility)
+	}
+
+	async setTranslationPopupVisibility(visibility) {
+		select(".translation-popup").style.visibility = visibility
+	}
+
+	async setRowVisibility(visibility) {
+		select(".tabs-row").style.visibility = visibility
+	}
+
+	async setScrollBarVisibility(visibility) {
+		select(".translation-scrollbar").style.visibility = visibility
+	}
 }
 
 export {PopupBuilder};

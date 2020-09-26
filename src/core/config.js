@@ -16,6 +16,5 @@ const proxies = ["https://cors-anywhere.herokuapp.com/",
 const normalizationServices = [];
 const textItemClass = '.player-timedtext';
 const playerControlClass = '.PlayerControlsNeo__button-control-row'
-const maxWidth = document.body.clientWidth
 
-export {textItemClass, playerControlClass, maxWidth, proxies, config}
+export {textItemClass, playerControlClass, proxies, config}

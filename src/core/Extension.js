@@ -18,6 +18,11 @@ class Extension {
 		let netflix_line = this.getLine(event.target)
 		console.log("[WORD]", event.target, word)
 
+		if (!this.subtitleProvider.isLoaded()){
+			console.warn("Subtitle Provider is not loaded")
+			builder.createTranslationPopup(new Translator(PoSConverter.convert(null, word)))
+			return;
+		}
 		let {ltc, probability} = this.subtitleProvider.getSubtitleByLine(netflix_line);
 		let ltc_sentence = joinLemma(ltc)
 

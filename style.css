@@ -10,7 +10,7 @@
 	visibility: hidden;
     opacity: 0.95;
     transition: opacity 0.3s, visibility 0.3s;
-    z-index: 80000;
+    z-index: 80000 !important;
     background: #282828;
     font-size: 15px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -24,7 +24,7 @@
     position: absolute;
     padding: 0 !important;
     margin: 0 !important;
-    left: 112.5px; 
+    /*left: 112.5px; */
     pointer-events: all;
     top: 510px;
 	right: auto;

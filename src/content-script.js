@@ -13,7 +13,7 @@ function run() {
 	var mainDiv = document.createElement("div");
 	mainDiv.id = "main";
 
-	document.body.append(mainDiv);
+	document.querySelector(".sizing-wrapper").prepend(mainDiv);
 
 	fetch(chrome.extension.getURL("./src/translationPopup.html"))
 		.then((data) => data.text())
