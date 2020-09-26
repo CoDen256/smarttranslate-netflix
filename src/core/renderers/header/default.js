@@ -1,4 +1,5 @@
 import {ExtendedWord, SimplePartOfSpeech} from "../../../services/entities.js";
+import {select} from "../../Utils.js";
 
 class DefaultRenderer{
     constructor(translator, header) {
@@ -22,7 +23,7 @@ class DefaultRenderer{
     }
 
     submitNewWord() {
-        let input = document.querySelector("#word").value
+        let input = select("#word").value
         let newWord = new ExtendedWord(input);
 
         newWord.pos = new SimplePartOfSpeech("NONE")

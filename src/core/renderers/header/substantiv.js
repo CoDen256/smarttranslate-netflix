@@ -1,4 +1,5 @@
 import {ExtendedWord, Substantiv} from "../../../services/entities.js";
+import {select} from "../../Utils.js";
 
 class SubstantivRenderer {
     constructor(translator, header) {
@@ -11,7 +12,9 @@ class SubstantivRenderer {
 
         let genderLabel = this.header.querySelector("#gender-label")
         this.translator.getGender().then(gender => {
-            genderLabel.textContent = gender.toString();
+            if (gender != null){
+                genderLabel.textContent = gender.toString();
+            }
         })
 
 
@@ -28,7 +31,7 @@ class SubstantivRenderer {
     }
 
     submitNewSubstantiv() {
-        let input = document.querySelector("#word").value
+        let input = select("#word").value
         let newWord = new ExtendedWord(input);
 
         newWord.pos = new Substantiv("NN", null)
@@ -37,14 +40,14 @@ class SubstantivRenderer {
     }
 
     static enableExtra() {
-        document.querySelector("#gender").style.visibility = "visible"
-        document.querySelector("#gender").style.position = "relative"
+        select("#gender").style.visibility = "visible"
+        select("#gender").style.position = "relative"
     }
 
     static disableExtra() {
-        document.querySelector("#gender").style.visibility = "hidden"
-        document.querySelector("#gender").style.position = "absolute"
-        document.querySelector("#gender-label").textContent = "(?)"
+        select("#gender").style.visibility = "hidden"
+        select("#gender").style.position = "absolute"
+        select("#gender-label").textContent = "(?)"
     }
 }
 

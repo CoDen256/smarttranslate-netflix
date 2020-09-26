@@ -1,4 +1,5 @@
 import {ExtendedWord, Verb} from "../../../services/entities.js";
+import {select} from "../../Utils.js";
 
 class VerbRenderer{
     constructor(translator, header) {
@@ -28,19 +29,19 @@ class VerbRenderer{
     }
 
     reflexChanged() {
-        let checked = document.querySelector("#reflex").checked
-        document.querySelector("#reflex-label").style.visibility = checked ? "visible" : "hidden"
+        let checked = select("#reflex").checked
+        select("#reflex-label").style.visibility = checked ? "visible" : "hidden"
     }
 
     changeReflex(isReflex) {
         isReflex = isReflex === true;
-        document.querySelector("#reflex").checked = isReflex
-        document.querySelector("#reflex-label").style.visibility = isReflex ? "visible" : "hidden"
+        select("#reflex").checked = isReflex
+        select("#reflex-label").style.visibility = isReflex ? "visible" : "hidden"
     }
 
     submitNewVerb() {
-        let checked = document.querySelector("#reflex").checked
-        let input = document.querySelector("#word").value
+        let checked = select("#reflex").checked
+        let input = select("#word").value
 
         let newWord = new ExtendedWord(input);
         newWord.pos = new Verb("V", null, checked)
@@ -48,17 +49,17 @@ class VerbRenderer{
     }
 
     static enableExtra() {
-        document.querySelector("#reflex-input").style.visibility = "visible"
-        document.querySelector("#reflex").style.visibility = "visible"
-        document.querySelector("#reflex-label").style.visibility = "visible"
-        document.querySelector("#reflex-input").style.position = "relative"
+        select("#reflex-input").style.visibility = "visible"
+        select("#reflex").style.visibility = "visible"
+        select("#reflex-label").style.visibility = "visible"
+        select("#reflex-input").style.position = "relative"
     }
 
     static disableExtra() {
-        document.querySelector("#reflex-input").style.visibility = "hidden"
-        document.querySelector("#reflex").style.visibility = "hidden"
-        document.querySelector("#reflex-label").style.visibility = "hidden"
-        document.querySelector("#reflex-input").style.position = "absolute"
+        select("#reflex-input").style.visibility = "hidden"
+        select("#reflex").style.visibility = "hidden"
+        select("#reflex-label").style.visibility = "hidden"
+        select("#reflex-input").style.position = "absolute"
     }
 }
 

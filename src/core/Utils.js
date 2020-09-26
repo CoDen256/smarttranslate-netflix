@@ -78,4 +78,15 @@ function editDistance(s1, s2) {
     return costs[s2.length];
 }
 
-export {replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity}
+function select(query){
+    return document.querySelector(query)
+}
+
+function create(element, cl){
+    let el = document.createElement(element)
+    el.classList.add(cl);
+    return el
+}
+
+export {replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity,
+select, create}

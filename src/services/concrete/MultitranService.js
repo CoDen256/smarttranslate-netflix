@@ -44,4 +44,4 @@ class MultitranService {
 
 }
 
-export {MultitranService, multitranUrl, langMap}
+export {MultitranService, multitranUrl, params}
