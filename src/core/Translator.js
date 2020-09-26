@@ -30,7 +30,7 @@ class Translator{
 	initializeSecondary(){
 		// this.reverso = new ReversoService(this.getExtended());
 		// this.pons = new PonsService(this.getExtended())
-		this.duden = new DudenService(this.getExtended())
+		// this.duden = new DudenService(this.getExtended())
 		// this.glosbe = new GlosbeService(this.getExtended());
 	}
 
@@ -64,6 +64,12 @@ class Translator{
 
 	getDudenMeanings(){
 		return this.duden.getMeaningWord().then((meaning) => {
+			return meaning.getMeanings()
+		})
+	}
+
+	getWikiMeanings(){
+		return this.wiktionary.getMeaningWord().then((meaning) => {
 			return meaning.getMeanings()
 		})
 	}

@@ -7,6 +7,7 @@ import {PonsRenderer} from "./renderers/tab/pons.js";
 import {ReversoRenderer} from "./renderers/tab/reverso.js";
 import {GlosbeRenderer} from "./renderers/tab/glosbe.js";
 import {DudenRenderer} from "./renderers/tab/duden.js";
+import {WikiRenderer} from "./renderers/tab/wiktionary.js";
 
 class PopupBuilder{
 
@@ -26,7 +27,7 @@ class PopupBuilder{
 		GoogleRenderer.render(translator) // the simple translation from google
 		headerRenderer.render()
 		this.fillTabs();
-		this.activate("#tab-duden", select("#button-duden"))
+		this.activate("#tab-wik", select("#button-wik"))
 	}
 
 	reload(extended) {
@@ -68,8 +69,8 @@ class PopupBuilder{
 		// PonsRenderer.render(this.translator)
 		// ReversoRenderer.render(this.translator)
 		// GlosbeRenderer.render(this.translator)
-		DudenRenderer.render(this.translator)
-		this.fillWiktionary()
+		// DudenRenderer.render(this.translator)
+		WikiRenderer.render(this.translator)
 	}
 
 	fillWiktionary(){

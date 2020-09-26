@@ -71,4 +71,4 @@ class WiktionaryService{ //TODO put extended word from outside
 	}
 }
 
-export {WiktionaryService, wiktionaryURL};
+export {WiktionaryService, wiktionaryURL, params};

@@ -1,21 +1,21 @@
-import {_Url, params} from "../../../services/concrete/_Service.js";
+import {wiktionaryURL, params} from "../../../services/concrete/WiktionaryService.js";
 import {URL} from "../../URL.js";
 import {select, create} from "../../Utils.js";
 
-class _Renderer{
+class WikiRenderer{
 
     static render(translator){
-        let tab = select("#tab-_")
+        let tab = select("#tab-wik")
 
-        tab.querySelector("a").href = URL.replaceAll(_Url, params)
+        tab.querySelector("a").href = URL.replaceAll(wiktionaryURL, params)
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
-        translator.get_<>s().then((<>s) => {
-            <>s.forEach((<>) => {
+        translator.getWikiMeanings().then((meanings) => {
+            meanings.forEach((meaning) => {
                 // <li class="dictionary-content-item">
                 let item = create("li", "dictionary-content-item")
-                item.textContent = <>;
+                item.innerHTML = "🞄 " + meaning;
                 content.appendChild(item)
             })
         })
@@ -23,4 +23,4 @@ class _Renderer{
 
 }
 
-export {_Renderer}
+export {WikiRenderer}
