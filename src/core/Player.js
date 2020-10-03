@@ -23,6 +23,8 @@ class NetflixPlayer {
     }
 
     seek(time){
+        if (time == null) return ;
+        console.log("Seeking to ", time)
         this.player.seek(time);
     }
 

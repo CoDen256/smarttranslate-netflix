@@ -4,7 +4,8 @@ import {convertToSeconds, replaceWithSpans, timeOfSeconds, joinLemma} from './Ut
 import {PoSConverter} from "./Converter.js";
 import {TimedSubtitleProvider} from "./TimedSubtitleProvider.js"
 import {NetflixPlayer} from "./Player.js";
-import {NetflixSubtitleRecorder} from "./NetflixSubtitleRecorder.js";
+import {NetflixSubtitleNavigator} from "./NetflixSubtitleNavigator.js";
+
 class Extension {
 	constructor(builder, script){
 		console.log("Extension created")
@@ -13,29 +14,28 @@ class Extension {
 		this.script = script;
 
 		this.player = new NetflixPlayer();
-		this.recorder = new NetflixSubtitleRecorder();
+		this.navigator = new NetflixSubtitleNavigator();
 		this.subtitleProvider = new TimedSubtitleProvider(script);
 
 		const pressed = (e) => this.pressed(e)
 		document.body.addEventListener("keydown", pressed)
+		document.body.addEventListener("mousedown", pressed)
 	}
 
 	pressed(event) {
-		if (event.code === "Escape"){
+		if (event.code === "KeyQ" || event.button === 4){
 			this.builder.removeTranslationPopup()
 			this.player.play()
 		}
-		if (event.code === "Enter"){
+		if (event.code === "Enter" || event.button === 1){
 			this.builder.onEnter()
 		}
-		// if (event.code === "KeyA"){
-		// 	console.log(this.recorder)
-		// 	this.player.seek(this.recorder.previous().time)
-		// }
-		// if (event.code === "KeyD"){
-		// 	console.log(this.recorder)
-		// 	this.player.seek(this.recorder.next().time)
-		// }
+		if (event.code === "KeyA"){
+			this.player.seek(this.navigator.previous())
+		}
+		if (event.code === "KeyD"){
+			this.player.seek(this.navigator.next())
+		}
 	}
 
 	wordClicked(event, builder){
@@ -77,12 +77,14 @@ class Extension {
 		return null;
 	}
 
-	wrapWordsWithSpans(span){
+	async wrapWordsWithSpans(span) {
 		if (span.id === config.wordEditedId) return false;
 
-		this.recorder.record(this.player.getCurrentTime(), this.getFullLine(span.parentElement.children))
+		await this.navigator.load()
+		this.navigator.update(this.player.getCurrentTime())
+
 		span.id = config.wordEditedId
-		span.innerHTML = "<br>"+replaceWithSpans(span.textContent, config.wordEditedId, config.hoverableWordClass);
+		span.innerHTML = "<br>" + replaceWithSpans(span.textContent, config.wordEditedId, config.hoverableWordClass);
 
 		const wordHandlerReference = (event) => this.wordClicked(event, this.builder)
 

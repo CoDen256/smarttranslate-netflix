@@ -2,12 +2,11 @@ const onMessageSend = (req, _1, _2)=> !(req.buttonClick && !window.location.href
 
 function run() {
 	var scriptsToPrepend = [];
-  
+
 	var mainScript = document.createElement('script');
 	mainScript.src = chrome.extension.getURL('./src/main.js');
 	mainScript.setAttribute("type", "module");
 	scriptsToPrepend.push(mainScript);
-
 
 	
 	var mainDiv = document.createElement("div");
