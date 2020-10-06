@@ -1,10 +1,10 @@
-import {reversoUrl, params} from "../../../services/concrete/ReversoService.js";
+import {params, reversoUrl} from "../../../services/concrete/ReversoService.js";
 import {URL} from "../../URL.js";
-import {select, create} from "../../Utils.js";
+import {create, select} from "../../Utils.js";
 
-class ReversoRenderer{
+class ReversoRenderer {
 
-    static render(translator){
+    static render(translator) {
         let tab = select("#tab-reverso")
 
         tab.querySelector("a").href = URL.replaceAll(reversoUrl, params)
@@ -19,13 +19,13 @@ class ReversoRenderer{
                 let sent = this.emphasize(context.sentence)
                 let translation = this.emphasize(context.translation)
 
-                item.innerHTML =  "🞄 " + sent + "<br>🞄 " + translation +"<br><br>"
+                item.innerHTML = "🞄 " + sent + "<br>🞄 " + translation + "<br><br>"
                 content.appendChild(item)
             })
         })
     }
 
-    static emphasize(sentence){
+    static emphasize(sentence) {
         return sentence
             .replace("{{", "<span style='color:yellow'><em><strong>")
             .replace("}}", "</strong></em></span>");

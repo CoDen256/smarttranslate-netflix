@@ -2,7 +2,7 @@ import {AbstractService} from './AbstractService.js'
 import {ContextWord} from './entities.js'
 
 class WordContextService {
-	constructor(apiUrl, params, extendedWord, client){
+    constructor(apiUrl, params, extendedWord, client) {
         this.abstractService = new AbstractService(
             apiUrl,
             params,
@@ -10,22 +10,22 @@ class WordContextService {
             client,
             this
         )
-	}
-
-	getContextWord(){
-		return this.abstractService.getWord();
     }
-    
-    toSpecifiedWord(extendedWord){
+
+    getContextWord() {
+        return this.abstractService.getWord();
+    }
+
+    toSpecifiedWord(extendedWord) {
         return new ContextWord(extendedWord)
     }
 
-    mapToString(contextWord){
-	    let extended = contextWord.extendedWord
+    mapToString(contextWord) {
+        let extended = contextWord.extendedWord
         return extended.prepareToContext(extended.mainForm)
     }
 
-    onResult(contextWord, result){
+    onResult(contextWord, result) {
         return contextWord.addContexts(result)
     }
 }

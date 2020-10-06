@@ -1,11 +1,11 @@
 import {multitranUrl, params} from "../../../services/concrete/MultitranService.js";
 import {URL} from "../../URL.js";
 
-import {select, create} from "../../Utils.js";
+import {create, select} from "../../Utils.js";
 
-class MultitranRenderer{
+class MultitranRenderer {
 
-    static render(translator){
+    static render(translator) {
         let tab = select("#tab-multitran")
 
         tab.querySelector("a").href = URL.replaceAll(multitranUrl, params)

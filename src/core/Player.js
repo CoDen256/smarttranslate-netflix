@@ -4,7 +4,7 @@ class NetflixPlayer {
         this.player = this.initializePlayer();
     }
 
-    initializePlayer(){
+    initializePlayer() {
         const videoPlayer = netflix
             .appContext
             .state
@@ -18,28 +18,28 @@ class NetflixPlayer {
             .getVideoPlayerBySessionId(playerSessionId)
     }
 
-    isInitialized(){
+    isInitialized() {
         return this.player != null;
     }
 
-    seek(time){
-        if (time == null) return ;
+    seek(time) {
+        if (time == null) return;
         console.log("Seeking to ", time)
         this.player.seek(time);
     }
 
-    play(){
+    play() {
         this.player.play()
     }
 
-    pause(){
+    pause() {
         this.player.pause()
     }
 
-    getCurrentTime(){
+    getCurrentTime() {
         return this.player.getCurrentTime()
     }
-    
+
 
 }
 

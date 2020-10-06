@@ -2,7 +2,7 @@ import {AbstractService} from './AbstractService.js'
 import {MeaningWord} from './entities.js'
 
 class WordMeaningService {
-	constructor(apiUrl, params, extendedWord, client){
+    constructor(apiUrl, params, extendedWord, client) {
         this.abstractService = new AbstractService(
             apiUrl,
             params,
@@ -10,22 +10,22 @@ class WordMeaningService {
             client,
             this
         )
-	}
-
-	getMeaningWord(){
-		return this.abstractService.getWord();
     }
-    
-    toSpecifiedWord(extendedWord){
+
+    getMeaningWord() {
+        return this.abstractService.getWord();
+    }
+
+    toSpecifiedWord(extendedWord) {
         return new MeaningWord(extendedWord)
     }
 
-    mapToString(meaningWord){
-	    let extended = meaningWord.extendedWord
+    mapToString(meaningWord) {
+        let extended = meaningWord.extendedWord
         return extended.prepareToMeaning(extended.mainForm)
     }
 
-    onResult(meaningWord, result){
+    onResult(meaningWord, result) {
         return meaningWord.addMeanings(result)
     }
 }

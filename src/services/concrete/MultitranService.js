@@ -3,28 +3,29 @@ import {config} from '../../core/config.js'
 
 const multitranUrl = "https://www.multitran.com/m.exe?l1={SOURCE}&l2={TARGET}&s={QUERY}"
 const multitranApi = multitranUrl
-const langMap = {"de" : "3", "ru":"2", "en":"1"}
+const langMap = {"de": "3", "ru": "2", "en": "1"}
 
 const params = {
     source: langMap[config.sourceLang],
     target: langMap[config.targetLang]
 }
+
 //TODO: different translations je nach WortArt
 class MultitranService {
-    constructor(extendedWord){
-		this.service = new WordTranslationService(
-			multitranApi,
-			params,
-			extendedWord,
-			this
-		)
-	}
+    constructor(extendedWord) {
+        this.service = new WordTranslationService(
+            multitranApi,
+            params,
+            extendedWord,
+            this
+        )
+    }
 
-	normalize(raw) {
-		return raw.text()
-	}
+    normalize(raw) {
+        return raw.text()
+    }
 
-	parse(normalized){ // Array<String> - translations
+    parse(normalized) { // Array<String> - translations
         let doc = new DOMParser().parseFromString(normalized, 'text/html')
         let translations = []
         doc.querySelectorAll(".trans").forEach((trans) => {
@@ -33,14 +34,14 @@ class MultitranService {
                     translations.push(a.textContent)
                 }
             })
-            
+
         })
         return translations;
-	}
+    }
 
-	getTranslatedWord(){
-		return this.service.getTranslatedWord();
-	}
+    getTranslatedWord() {
+        return this.service.getTranslatedWord();
+    }
 
 }
 

@@ -10,7 +10,7 @@ class SublemService {
         this.episode = episode
     }
 
-    async getData(){
+    async getData() {
         console.log(`Sublem is getting data for series : id=${this.imdb} season=${this.season} episode=${this.episode}`)
         let api = new Request(sublemApi
             .replace("{ID}", this.imdb)

@@ -1,6 +1,6 @@
 import {glosbeUrl, params} from "../../../services/concrete/GlosbeService.js";
 import {URL} from "../../URL.js";
-import {select, create} from "../../Utils.js";
+import {create, select} from "../../Utils.js";
 
 class GlosbeRenderer {
 
@@ -22,7 +22,7 @@ class GlosbeRenderer {
         })
     }
 
-    static emphasize(sentence){
+    static emphasize(sentence) {
         return sentence
             .replace("{{", "<span style='color:yellow'><em><strong>")
             .replace("}}", "</strong></em></span>");

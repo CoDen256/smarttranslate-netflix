@@ -1,42 +1,10 @@
 import {ExtendedWord, Verb} from "../../../services/entities.js";
 import {select} from "../../Utils.js";
 
-class VerbRenderer{
+class VerbRenderer {
     constructor(translator, header) {
         this.translator = translator;
         this.header = header
-    }
-
-
-    render() {
-        window.submitNewVerb = VerbRenderer.submitNew
-        window.reflexChanged = this.reflexChanged
-
-        this.changeReflex(this.translator.isReflex())
-
-        let reflexCheckbox = this.header.querySelector("#reflex")
-        reflexCheckbox.onchange = reflexChanged
-
-        let wordInput = this.header.querySelector("#word")
-        wordInput.value = (this.translator.getPrefix() || "") +this.translator.getMainForm()
-
-        let searchButton = this.header.querySelector("#search-btn")
-        searchButton.onclick = submitNewVerb
-    }
-
-    getInfo() {
-        return this.translator.isReflex() ? "refl." : ""
-    }
-
-    reflexChanged() {
-        let checked = select("#reflex").checked
-        select("#reflex-label").style.visibility = checked ? "visible" : "hidden"
-    }
-
-    changeReflex(isReflex) {
-        isReflex = isReflex === true;
-        select("#reflex").checked = isReflex
-        select("#reflex-label").style.visibility = isReflex ? "visible" : "hidden"
     }
 
     static submitNew() {
@@ -60,6 +28,37 @@ class VerbRenderer{
         select("#reflex").style.visibility = "hidden"
         select("#reflex-label").style.visibility = "hidden"
         select("#reflex-input").style.position = "absolute"
+    }
+
+    render() {
+        window.submitNewVerb = VerbRenderer.submitNew
+        window.reflexChanged = this.reflexChanged
+
+        this.changeReflex(this.translator.isReflex())
+
+        let reflexCheckbox = this.header.querySelector("#reflex")
+        reflexCheckbox.onchange = reflexChanged
+
+        let wordInput = this.header.querySelector("#word")
+        wordInput.value = (this.translator.getPrefix() || "") + this.translator.getMainForm()
+
+        let searchButton = this.header.querySelector("#search-btn")
+        searchButton.onclick = submitNewVerb
+    }
+
+    getInfo() {
+        return this.translator.isReflex() ? "refl." : ""
+    }
+
+    reflexChanged() {
+        let checked = select("#reflex").checked
+        select("#reflex-label").style.visibility = checked ? "visible" : "hidden"
+    }
+
+    changeReflex(isReflex) {
+        isReflex = isReflex === true;
+        select("#reflex").checked = isReflex
+        select("#reflex-label").style.visibility = isReflex ? "visible" : "hidden"
     }
 }
 

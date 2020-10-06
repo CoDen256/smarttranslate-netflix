@@ -2,7 +2,7 @@ import {Request} from '../core/requests.js'
 
 
 class AbstractService {
-	constructor(apiUrl, params, extendedWord, client, concreteService){
+    constructor(apiUrl, params, extendedWord, client, concreteService) {
         // TODO cache
         this.concreteService = concreteService;
         this.apiUrl = apiUrl;
@@ -11,16 +11,16 @@ class AbstractService {
 
         this.client = client
 
-        if (!(typeof client.normalize === 'function')){
+        if (!(typeof client.normalize === 'function')) {
             client.normalize = this.identity;
             // console.log(`normalize() of ${client.constructor.name} is not specified`)
         }
-        if (!(typeof client.parse === 'function')){
+        if (!(typeof client.parse === 'function')) {
             client.parse = this.identity;
             // console.log(`parse() of ${client.constructor.name} is not specified`)
         }
 
-        if (!(typeof client.prepare === 'function')){
+        if (!(typeof client.prepare === 'function')) {
             client.prepare = this.identity;
             // console.log(`prepare() of ${client.constructor.name} is not specified`)
         }
@@ -38,37 +38,39 @@ class AbstractService {
 
 
         this.specifiedWord = this.update(this.concreteService.toSpecifiedWord(extendedWord))
-                                          .catch((error) => this.defaultValue(error))
-	}
+            .catch((error) => this.defaultValue(error))
+    }
 
-	getData(word){
-	    let prepared = this.client.prepare(word)
+    getData(word) {
+        let prepared = this.client.prepare(word)
         //console.log(`Getting data for '${prepared}' from ${this.apiUrl}`)
-        
+
         this.params.query = prepared;
         let api = new Request(this.apiUrl, this.params)
 
-		return api.fetchData()
-	}
+        return api.fetchData()
+    }
 
-	update(specified){
+    update(specified) {
         return this.getData(this.concreteService.mapToString(specified))
             .then((raw) => this.client.normalize(raw))
             .then((normalized) => this.client.parse(normalized))
             .then((result) => this.concreteService.onResult(specified, result));
     }
-    
-    defaultValue(error){
-		console.log("Error while creating Specified word beacause:\n", error)
-		console.log("Default value will be returned by", this.client)
+
+    defaultValue(error) {
+        console.log("Error while creating Specified word beacause:\n", error)
+        console.log("Default value will be returned by", this.client)
         return this.concreteService.toSpecifiedWord(this.extendedWord)
     }
 
-	getWord(){
-		return this.specifiedWord;
+    getWord() {
+        return this.specifiedWord;
     }
-    
-    identity(input){return input}
+
+    identity(input) {
+        return input
+    }
 }
 
 export {AbstractService};

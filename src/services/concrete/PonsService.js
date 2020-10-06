@@ -11,34 +11,34 @@ const params = {
 // Provides usages and translations
 // Provides synonyms
 class PonsService {
-    constructor(extendedWord){
-		this.service = new WordTranslationService(
-			ponsApi,
-			params,
-			extendedWord,
-			this
-		)
-	}
+    constructor(extendedWord) {
+        this.service = new WordTranslationService(
+            ponsApi,
+            params,
+            extendedWord,
+            this
+        )
+    }
 
-	normalize(raw) {
-		return raw.text()
-	}
+    normalize(raw) {
+        return raw.text()
+    }
 
-	parse(normalized){ // Array<String> - translations
+    parse(normalized) { // Array<String> - translations
         let doc = new DOMParser().parseFromString(normalized, 'text/html')
         let translations = []
         //doc.querySelector(".entry .first").querySelectorAll(".target")
-		doc.querySelectorAll(".dd-inner").forEach((target) => {
+        doc.querySelectorAll(".dd-inner").forEach((target) => {
             target.querySelectorAll("span").forEach(span => span.remove())
             translations.push(target.textContent.trim())
-            
+
         })
         return translations;
-	}
+    }
 
-	getTranslatedWord(){
-		return this.service.getTranslatedWord();
-	}
+    getTranslatedWord() {
+        return this.service.getTranslatedWord();
+    }
 }
 
 export {PonsService, ponsUrl, params}

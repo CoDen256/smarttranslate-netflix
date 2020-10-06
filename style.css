@@ -1,13 +1,18 @@
-.player-timedtext-text-container{z-index:100!important;}
-.player-timedtext .player-timedtext-text-container:hover{cursor:pointer;}
+.player-timedtext-text-container {
+    z-index: 100 !important;
+}
 
-.hoverable:hover{
+.player-timedtext .player-timedtext-text-container:hover {
+    cursor: pointer;
+}
+
+.hoverable:hover {
     background: #116ce4;
     border-radius: 15%;
 }
 
 .translation-popup {
-	visibility: hidden;
+    visibility: hidden;
     opacity: 0.95;
     transition: opacity 0.3s, visibility 0.3s;
     z-index: 80000 !important;
@@ -27,12 +32,12 @@
     /*left: 112.5px; */
     pointer-events: all;
     top: 510px;
-	right: auto;
+    right: auto;
     transform: translateY(-100%);
     /* box-shadow: 0 0.2em 0.1em 0 #000; */
 }
 
-.translation-scrollbar{
+.translation-scrollbar {
     height: 381px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -50,13 +55,13 @@
     top: 1px;
     right: 12px;
     background-image: url(https://img.icons8.com/cotton/2x/cancel.png);
-    background-size : 26px 26px;
+    background-size: 26px 26px;
     width: 26px;
     height: 26px;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-    padding: 4px; 
+    padding: 4px;
     opacity: .7;
     z-index: 5;
 }
@@ -66,26 +71,27 @@
     line-height: 1.35em;
 }
 
-.translation-header-section{
+.translation-header-section {
     padding: 7px 35px 7px 10px;
     background: #00639e;
-    
-    
+
+
 }
 
-.popup-main{
+.popup-main {
     min-width: 400px;
     width: 400px;
 }
 
 
-.translation-header{
+.translation-header {
     color: #fff;
     font-weight: 500;
     margin-left: 5px;
     padding-left: 35px;
     position: relative;
 }
+
 .v-line {
     border-left: 2px solid rgba(128, 159, 176, 0.6);
     height: 25px;
@@ -120,17 +126,17 @@
     outline: none;
 }
 
-.translation-header #search-btn:hover{
+.translation-header #search-btn:hover {
     background-color: #23a8f3;
 }
 
-.translation-header #reflex{
-    -webkit-appearance:none;
-    width:12px;
-    height:12px;
+.translation-header #reflex {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
     background: #f65454;
-    border-radius:6px;
-    border:2px solid #555;
+    border-radius: 6px;
+    border: 2px solid #555;
     outline: none;
 }
 
@@ -146,17 +152,19 @@
     font-weight: bold;
 }
 
-#reflex-input{
+#reflex-input {
     display: inline-block;
     visibility: hidden;
     position: absolute
 }
 
 #gender {
-    display: inline-block; visibility: hidden; position: absolute;
+    display: inline-block;
+    visibility: hidden;
+    position: absolute;
 }
 
-#gender-label{
+#gender-label {
     color: #00ffdc;
 }
 
@@ -182,11 +190,11 @@
 
 
 .translation-header::before {
-    content : '';
+    content: '';
     background-image: url(https://static.thenounproject.com/png/5735-200.png);
-    background-size : 24px 24px;
+    background-size: 24px 24px;
     width: 24px;
-    height:24px;
+    height: 24px;
     position: absolute;
     left: 0;
     top: calc(50%);
@@ -194,7 +202,7 @@
     opacity: .5;
 }
 
-.section-full{
+.section-full {
     /*padding: 10px 35px 5px 10px;*/
     display: none;
     background: #0b344c;
@@ -222,7 +230,7 @@
     margin-inline-start: 0px;
 }
 
-.dictionary-title{
+.dictionary-title {
     font-weight: 700;
     color: rgb(189, 189, 0);
     padding-left: 5px;
@@ -237,7 +245,7 @@
     padding-right: 10px;
 }
 
-.dictionary-content{
+.dictionary-content {
     padding-inline-start: 10px;
     list-style: none;
     padding-top: 2px;
@@ -253,6 +261,7 @@ li {
 .tabs-row {
     display: block;
 }
+
 .tabs-row button {
     background-color: inherit;
     outline: none;
@@ -263,7 +272,7 @@ li {
     transition: 0.3s;
     font-size: 13px;
     border-radius: 8%;
-  }
+}
 
 
 .tabs-row button:hover {
@@ -271,9 +280,10 @@ li {
 }
 
 .tabs-row button.active {
-    background-color:#0b344c;
+    background-color: #0b344c;
     color: #ddd;
 }
+
 .external-dicts-row {
     text-align: center;
     /*

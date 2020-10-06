@@ -1,7 +1,7 @@
 import {select} from "../../Utils.js";
 
-class GoogleRenderer{
-    static render(translator){
+class GoogleRenderer {
+    static render(translator) {
         let short_translation = select("#short-translation")
         short_translation.textContent = "[loading]"
         short_translation.style.color = "white"

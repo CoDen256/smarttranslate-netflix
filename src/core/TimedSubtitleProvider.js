@@ -1,6 +1,6 @@
-import {convertToSeconds, computeSimilarity, joinLemma} from './Utils.js'
+import {computeSimilarity, convertToSeconds, joinLemma} from './Utils.js'
 
-class TimedSubtitleProvider{
+class TimedSubtitleProvider {
     constructor(script) {
         this.script = script;
         this.last_index = null;
@@ -8,10 +8,10 @@ class TimedSubtitleProvider{
 
     findByTime(time) {
         for (let i = 0; i < this.script.length; i++) {
-            let prev = this.getSubtitleByIndex(i-1);
-            let next = this.getSubtitleByIndex(i+1);
+            let prev = this.getSubtitleByIndex(i - 1);
+            let next = this.getSubtitleByIndex(i + 1);
             if (convertToSeconds(time) >= convertToSeconds(prev.end)
-                && convertToSeconds(time) <= convertToSeconds(next.start)){
+                && convertToSeconds(time) <= convertToSeconds(next.start)) {
                 return i
             }
         }
@@ -26,7 +26,7 @@ class TimedSubtitleProvider{
     }
 
     getSubtitleByIndex(index) {
-        return this.script[Math.min(Math.max(0, index), this.script.length-1)]
+        return this.script[Math.min(Math.max(0, index), this.script.length - 1)]
     }
 
     getSubtitleByLine(line) {
@@ -36,16 +36,16 @@ class TimedSubtitleProvider{
         const computeSim = (s1, s2) => computeSimilarity(s1, s2)
         const adjust = (s) => this.adjustLine(s)
 
-        this.script.forEach( lemma => {
-            if (lemma !== undefined && lemma != null){
+        this.script.forEach(lemma => {
+            if (lemma !== undefined && lemma != null) {
                 let joined = joinLemma(lemma)
                 let similarity = computeSim(joined, adjust(line));
 
-                if (similarity >= max_similarity){
+                if (similarity >= max_similarity) {
                     max_similarity = similarity
                     possible_line = lemma
                     //console.log(lemma, max_similarity)
-                    if (similarity === max_similarity){
+                    if (similarity === max_similarity) {
                         // TODO compare time codes
                     }
                 }
@@ -55,7 +55,7 @@ class TimedSubtitleProvider{
         return {ltc: possible_line, probability: max_similarity};
     }
 
-    isLoaded(){
+    isLoaded() {
         return this.script != null && this.script.length !== 0;
     }
 

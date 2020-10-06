@@ -1,23 +1,23 @@
-const replaceWithSpans = (sentence, id, cl) => sentence.replace(/([a-zäüöß']+)/gi, '<span id="'+id+'" class='+cl+'>$1</span>');
+const replaceWithSpans = (sentence, id, cl) => sentence.replace(/([a-zäüöß']+)/gi, '<span id="' + id + '" class=' + cl + '>$1</span>');
 const pixel = (any) => any.toString() + "px";
 const toClass = (any) => "." + any;
 const toId = (any) => "#" + any;
 
-function convertToSeconds(time){
+function convertToSeconds(time) {
     let parts = time.split(".")
     let t = parts[0].split(":")
 
-    let h = t[t.length-3] || 0
-    let m = t[t.length-2] || 0
-    let s = t[t.length-1] || 0
+    let h = t[t.length - 3] || 0
+    let m = t[t.length - 2] || 0
+    let s = t[t.length - 1] || 0
     let millis = parts[1] || 0
 
-    return parseFloat((parseInt(h)* 60 * 60 + parseInt(m) * 60 + parseInt(s)).toString() + "." + millis)
+    return parseFloat((parseInt(h) * 60 * 60 + parseInt(m) * 60 + parseInt(s)).toString() + "." + millis)
 }
 
 function pad(num, size) {
     var s = "000000000" + num;
-    return s.substr(s.length-size);
+    return s.substr(s.length - size);
 }
 
 function timeOfSeconds(duration) {
@@ -25,11 +25,11 @@ function timeOfSeconds(duration) {
     let hrs = ~~(duration / 3600);
     let mins = ~~((duration % 3600) / 60);
     let secs = ~~duration % 60;
-    return [pad(hrs, 2), pad(mins ,2), pad(secs ,2)].join(":") + "." + millis
+    return [pad(hrs, 2), pad(mins, 2), pad(secs, 2)].join(":") + "." + millis
 }
 
 function joinLemma(ltc) {
-    if (ltc === undefined) return  ""
+    if (ltc === undefined) return ""
     let result = ""
     ltc.lemmas.forEach(l => {
         result += l.original + " "
@@ -78,15 +78,17 @@ function editDistance(s1, s2) {
     return costs[s2.length];
 }
 
-function select(query){
+function select(query) {
     return document.querySelector(query)
 }
 
-function create(element, cl){
+function create(element, cl) {
     let el = document.createElement(element)
     el.classList.add(cl);
     return el
 }
 
-export {replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity,
-select, create}
+export {
+    replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity,
+    select, create
+}

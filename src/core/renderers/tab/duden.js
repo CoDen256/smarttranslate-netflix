@@ -1,6 +1,6 @@
 import {dudenUrl, params} from "../../../services/concrete/DudenService.js";
 import {URL} from "../../URL.js";
-import {select, create} from "../../Utils.js";
+import {create, select} from "../../Utils.js";
 
 class DudenRenderer {
 

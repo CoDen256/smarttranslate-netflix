@@ -3,7 +3,7 @@ import {ExtendedWord, SimplePartOfSpeech, Substantiv, Verb} from '../services/en
 
 // APPO zufolge
 
-class PoSConverter{
+class PoSConverter {
     static convert(lemma, defaultWord) {
         if (lemma === undefined || lemma === null) {
             return PoSConverter.createDefault(defaultWord)
@@ -18,7 +18,7 @@ class PoSConverter{
         extended.mainForm = main
 
 
-        if (PoSConverter.isVerb(type)){
+        if (PoSConverter.isVerb(type)) {
             let prefix = PoSConverter.extractArgument(args, "prefix")
             let reflex = PoSConverter.extractArgument(args, "reflex")
 
@@ -56,10 +56,21 @@ class PoSConverter{
         return null;
     }
 
-    static isVerb(type){return type.startsWith("V")}
-    static isAdj(type){return type.startsWith("ADJ")}
-    static isAdv(type){return type.startsWith("ADV")}
-    static isSub(type){return type.startsWith("N")}
+    static isVerb(type) {
+        return type.startsWith("V")
+    }
+
+    static isAdj(type) {
+        return type.startsWith("ADJ")
+    }
+
+    static isAdv(type) {
+        return type.startsWith("ADV")
+    }
+
+    static isSub(type) {
+        return type.startsWith("N")
+    }
 }
 
 export {PoSConverter}

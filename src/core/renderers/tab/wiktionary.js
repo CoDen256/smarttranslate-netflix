@@ -1,10 +1,10 @@
-import {wiktionaryURL, params} from "../../../services/concrete/WiktionaryService.js";
+import {params, wiktionaryURL} from "../../../services/concrete/WiktionaryService.js";
 import {URL} from "../../URL.js";
-import {select, create} from "../../Utils.js";
+import {create, select} from "../../Utils.js";
 
-class WikiRenderer{
+class WikiRenderer {
 
-    static render(translator){
+    static render(translator) {
         let tab = select("#tab-wik")
 
         tab.querySelector("a").href = URL.replaceAll(wiktionaryURL, params)
