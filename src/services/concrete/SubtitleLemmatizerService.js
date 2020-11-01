@@ -1,6 +1,6 @@
 import {Request} from '../../core/requests.js'
 
-const sublemApi = "https://sublem.pythonanywhere.com/sublem/?id={ID}&e={EPISODE}&s={SEASON}"
+const sublemApi = "http://sublem.pythonanywhere.com/ltc?id={ID}&e={EPISODE}&s={SEASON}"
 
 class SublemService {
 

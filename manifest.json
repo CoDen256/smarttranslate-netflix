@@ -17,7 +17,7 @@
         "style.css"
       ],
       "matches": [
-        "*://*.netflix.com/*"
+        "*://*.netflix.com/watch/*"
       ],
       "run_at": "document_end"
     }

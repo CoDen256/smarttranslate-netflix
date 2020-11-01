@@ -1,21 +1,26 @@
 import {PopupBuilder} from './core/PopupBuilder.js';
 import {Extension} from './core/Extension.js';
 import {SublemService} from "./services/concrete/SubtitleLemmatizerService.js";
-import {TimedSubtitleProvider} from "./core/TimedSubtitleProvider.js";
-import {playerControlClass, textItemClass} from './core/config.js'
+import {LTCProvider} from "./core/player/LTCProvider.js";
+import {config, playerControlClass, textItemClass} from './core/config.js'
 import {timeOfSeconds} from './core/Utils.js'
+import {NetflixPlayer} from "./core/player/Player.js";
+import {MovieIdFinder} from "./services/concrete/MovieIdFinder.js";
+import {TitleExtractor} from "./core/player/TitleExtractor.js";
 
 
 async function main() {
 
-    // let video_title = document.body.querySelector(".video-title");
-    // let title = video_title.querySelector("h4").textContent
-    // let episode_info = video_title.querySelector("span").textContent
-    // let [season, episode] = episode_info.match(/\d+/g);
+    let extractor = new TitleExtractor()
+    let {title, season, episode} = await extractor.extract()
 
+    let finder = new MovieIdFinder(title)
+    let id = await finder.getId()
+    console.log(`${title} ${id}, season:${season}, episode:${episode}`)
 
-    console.log("Loading subtitle script...")
-    let service = new SublemService(898266, 1, 1)
+    let netflixPlayer = new NetflixPlayer()
+    netflixPlayer.pause()
+    let service = new SublemService(id, season, episode)
     let script;
     try {
         script = await service.getData();
@@ -23,46 +28,19 @@ async function main() {
     } catch (e) {
         console.error("Failed to load subtitle script", e)
     }
+    netflixPlayer.play()
 
-    let extension = new Extension(new PopupBuilder(), script);
-
-    let provider = new TimedSubtitleProvider(script)
-    var el = document.querySelector("#button-multi")
-    var i = 0;
-    var interval = setInterval(function () {
-        return
-        if (document.querySelectorAll('video')[0] === undefined) return
-        el.style.visibility = "visible";
-        let duration = document.querySelectorAll('video')[0].currentTime
-        el.textContent = timeOfSeconds(duration)
-        return
-        let sub = provider.getSubtitleByTime(timeOfSeconds(duration))
-        if (sub == null) return
-        let line = ""
-        sub.lemmas.forEach(l => {
-            line += l.original + " ";
-        })
-        //console.log("[SUBTITLE]", sub.start, line, ":", sub.start, "<", el.textContent, "<", sub.end)
-
-        if (i > 10) {
-            clearInterval(interval);
-        }
-    }, 100);
-
+    let extension = new Extension(new PopupBuilder(), netflixPlayer, script);
     setInterval(function () {
 
         let targetItem = document.querySelector(textItemClass);
         if (targetItem && document.querySelector(playerControlClass)) {
-
             if (!extension.launched) {
                 extension.start(targetItem);
             }
-
         } else {
             extension.launched = false;
         }
-
-
     }, 1000);
 }
 

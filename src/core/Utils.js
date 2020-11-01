@@ -3,6 +3,16 @@ const pixel = (any) => any.toString() + "px";
 const toClass = (any) => "." + any;
 const toId = (any) => "#" + any;
 
+function waitFor(conditionFunction) {
+
+    const poll = resolve => {
+        if(conditionFunction()) resolve();
+        else setTimeout(_ => poll(resolve), 400);
+    }
+
+    return new Promise(poll);
+}
+
 function convertToSeconds(time) {
     let parts = time.split(".")
     let t = parts[0].split(":")
@@ -90,5 +100,5 @@ function create(element, cl) {
 
 export {
     replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity,
-    select, create
+    select, create, waitFor
 }

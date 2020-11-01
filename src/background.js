@@ -23,6 +23,11 @@ function urlChanged(tab) {
 }
 
 chrome.tabs.onUpdated.addListener(function (tabId, change, tab) {
+    if (tab.url.match(/.+:\/\/.+netflix\.com\/watch\//)) {
+        chrome.tabs.sendMessage( tabId, {
+            message: 'RUN',
+        })
+    }
     return urlChanged(tab);
 });
 
@@ -31,6 +36,8 @@ chrome.tabs.onActivated.addListener(function (info) {
         return urlChanged(tab);
     });
 });
+
+
 
 
 /*chrome.devtools.network.onRequestFinished.addListener(

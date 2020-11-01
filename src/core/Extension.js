@@ -2,20 +2,20 @@ import {config} from './config.js'
 import {Translator} from './Translator.js'
 import {joinLemma, replaceWithSpans} from './Utils.js'
 import {PoSConverter} from "./Converter.js";
-import {TimedSubtitleProvider} from "./TimedSubtitleProvider.js"
-import {NetflixPlayer} from "./Player.js";
-import {NetflixSubtitleNavigator} from "./NetflixSubtitleNavigator.js";
+import {LTCProvider} from "./player/LTCProvider.js"
+import {NetflixPlayer} from "./player/Player.js";
+import {NetflixSubtitleNavigator} from "./player/NetflixSubtitleNavigator.js";
 
 class Extension {
-    constructor(builder, script) {
+    constructor(builder, player, script) {
         console.log("Extension created")
         this.launched = false;
         this.builder = builder;
         this.script = script;
 
-        this.player = new NetflixPlayer();
+        this.player = player
         this.navigator = new NetflixSubtitleNavigator();
-        this.subtitleProvider = new TimedSubtitleProvider(script);
+        this.subtitleProvider = new LTCProvider(script);
 
         const pressed = (e) => this.pressed(e)
         document.body.addEventListener("keydown", pressed)
@@ -84,7 +84,7 @@ class Extension {
         this.navigator.update(this.player.getCurrentTime())
 
         span.id = config.wordEditedId
-        span.innerHTML = "<br>" + replaceWithSpans(span.textContent, config.wordEditedId, config.hoverableWordClass);
+        span.innerHTML = replaceWithSpans(span.textContent, config.wordEditedId, config.hoverableWordClass) + "<br>";
 
         const wordHandlerReference = (event) => this.wordClicked(event, this.builder)
 

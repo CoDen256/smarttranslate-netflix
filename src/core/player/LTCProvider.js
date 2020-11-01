@@ -1,6 +1,6 @@
-import {computeSimilarity, convertToSeconds, joinLemma} from './Utils.js'
+import {computeSimilarity, convertToSeconds, joinLemma} from '../Utils.js'
 
-class TimedSubtitleProvider {
+class LTCProvider {
     constructor(script) {
         this.script = script;
         this.last_index = null;
@@ -69,4 +69,4 @@ class TimedSubtitleProvider {
     }
 }
 
-export {TimedSubtitleProvider}
+export {LTCProvider}
