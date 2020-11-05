@@ -1,12 +1,5 @@
 import {select} from './util/Utils.js'
-import {Translator} from "./Translator.js";
-import {GoogleRenderer} from "./renderers/header/google.js";
-import {DudenService} from "../services/concrete/DudenService.js";
-import {WiktionaryService} from "../services/concrete/WiktionaryService.js";
-import {GlosbeService} from "../services/concrete/GlosbeService.js";
-import {ReversoService} from "../services/concrete/ReversoService.js";
-import {PonsService} from "../services/concrete/PonsService.js";
-import {MultitranService} from "../services/concrete/MultitranService.js";
+import {TranslatorService} from "./TranslatorService.js";
 
 class PopupBuilder {
 
@@ -16,24 +9,26 @@ class PopupBuilder {
     }
 
     createTranslationPopup(translator) {
-        this.translator = translator;
         this.rendererProvider = translator.getExtended().getHeaderRendererClass();
         let headerRenderer = new this.rendererProvider(translator, select(".translation-header"));
-        this.removeTranslationPopup()
-        this.showTranslationPopup()
+        this.reloadPopup()
 
         // rendering all the stuff
-        GoogleRenderer.render(translator) // the simple translation from google
         headerRenderer.render()
-        this.fillTabs();
+        translator.renderAllServices()
+
         this.activate("#tab-multitran", select("#button-multi"))
     }
 
     reload(extended) {
         let popup = new PopupBuilder()
-        popup.createTranslationPopup(new Translator(extended))
+        popup.createTranslationPopup(new TranslatorService(extended))
     }
 
+    reloadPopup(){
+        this.removeTranslationPopup()
+        this.showTranslationPopup()
+    }
 
     applyEventListeners() {
         select(".close-popup").addEventListener("click", (e) => this.removeTranslationPopup())
@@ -51,7 +46,6 @@ class PopupBuilder {
 
     }
 
-
     activate(id, button) {
         document.querySelectorAll(".section-full").forEach(e => e.style.display = "none")
         select(id).style.display = "block"
@@ -60,16 +54,6 @@ class PopupBuilder {
             b.className = ""
         })
         button.className = "active"
-    }
-
-
-    fillTabs() {
-        MultitranService.render(this.translator.multitran);
-        PonsService.render(this.translator.pons)
-        ReversoService.render(this.translator.reverso)
-        GlosbeService.render(this.translator.glosbe)
-        DudenService.render(this.translator.duden)
-        WiktionaryService.render(this.translator.wiktionary)
     }
 
     removeTranslationPopup() {

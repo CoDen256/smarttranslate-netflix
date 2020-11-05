@@ -63,14 +63,14 @@ class GlosbeService {
         return URL.replaceAll(glosbeUrl, this.service.abstractService.getParams())
     }
 
-    static render(glosbe) {
+    render() {
         let tab = select("#tab-glosbe")
 
-        tab.querySelector("a").href = glosbe.getLink()
+        tab.querySelector("a").href = this.getLink()
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
-        glosbe.getContextWord().then((context) => {
+        this.getContextWord().then((context) => {
             return context.getContexts()
         }).then((contexts) => {
             contexts.forEach((context) => {
@@ -83,7 +83,7 @@ class GlosbeService {
         })
     }
 
-    static emphasize(sentence) {
+    emphasize(sentence) {
         return sentence
             .replace("{{", "<span style='color:yellow'><em><strong>")
             .replace("}}", "</strong></em></span>");

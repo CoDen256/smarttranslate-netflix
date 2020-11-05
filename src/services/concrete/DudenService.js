@@ -69,15 +69,15 @@ class DudenService {
         return URL.replaceAll(dudenUrl, this.service.abstractService.getParams())
     }
 
-    static render(duden) {
+    render() {
         let tab = select("#tab-duden")
 
-        tab.querySelector("a").href = duden.getLink()
+        tab.querySelector("a").href = this.getLink()
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
 
-        duden.getMeaningWord()
+        this.getMeaningWord()
             .then(word => word.getMeanings())
             .then((meanings) => {
                 meanings.forEach((meaning) => {

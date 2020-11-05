@@ -1,5 +1,5 @@
 import {wordEditedId, hoverableWordClass} from './util/config.js'
-import {Translator} from './Translator.js'
+import {TranslatorService} from './TranslatorService.js'
 import {joinLemma, replaceWithSpans} from './util/Utils.js'
 import {PoSConverter} from "./sublem/PartOfSpeechConverter.js";
 import {LTCProvider} from "./sublem/LTCProvider.js"
@@ -26,7 +26,7 @@ class Extension {
             this.builder.removeTranslationPopup()
             this.player.play()
         }
-        if (event.code === "Enter" || event.button === 1) {
+        if (event.code === "Enter") {
             this.builder.onEnter()
         }
         if (event.code === "KeyA") {
@@ -62,7 +62,7 @@ class Extension {
         }
 
         console.log("Building popup for...", target)
-        builder.createTranslationPopup(new Translator(target));
+        builder.createTranslationPopup(new TranslatorService(target));
         this.player.pause()
     };
 

@@ -57,15 +57,15 @@ class MultitranService {
         return URL.replaceAll(multitranUrl, this.service.abstractService.getParams() )
     }
 
-    static render(multitran) {
+    render() {
         let tab = select("#tab-multitran")
 
-        tab.querySelector("a").href = multitran.getLink()
+        tab.querySelector("a").href = this.getLink()
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
 
-        multitran.getTranslatedWord().then((word) => {
+        this.getTranslatedWord().then((word) => {
             return word.getTranslations()[0];
         }).then((translations) => {
             translations.forEach((t) => {

@@ -50,14 +50,14 @@ class PonsService {
         return URL.replaceAll(ponsUrl, this.service.abstractService.getParams())
     }
 
-    static render(pons) {
+    render() {
         let tab = select("#tab-pons")
 
-        tab.querySelector("a").href = pons.getLink()
+        tab.querySelector("a").href = this.getLink()
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
-        pons.getTranslatedWord().then((word) => {
+        this.getTranslatedWord().then((word) => {
             return word.getTranslations()[0];
         }).then((translations) => {
             translations.forEach((t) => {

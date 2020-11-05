@@ -14,28 +14,31 @@ let GENDERS = {
 }
 
 
-class Translator {
+class TranslatorService {
     constructor(extended) {
         this.extended = extended;
-        this.initializePrimary();
-        this.initializeSecondary()
+        this.services = []
+        this.initialize();
     }
 
-    initializePrimary() {
+    initialize() {
         this.google = new GoogleService(this.getExtended());
         this.multitran = new MultitranService(this.getExtended());
         this.wiktionary = new WiktionaryService(this.getExtended())
-    }
 
-    initializeSecondary() {
         this.reverso = new ReversoService(this.getExtended());
         this.pons = new PonsService(this.getExtended())
         this.duden = new DudenService(this.getExtended())
         this.glosbe = new GlosbeService(this.getExtended());
+
+        this.services.push(
+            this.google, this.multitran, this.wiktionary,
+            this.reverso, this.pons, this.duden, this.glosbe
+        )
     }
 
-    simpleTranslate() {
-        return this.google.getTranslatedWord().then((word) => word.getTranslations().join(", "));
+    renderAllServices(){
+        this.services.forEach(service => service.render())
     }
 
     getGender() {
@@ -90,4 +93,4 @@ class Translator {
 
 }
 
-export {Translator};
+export {TranslatorService};

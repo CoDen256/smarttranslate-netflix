@@ -80,14 +80,14 @@ class WiktionaryService {
         return URL.replaceAll(wiktionaryURL, this.service.abstractService.getParams())
     }
 
-    static render(wiktionary) {
+    render() {
         let tab = select("#tab-wik")
 
-        tab.querySelector("a").href = wiktionary.getLink()
+        tab.querySelector("a").href = this.getLink()
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
-        wiktionary.getMeaningWord().then((meaning) => {
+        this.getMeaningWord().then((meaning) => {
             return meaning.getMeanings()
         }).then((meanings) => {
             meanings.forEach((meaning) => {

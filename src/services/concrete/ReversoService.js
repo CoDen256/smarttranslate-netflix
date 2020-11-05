@@ -60,15 +60,15 @@ class ReversoService {
         return URL.replaceAll(reversoUrl, this.service.abstractService.getParams())
     }
 
-    static render(reverso) {
+    render() {
         let tab = select("#tab-reverso")
 
-        tab.querySelector("a").href = reverso.getLink()
+        tab.querySelector("a").href = this.getLink()
 
         let content = tab.querySelector(".dictionary-content")
 
         content.innerHTML = ""
-        reverso.getContextWord().then((context) => {
+        this.getContextWord().then((context) => {
             return context.getContexts()
         }).then((contexts) => {
             contexts.forEach((context) => {
