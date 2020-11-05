@@ -18,11 +18,6 @@ class TitleExtractor {
         return {title: video_title, season:season, episode:episode}
     }
 
-    delay (ms) {
-        return new Promise(res => setTimeout(res, ms));
-    }
-
-
 }
 
 export {TitleExtractor}

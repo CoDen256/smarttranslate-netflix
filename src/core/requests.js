@@ -9,12 +9,12 @@ class Request {
 
 
     fetchData() {
-        console.log("Fetching url", this.url)
+        // console.log("Fetching url", this.url)
         let proxy = this.proxyProvider.getNextProxy();
         let resultUrl = proxy + this.url;
         let request = this
 
-        console.log(resultUrl)
+        console.log("GET", resultUrl)
         return fetch(resultUrl, {method: "GET"}).catch((e) => {
             console.log("Error while fetching", proxy+this.url, e)
             request.proxyProvider.fail()

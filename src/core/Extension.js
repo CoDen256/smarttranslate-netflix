@@ -4,22 +4,21 @@ import {joinLemma, replaceWithSpans} from './Utils.js'
 import {PoSConverter} from "./Converter.js";
 import {LTCProvider} from "./player/LTCProvider.js"
 import {NetflixPlayer} from "./player/Player.js";
-import {NetflixSubtitleNavigator} from "./player/NetflixSubtitleNavigator.js";
+import {NetflixNavigator} from "./player/NetflixNavigator.js";
+import {PopupBuilder} from "./PopupBuilder.js";
 
 class Extension {
-    constructor(builder, player, script) {
+    constructor(script) {
         console.log("Extension created")
         this.launched = false;
-        this.builder = builder;
-        this.script = script;
+        this.builder = new PopupBuilder();
+        this.player = new NetflixPlayer()
+        this.navigator = new NetflixNavigator();
 
-        this.player = player
-        this.navigator = new NetflixSubtitleNavigator();
         this.subtitleProvider = new LTCProvider(script);
 
-        const pressed = (e) => this.pressed(e)
-        document.body.addEventListener("keydown", pressed)
-        document.body.addEventListener("mousedown", pressed)
+        document.body.addEventListener("keydown", (e) => this.pressed(e))
+        document.body.addEventListener("mousedown", (e) => this.pressed(e))
     }
 
     pressed(event) {
@@ -43,27 +42,28 @@ class Extension {
         let netflix_line = this.getLine(event.target)
         console.log("[WORD]", event.target, word)
 
+        let target;
         if (!this.subtitleProvider.isLoaded()) {
-            console.warn("Subtitle Provider is not loaded")
-            builder.createTranslationPopup(new Translator(PoSConverter.convert(null, word)))
-            return;
+            console.warn("LTC Provider is not loaded")
+            target = PoSConverter.convert(null, word);
+
+        } else {
+            let {ltc, probability} = this.subtitleProvider.getSubtitleByLine(netflix_line);
+            let ltc_sentence = joinLemma(ltc)
+
+            console.log("[ACTUAL]", netflix_line)
+            console.log("[PREDICTED]", ltc_sentence, "\t[probability]:", probability)
+            //console.log("[SRT TIME]", ltc.start || null, "-->", ltc.end || null)
+
+            let lemma = this.findWord(word, ltc.lemmas || null);
+
+            target = PoSConverter.convert(lemma, word)
+            console.assert(target !== undefined && target != null)
         }
-        let {ltc, probability} = this.subtitleProvider.getSubtitleByLine(netflix_line);
-        let ltc_sentence = joinLemma(ltc)
 
-        console.log("[ACTUAL]", netflix_line)
-        console.log("[PREDICTED]", ltc_sentence, "\t[probability]:", probability)
-
-        //console.log("[SRT TIME]", ltc.start || null, "-->", ltc.end || null)
-
-        let lemma = this.findWord(word, ltc.lemmas || null);
-
-        let converted = PoSConverter.convert(lemma, word)
-        console.assert(converted !== undefined && converted != null)
-        console.log("Building popup for...", converted)
-        builder.createTranslationPopup(new Translator(converted));
+        console.log("Building popup for...", target)
+        builder.createTranslationPopup(new Translator(target));
         this.player.pause()
-
     };
 
     findWord(wordToFind, ltc_sentence) {
@@ -80,7 +80,7 @@ class Extension {
     async wrapWordsWithSpans(span) {
         if (span.id === config.wordEditedId) return false;
 
-        await this.navigator.load()
+        await this.navigator.initialize()
         this.navigator.update(this.player.getCurrentTime())
 
         span.id = config.wordEditedId

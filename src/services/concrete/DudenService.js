@@ -1,4 +1,6 @@
 import {WordMeaningService} from '../WordMeaningService.js';
+import {Config} from "../../core/config.js";
+import {MeaningWord} from "../entities.js";
 
 const dudenUrl = "https://www.duden.de/rechtschreibung/{QUERY}"
 const dudenApi = dudenUrl;
@@ -7,12 +9,19 @@ const params = {}
 
 class DudenService {
     constructor(extendedWord) {
-        this.service = new WordMeaningService(
-            dudenApi,
-            params,
-            extendedWord,
-            this
-        )
+        this.service = null
+        this.extendedWord = extendedWord
+
+        if (!this.isUnsupported()){
+            this.service = new WordMeaningService(
+                dudenApi,
+                params,
+                extendedWord,
+                this)
+        } else {
+            console.warn("DUDEN IS DISABLED")
+        }
+
     }
 
     prepare(word) {
@@ -38,9 +47,15 @@ class DudenService {
     }
 
     getMeaningWord() {
+        if (this.isUnsupported()){
+            return new MeaningWord(this.extendedWord)
+        }
         return this.service.getMeaningWord();
     }
 
+    isUnsupported(){
+        return Config.getCurrentSettings().language !== "de"
+    }
 
 }
 

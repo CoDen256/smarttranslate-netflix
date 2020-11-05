@@ -5,7 +5,9 @@
     ]
   },
   "browser_action": {
-    "default_icon": "/resources/icon-small.png"
+    "default_icon": "/resources/icon-small.png",
+    "default_popup" : "popup.html",
+    "default_title": "Netflix Enhanced Subtitle Tool"
   },
   "options_page": "options.html",
   "content_scripts": [

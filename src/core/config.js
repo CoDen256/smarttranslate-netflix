@@ -1,3 +1,5 @@
+import {waitFor} from "./Utils.js";
+
 let lang_pack = {
     "en" : ["en", "english"],
     "de" : ["de", "german"]
@@ -9,7 +11,7 @@ let lang_pack = {
 let lang = lang_pack["en"]
 let id = "0898266"
 
-const config = {
+let config = {
     wordEditedId: "edited",
     hoverableWordClass: "hoverable",
 
@@ -22,6 +24,29 @@ const config = {
 
 }
 
+class Config {
+    static async getSettings(){
+        await waitFor(() => !(this.getCurrentSettings() == null))
+        return this.getCurrentSettings();
+    }
+
+    static getCurrentSettings(){
+        let popup = document.getElementById("nest-popup");
+        if (popup == null) return null
+        return this.extractSettings(popup)
+    }
+
+    static extractSettings(element){
+        let result = {
+            default_id:       element.getAttribute("imdb-id"),
+            language:   element.getAttribute("language")
+        }
+        if(Object.values(result).some(v => v == null)){
+            return null;
+        }
+        return result
+    }
+}
 
 const proxies = ["https://cors-anywhere2.herokuapp.com/", "https://cors-anywhere.herokuapp.com/",
     "https://cors-proxy.htmldriven.com/?url=", "https://thingproxy.freeboard.io/fetch/"]
@@ -29,4 +54,4 @@ const normalizationServices = [];
 const textItemClass = '.player-timedtext';
 const playerControlClass = '.PlayerControlsNeo__button-control-row'
 
-export {textItemClass, playerControlClass, proxies, config}
+export {textItemClass, playerControlClass, proxies, config, lang_pack, Config}

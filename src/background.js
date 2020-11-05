@@ -40,12 +40,13 @@ chrome.tabs.onActivated.addListener(function (info) {
 
 
 
+
 /*chrome.devtools.network.onRequestFinished.addListener(
 	function(request) {
 		  console.log(request.request.url)
 });*/
-/* 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {    
+/*
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.contentScriptQuery == "getData") {
 		console.log("hello from background")
         var url = request.url;

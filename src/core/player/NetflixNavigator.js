@@ -1,4 +1,4 @@
-class NetflixSubtitleNavigator {
+class NetflixNavigator {
     constructor() {
         this.time = 0;
         this.subtitles = []
@@ -11,9 +11,9 @@ class NetflixSubtitleNavigator {
     }
 
     fetchSubtitles(resource) {
-        console.log("Network Resource:", resource)
+        console.log("[Navigator] Network Resource:", resource)
         let url = resource.name
-        console.log("Fetching network resource", url)
+        console.log("[Navigator] GET", url)
         return fetch(url);
     }
 
@@ -29,7 +29,7 @@ class NetflixSubtitleNavigator {
                 parseInt(c.attributes["end"].value.slice(0, -1))) / 20000)
     }
 
-    async load() {
+    async initialize() {
         if (this.subtitles.length === 0) {
             this.subtitles = await this.fetchSubtitles(this.getResource())
                 .then(r => r.text())
@@ -39,12 +39,13 @@ class NetflixSubtitleNavigator {
     }
 
     update(time) {
+        if (this.subtitles == null) return
         this.time = time
     }
 
     next() {
         if (this.subtitles.length === 0) {
-            console.warn("Unable to navigate to next subtitle, subtitles are not loaded")
+            console.warn("[Navigator] Unable to navigate to next subtitle, subtitles are not loaded")
             return null;
         }
         this.subtitles.sort((a, b) => a - b)
@@ -58,7 +59,7 @@ class NetflixSubtitleNavigator {
 
     previous() {
         if (this.subtitles.length === 0) {
-            console.warn("Unable to navigate to next subtitle, subtitles are not loaded")
+            console.warn("[Navigator] Unable to navigate to next subtitle, subtitles are not loaded")
             return null;
         }
         this.subtitles.sort((a, b) => b - a)
@@ -75,4 +76,4 @@ class NetflixSubtitleNavigator {
     }
 }
 
-export {NetflixSubtitleNavigator}
+export {NetflixNavigator}

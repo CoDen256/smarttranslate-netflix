@@ -1,36 +1,52 @@
 import {PopupBuilder} from './core/PopupBuilder.js';
 import {Extension} from './core/Extension.js';
 import {SublemService} from "./services/concrete/SubtitleLemmatizerService.js";
-import {LTCProvider} from "./core/player/LTCProvider.js";
-import {config, playerControlClass, textItemClass} from './core/config.js'
-import {timeOfSeconds} from './core/Utils.js'
+import {Config, playerControlClass, textItemClass} from './core/config.js'
 import {NetflixPlayer} from "./core/player/Player.js";
 import {MovieIdFinder} from "./services/concrete/MovieIdFinder.js";
 import {TitleExtractor} from "./core/player/TitleExtractor.js";
 
 
-async function main() {
+async function fetchScript(id, season, episode) {
+    if (Config.getCurrentSettings().language !== "de"){
+        console.warn("Subtitle will not be fetched, since language is set to '"+Config.getCurrentSettings().language+"'")
+        return null
+    }
+    let service = new SublemService(id, season, episode)
+    let script = null;
+    try {
+        script = await service.getData();
+        console.log("Subtitle script is fetched", script)
+    } catch (e) {
+        console.error("Failed to fetch subtitle script", e)
+    }
+    return script;
+}
 
+async function fetchInformation() {
     let extractor = new TitleExtractor()
     let {title, season, episode} = await extractor.extract()
 
     let finder = new MovieIdFinder(title)
-    let id = await finder.getId()
-    console.log(`${title} ${id}, season:${season}, episode:${episode}`)
-
-    let netflixPlayer = new NetflixPlayer()
-    netflixPlayer.pause()
-    let service = new SublemService(id, season, episode)
-    let script;
+    let id;
     try {
-        script = await service.getData();
-        console.log("Subtitle script is loaded, starting Extension...", script)
+        id = await finder.getId()
+        console.warn(`${title} ${id}, season:${season}, episode:${episode}`)
     } catch (e) {
-        console.error("Failed to load subtitle script", e)
+        id = Config.getCurrentSettings().default_id
+        console.warn(`DEFAULT ID USED: ${id}, season:${season}, episode:${episode}`)
     }
-    netflixPlayer.play()
+    return {season, episode, id};
+}
 
-    let extension = new Extension(new PopupBuilder(), netflixPlayer, script);
+async function main() {
+    let settings = await Config.getSettings()
+    console.log(settings)
+
+    let {season, episode, id} = await fetchInformation(settings);
+    let script = await fetchScript(id, season, episode);
+
+    let extension = new Extension(script);
     setInterval(function () {
 
         let targetItem = document.querySelector(textItemClass);
@@ -44,7 +60,7 @@ async function main() {
     }, 1000);
 }
 
-// let netflixSubtitleNavigator = new NetflixSubtitleNavigator();
+// let netflixSubtitleNavigator = new NetflixNavigator();
 
 
 // setTimeout(() => netflixSubtitleNavigator.update(0), 5000)

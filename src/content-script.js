@@ -31,3 +31,42 @@ function run() {
 }
 
 run()
+
+
+function waitFor(conditionFunction) {
+    const poll = resolve => {
+        if(conditionFunction()) resolve();
+        else setTimeout(_ => poll(resolve), 400);
+    }
+    return new Promise(poll);
+}
+
+function getPopup(){
+    return waitFor(_ => !(document.querySelector("#nest-popup") == null))
+        .then(_ => (document.querySelector("#nest-popup")))
+}
+
+
+chrome.storage.sync.get(['id'], function(result) {
+    getPopup().then(p => p.setAttribute("imdb-id", result.id))
+});
+
+chrome.storage.sync.get(['language'], function(result) {
+    getPopup().then(p => p.setAttribute("language", result.language))
+});
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    for (var key in changes) {
+        var storageChange = changes[key];
+        if (key === "id"){
+            getPopup().then(p => p.setAttribute("imdb-id", storageChange.newValue))
+        }
+        if (key === "language"){
+            getPopup().then(p => p.setAttribute("language", storageChange.newValue))
+        }
+    }
+});
+
+
+
+
