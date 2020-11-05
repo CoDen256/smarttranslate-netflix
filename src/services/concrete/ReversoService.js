@@ -1,6 +1,6 @@
 import {WordContextService} from '../WordContextService.js'
 import {Config} from '../../core/util/config.js'
-import {create, select} from "../../core/util/Utils.js";
+import {create, displayFailMessage, emphasize, select} from "../../core/util/Utils.js";
 import {URL} from "../../core/util/URL.js";
 
 
@@ -56,7 +56,7 @@ class ReversoService {
         }
     }
 
-    getLink(){
+    getLink() {
         return URL.replaceAll(reversoUrl, this.service.abstractService.getParams())
     }
 
@@ -68,26 +68,28 @@ class ReversoService {
         let content = tab.querySelector(".dictionary-content")
 
         content.innerHTML = ""
-        this.getContextWord().then((context) => {
-            return context.getContexts()
-        }).then((contexts) => {
-            contexts.forEach((context) => {
-                // <li class="dictionary-content-item">
-                let item = create("li", "dictionary-content-item")
-                let sent = this.emphasize(context.sentence)
-                let translation = this.emphasize(context.translation)
+        this.getContextWord()
+            .then((context) => context.getContexts())
+            .then((contexts) => this.displayContexts(content, contexts))
+    }
 
-                item.innerHTML = "🞄 " + sent + "<br>🞄 " + translation + "<br><br>"
-                content.appendChild(item)
-            })
+
+    displayContexts(content, contexts) {
+        if (contexts.length === 0) {
+            displayFailMessage(content);
+            return
+        }
+        contexts.forEach((context) => {
+            // <li class="dictionary-content-item">
+            let item = create("li", "dictionary-content-item")
+            let sent = emphasize(context.sentence)
+            let translation = emphasize(context.translation)
+
+            item.innerHTML = "🞄 " + sent + "<br>🞄 " + translation + "<br><br>"
+            content.appendChild(item)
         })
     }
 
-    static emphasize(sentence) {
-        return sentence
-            .replace("{{", "<span style='color:yellow'><em><strong>")
-            .replace("}}", "</strong></em></span>");
-    }
 }
 
 

@@ -1,7 +1,7 @@
-import {Substantiv} from '../entities.js'
+import {MeaningWord, Substantiv} from '../entities.js'
 import {Config} from '../../core/util/config.js'
 import {WordMeaningService} from "../WordMeaningService.js";
-import {create, select} from "../../core/util/Utils.js";
+import {create, displayFailMessage, select} from "../../core/util/Utils.js";
 import {URL} from "../../core/util/URL.js";
 
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
@@ -11,13 +11,20 @@ const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&ti
 class WiktionaryService {
 
     constructor(extendedWord) {
-        this.service = new WordMeaningService(
+        this.service = this.createService(extendedWord)
+        this.extendedWord = extendedWord
+    }
+
+    createService(extendedWord) {
+        if (this.isUnsupported()) {
+            console.warn("WIKTIONARY.ORG IS DISABLED")
+            return null
+        }
+        return new WordMeaningService(
             wiktionaryApi,
             WiktionaryService.generateParams(),
             extendedWord,
-            this
-        )
-        this.parsed_gender = null;
+            this)
     }
 
 
@@ -29,7 +36,11 @@ class WiktionaryService {
         return this.parseMeaning(normalized, 3)
     }
 
+
     getMeaningWord() {
+        if (this.isUnsupported()) {
+            return Promise.resolve(new MeaningWord(this.extendedWord))
+        }
         return this.service.getMeaningWord().then(meaningWord => this.applyGender(meaningWord));
     }
 
@@ -76,29 +87,22 @@ class WiktionaryService {
         return {source: Config.getLanguage()}
     }
 
+    isUnsupported() {
+        return Config.getLanguage() !== "de"
+    }
+
     getLink(){
+        if (this.isUnsupported()){
+            let fakeParams = WiktionaryService.generateParams()
+            fakeParams.query = ""
+            return URL.replaceAll(wiktionaryURL, fakeParams)
+        }
         return URL.replaceAll(wiktionaryURL, this.service.abstractService.getParams())
     }
 
     render() {
-        let tab = select("#tab-wik")
-
-        tab.querySelector("a").href = this.getLink()
-
-        let content = tab.querySelector(".dictionary-content")
-        content.innerHTML = ""
-        this.getMeaningWord().then((meaning) => {
-            return meaning.getMeanings()
-        }).then((meanings) => {
-            meanings.forEach((meaning) => {
-                // <li class="dictionary-content-item">
-                let item = create("li", "dictionary-content-item")
-                item.innerHTML = "🞄 " + meaning;
-                content.appendChild(item)
-            })
-        })
+        WordMeaningService.render(this.getMeaningWord(), "#tab-wik", this.getLink())
     }
-
 }
 
 export {WiktionaryService};

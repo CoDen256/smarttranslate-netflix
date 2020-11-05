@@ -1,5 +1,6 @@
 import {AbstractService} from './AbstractService.js'
 import {MeaningWord} from './entities.js'
+import {create, displayFailMessage, select} from "../core/util/Utils.js";
 
 class WordMeaningService {
     constructor(apiUrl, params, extendedWord, client) {
@@ -27,6 +28,32 @@ class WordMeaningService {
 
     onResult(meaningWord, result) {
         return meaningWord.addMeanings(result)
+    }
+
+    static render(meaningWord, id, link) {
+        let tab = select(id)
+
+        tab.querySelector("a").href = link
+
+        let content = tab.querySelector(".dictionary-content")
+        content.innerHTML = ""
+
+        meaningWord
+            .then(word => word.getMeanings())
+            .then(meanings => WordMeaningService.displayMeanings(content, meanings))
+    }
+
+    static displayMeanings(content, meanings) {
+        if (meanings.length === 0){
+            displayFailMessage(content);
+            return
+        }
+        meanings.forEach((meaning) => {
+            let item = create("li", "dictionary-content-item")
+            item.innerHTML = "🞄 " + meaning;
+            content.appendChild(item)
+        })
+
     }
 }
 

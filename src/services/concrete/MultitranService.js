@@ -58,23 +58,7 @@ class MultitranService {
     }
 
     render() {
-        let tab = select("#tab-multitran")
-
-        tab.querySelector("a").href = this.getLink()
-
-        let content = tab.querySelector(".dictionary-content")
-        content.innerHTML = ""
-
-        this.getTranslatedWord().then((word) => {
-            return word.getTranslations()[0];
-        }).then((translations) => {
-            translations.forEach((t) => {
-                // <li class="dictionary-content-item">
-                let item = create("li", "dictionary-content-item")
-                item.textContent = t;
-                content.appendChild(item)
-            })
-        })
+        WordTranslationService.render(this.getTranslatedWord(),"#tab-multitran", this.getLink())
     }
 
 }

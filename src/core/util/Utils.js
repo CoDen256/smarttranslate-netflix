@@ -98,7 +98,19 @@ function create(element, cl) {
     return el
 }
 
+function displayFailMessage(content) {
+    let item = create("h4", "failed-item")
+    item.innerHTML = "Unable to retrieve any information ..."
+    content.appendChild(item)
+}
+
+function emphasize(sentence) {
+    return sentence
+        .replace("{{", "<span style='color:yellow'><em><strong>")
+        .replace("}}", "</strong></em></span>");
+}
+
 export {
     replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity,
-    select, create, waitFor
+    select, create, waitFor, displayFailMessage, emphasize
 }

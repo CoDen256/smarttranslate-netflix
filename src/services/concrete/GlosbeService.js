@@ -1,6 +1,6 @@
 import {WordContextService} from '../WordContextService.js'
 import {Config} from '../../core/util/config.js'
-import {create, select} from "../../core/util/Utils.js";
+import {create, displayFailMessage, emphasize, select} from "../../core/util/Utils.js";
 import {URL} from "../../core/util/URL.js";
 
 const glosbeUrl = "https://{SOURCE}.glosbe.com/{SOURCE}/{TARGET}/{QUERY}"
@@ -70,23 +70,23 @@ class GlosbeService {
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""
-        this.getContextWord().then((context) => {
-            return context.getContexts()
-        }).then((contexts) => {
-            contexts.forEach((context) => {
-                // <li class="dictionary-content-item">
-                let item = create("li", "dictionary-content-item")
-                let sent = this.emphasize(context.sentence)
-                item.innerHTML = "🞄 " + sent + "<br><br>"
-                content.appendChild(item)
-            })
-        })
+        this.getContextWord()
+            .then((context) => context.getContexts())
+            .then((contexts) => this.displayContexts(content, contexts))
     }
 
-    emphasize(sentence) {
-        return sentence
-            .replace("{{", "<span style='color:yellow'><em><strong>")
-            .replace("}}", "</strong></em></span>");
+    displayContexts(content, contexts){
+        if (contexts.length === 0){
+            displayFailMessage(content);
+            return
+        }
+        contexts.forEach((context) => {
+            // <li class="dictionary-content-item">
+            let item = create("li", "dictionary-content-item")
+            let sent = emphasize(context.sentence)
+            item.innerHTML = "🞄 " + sent + "<br><br>"
+            content.appendChild(item)
+        })
     }
 
 }
