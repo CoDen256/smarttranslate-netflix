@@ -1,4 +1,4 @@
-import {Request} from '../../core/requests.js'
+import {Request} from '../../core/util/requests.js'
 import {ExtendedWord, SimplePartOfSpeech, Substantiv, Verb} from '../entities.js'
 
 const lemmatizerAPI = "http://netflixenhancedlanguagestorage.pythonanywhere.com/lemmatizer/?{QUERY}";
@@ -178,5 +178,3 @@ class Lemmatizer {
     }
 
 }
-
-export {Lemmatizer};

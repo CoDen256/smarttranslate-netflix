@@ -1,5 +1,5 @@
 import {ExtendedWord, Substantiv} from "../../../services/entities.js";
-import {select} from "../../Utils.js";
+import {select} from "../../util/Utils.js";
 
 class SubstantivRenderer {
     constructor(translator, header) {

@@ -1,12 +1,9 @@
 import {WordTranslationService} from '../WordTranslationService.js'
-import {config} from '../../core/config.js'
+import {Config} from '../../core/util/config.js'
 
 const ponsUrl = "https://en.pons.com/translate/{SOURCE_FULL}-{TARGET_FULL}/{QUERY}"
 const ponsApi = ponsUrl
-const params = {
-    sourceFull: config.sourceLangFull,
-    targetFull: config.targetLangFull,
-}
+
 
 // Provides usages and translations
 // Provides synonyms
@@ -14,7 +11,7 @@ class PonsService {
     constructor(extendedWord) {
         this.service = new WordTranslationService(
             ponsApi,
-            params,
+            PonsService.getParams(),
             extendedWord,
             this
         )
@@ -39,6 +36,13 @@ class PonsService {
     getTranslatedWord() {
         return this.service.getTranslatedWord();
     }
+
+    static getParams() {
+        return {
+            sourceFull: Config.getLanguageFull(),
+            targetFull: Config.getTargetLanguageFull(),
+        }
+    }
 }
 
-export {PonsService, ponsUrl, params}
+export {PonsService, ponsUrl}

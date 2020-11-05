@@ -1,19 +1,14 @@
 import {WordContextService} from '../WordContextService.js'
-import {config} from '../../core/config.js'
+import {Config} from '../../core/util/config.js'
 
 const glosbeUrl = "https://{SOURCE}.glosbe.com/{SOURCE}/{TARGET}/{QUERY}"
 const glosbeApi = glosbeUrl;
-
-const params = {
-    source: config.sourceLang,
-    target: config.targetLang
-}
 
 class GlosbeService {
     constructor(extendedWord) {
         this.service = new WordContextService(
             glosbeApi,
-            params,
+            GlosbeService.getParams(),
             extendedWord,
             this
         )
@@ -32,10 +27,11 @@ class GlosbeService {
             let srcEm = src.querySelector(".translate-example-text-highlight")
 
             // Glosbe API probably returning fake translations, so there is no actual translations
-            //let trg =  example.querySelector(".translate-example-target")
-            //let trgEm = trg.querySelector(".translate-example-text-highlight")
-            //trg.querySelector(".translate-example-text-origin-placeholder").remove()
-            //trg.querySelector(".translate-example-text-origin-placeholder").remove()
+
+            // let trg =  example.querySelector(".translate-example-target")
+            // let trgEm = trg.querySelector(".translate-example-text-highlight")
+            // trg.querySelector(".translate-example-text-origin-placeholder").remove()
+            // trg.querySelector(".translate-example-text-origin-placeholder").remove()
 
             contexts.push([this.highlight(src, srcEm), ""])
         })
@@ -54,6 +50,13 @@ class GlosbeService {
         return original.textContent.trim().replace(toHighlight.textContent, `{{${toHighlight.textContent}}}`)
     }
 
+    static getParams(){
+        return {
+            source: Config.getLanguage(),
+            target: Config.getTargetLanguage()
+        }
+    }
+
 }
 
-export {GlosbeService, glosbeUrl, params}
+export {GlosbeService, glosbeUrl}

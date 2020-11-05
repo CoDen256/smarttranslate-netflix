@@ -1,19 +1,15 @@
 import {WordContextService} from '../WordContextService.js'
-import {config} from '../../core/config.js'
+import {Config} from '../../core/util/config.js'
 
 
 const reversoUrl = "https://context.reverso.net/translation/{SOURCE_FULL}-{TARGET_FULL}/{QUERY}"
 const reversoApi = reversoUrl
-const params = {
-    sourceFull: config.sourceLangFull,
-    targetFull: config.targetLangFull
-}
 
 class ReversoService {
     constructor(extendedWord) {
         this.service = new WordContextService(
             reversoApi,
-            params,
+            ReversoService.getParams(),
             extendedWord,
             this
         )
@@ -44,14 +40,21 @@ class ReversoService {
 
     highlight(original, toHighlight) {
         if (toHighlight == null) {
-            console.log("Tohighlight from reverso", toHighlight, original)
+            // console.log("To highlight from reverso", toHighlight, original)
             return original.textContent.trim();
         }
 
         return original.textContent.trim().replace(toHighlight.textContent, `{{${toHighlight.textContent}}}`)
     }
 
+    static getParams() {
+        return {
+            sourceFull: Config.getLanguageFull(),
+            targetFull: Config.getTargetLanguageFull(),
+        }
+    }
+
 }
 
 
-export {ReversoService, reversoUrl, params}
+export {ReversoService, reversoUrl}

@@ -1,4 +1,4 @@
-import {Request} from '../../core/requests.js'
+import {Request} from '../util/requests.js'
 
 const sublemApi = "http://sublem.pythonanywhere.com/ltc?id={ID}&e={EPISODE}&s={SEASON}"
 

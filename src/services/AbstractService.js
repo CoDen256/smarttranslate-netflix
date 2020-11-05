@@ -1,4 +1,4 @@
-import {Request} from '../core/requests.js'
+import {Request} from '../core/util/requests.js'
 
 
 class AbstractService {
@@ -8,6 +8,7 @@ class AbstractService {
         this.apiUrl = apiUrl;
         this.params = params;
         this.extendedWord = extendedWord.clone();
+        this.link = null
 
         this.client = client
 
@@ -46,6 +47,7 @@ class AbstractService {
         //console.log(`Getting data for '${prepared}' from ${this.apiUrl}`)
 
         this.params.query = prepared;
+        this.link = URL.replaceAll(this.apiUrl, this.params)
         let api = new Request(this.apiUrl, this.params)
 
         return api.fetchData()
@@ -70,6 +72,10 @@ class AbstractService {
 
     identity(input) {
         return input
+    }
+
+    getLink(){
+        return this.link
     }
 }
 

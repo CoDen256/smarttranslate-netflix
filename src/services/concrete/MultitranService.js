@@ -1,13 +1,13 @@
 import {WordTranslationService} from '../WordTranslationService.js'
-import {config} from '../../core/config.js'
+import {Config} from '../../core/util/config.js'
 
 const multitranUrl = "https://www.multitran.com/m.exe?l1={SOURCE}&l2={TARGET}&s={QUERY}"
 const multitranApi = multitranUrl
-const langMap = {"de": "3", "ru": "2", "en": "1"}
 
-const params = {
-    source: langMap[config.sourceLang],
-    target: langMap[config.targetLang]
+const multitranConvention = {
+    "de": "3",
+    "ru": "2",
+    "en": "1"
 }
 
 //TODO: different translations je nach WortArt
@@ -15,7 +15,7 @@ class MultitranService {
     constructor(extendedWord) {
         this.service = new WordTranslationService(
             multitranApi,
-            params,
+            MultitranService.getParams(),
             extendedWord,
             this
         )
@@ -43,6 +43,13 @@ class MultitranService {
         return this.service.getTranslatedWord();
     }
 
+    static getParams(){
+        return {
+            source: multitranConvention[Config.getLanguage()],
+            target: multitranConvention[Config.getTargetLanguage()]
+        }
+    }
+
 }
 
-export {MultitranService, multitranUrl, params}
+export {MultitranService, multitranUrl}

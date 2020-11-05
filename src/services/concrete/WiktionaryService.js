@@ -1,18 +1,17 @@
 import {Substantiv} from '../entities.js'
-import {config} from '../../core/config.js'
+import {Config} from '../../core/util/config.js'
 import {WordMeaningService} from "../WordMeaningService.js";
 
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
 const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&title={QUERY}";
 
-const params = {source: config.sourceLang}
-
-class WiktionaryService { //TODO put extended word from outside
+// TODO english wiki
+class WiktionaryService {
 
     constructor(extendedWord) {
         this.service = new WordMeaningService(
             wiktionaryApi,
-            params,
+            WiktionaryService.getParams(),
             extendedWord,
             this
         )
@@ -70,6 +69,11 @@ class WiktionaryService { //TODO put extended word from outside
         }
         return meaningWord
     }
+
+    static getParams() {
+        return {source: Config.getTargetLanguage()}
+    }
+
 }
 
-export {WiktionaryService, wiktionaryURL, params};
+export {WiktionaryService, wiktionaryURL};

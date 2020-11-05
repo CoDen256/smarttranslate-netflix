@@ -1,4 +1,4 @@
-import {computeSimilarity, convertToSeconds, joinLemma} from '../Utils.js'
+import {computeSimilarity, convertToSeconds, joinLemma} from '../util/Utils.js'
 
 class LTCProvider {
     constructor(script) {

@@ -7,7 +7,6 @@ const targetFull = "TARGET_FULL"
 
 class URL {
     constructor(pattern, params) {
-        this.pattern = pattern;
         this.params = params;
         this.result = this.replaceAll(pattern, params)
     }
@@ -44,10 +43,10 @@ class URL {
         }
     }
 
-    open() {
-        // open this.result
+    static applyQuery(params, query){
+        params.query = query
+        return params
     }
-
 }
 
 export {URL}

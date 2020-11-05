@@ -1,14 +1,7 @@
-import {waitFor} from '../Utils.js'
+import {waitFor} from '../util/Utils.js'
 
 class TitleExtractor {
-    async extract(){
-        // let video_title = document.body.querySelector(".video-title");
-        // let title = video_title.querySelector("h4").textContent
-        // let episode_info = video_title.querySelector("span").textContent
-        // let [season, episode] = episode_info.match(/\d+/g);
-
-        // await delay(2000)
-
+    async extractMovieInfo(){
         await waitFor(_ => !(document.querySelector(".title") == null))
 
         let video_title = document.querySelector(".title").textContent

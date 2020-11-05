@@ -1,13 +1,13 @@
-import {glosbeUrl, params} from "../../../services/concrete/GlosbeService.js";
-import {URL} from "../../URL.js";
-import {create, select} from "../../Utils.js";
+import {GlosbeService, glosbeUrl} from "../../../services/concrete/GlosbeService.js";
+import {URL} from "../../util/URL.js";
+import {create, select} from "../../util/Utils.js";
 
 class GlosbeRenderer {
 
     static render(translator) {
         let tab = select("#tab-glosbe")
 
-        tab.querySelector("a").href = URL.replaceAll(glosbeUrl, params)
+        tab.querySelector("a").href = URL.replaceAll(glosbeUrl, GlosbeService.getParams())
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""

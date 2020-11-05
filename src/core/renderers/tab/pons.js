@@ -1,13 +1,13 @@
-import {params, ponsUrl} from "../../../services/concrete/PonsService.js";
-import {URL} from "../../URL.js";
-import {create, select} from "../../Utils.js";
+import {PonsService, ponsUrl} from "../../../services/concrete/PonsService.js";
+import {URL} from "../../util/URL.js";
+import {create, select} from "../../util/Utils.js";
 
 class PonsRenderer {
 
     static render(translator) {
         let tab = select("#tab-pons")
 
-        tab.querySelector("a").href = URL.replaceAll(ponsUrl, params)
+        tab.querySelector("a").href = URL.replaceAll(ponsUrl, PonsService.getParams())
 
         let content = tab.querySelector(".dictionary-content")
         content.innerHTML = ""

@@ -1,4 +1,4 @@
-import {ExtendedWord, SimplePartOfSpeech, Substantiv, Verb} from '../services/entities.js'
+import {ExtendedWord, SimplePartOfSpeech, Substantiv, Verb} from '../../services/entities.js'
 
 
 // APPO zufolge

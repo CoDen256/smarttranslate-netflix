@@ -5,7 +5,7 @@ import {MultitranService} from './services/concrete/MultitranService.js'
 import {DudenService} from './services/concrete/DudenService.js';
 import {GlosbeService} from './services/concrete/GlosbeService.js';
 import {PonsService} from './services/concrete/PonsService.js'
-import {SublemService} from './services/concrete/SubtitleLemmatizerService.js'
+import {SublemService} from './core/sublem/SubtitleLemmatizerService.js'
 
 function test(extended) {
     const words = ["beobachtet", "Sprachen", "besser", "objektiven", "ausgehen", "Hündinnen"]

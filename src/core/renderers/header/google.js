@@ -1,4 +1,4 @@
-import {select} from "../../Utils.js";
+import {select} from "../../util/Utils.js";
 
 class GoogleRenderer {
     static render(translator) {

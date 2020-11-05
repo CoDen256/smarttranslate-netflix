@@ -1,13 +1,13 @@
-import {params, reversoUrl} from "../../../services/concrete/ReversoService.js";
-import {URL} from "../../URL.js";
-import {create, select} from "../../Utils.js";
+import {ReversoService, reversoUrl} from "../../../services/concrete/ReversoService.js";
+import {URL} from "../../util/URL.js";
+import {create, select} from "../../util/Utils.js";
 
 class ReversoRenderer {
 
     static render(translator) {
         let tab = select("#tab-reverso")
 
-        tab.querySelector("a").href = URL.replaceAll(reversoUrl, params)
+        tab.querySelector("a").href = URL.replaceAll(reversoUrl, ReversoService.getParams())
 
         let content = tab.querySelector(".dictionary-content")
 

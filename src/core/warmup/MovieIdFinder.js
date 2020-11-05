@@ -1,5 +1,5 @@
-import {Request} from '../../core/requests.js'
-import {config} from '../../core/config.js'
+import {Request} from '../util/requests.js'
+import {Config} from '../util/config.js'
 const omdbapi = "http://www.omdbapi.com/?i=tt3896198&apikey=d432debb&s="
 
 class MovieIdFinder {
@@ -28,7 +28,7 @@ class MovieIdFinder {
     }
 
     getDefaultId(){
-        return config.movie_id
+        return Config.getCurrentSettings().default_id
     }
 }
 

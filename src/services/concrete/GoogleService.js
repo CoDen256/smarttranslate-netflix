@@ -1,20 +1,16 @@
-import {config} from '../../core/config.js'
+import {Config} from '../../core/util/config.js'
 import {WordTranslationService} from '../WordTranslationService.js'
 
-//TODO: MAYBE USE THIS INSTEAD OF API TOO
+//TODO: MAYBE USE THIS ONE INSTEAD OF API TOO
 const googleURL = "https://translate.google.com/?hl=de#view=home&op=translate&sl={SOURCE}&tl={TARGET}&text={QUERY}"
 const googleApiUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={SOURCE}&tl={TARGET}&dt=t&q={QUERY}";
 
-const params = {
-    source: config.sourceLang,
-    target: config.targetLang,
-}
 
 class GoogleService {
     constructor(extendedWord) {
         this.service = new WordTranslationService(
             googleApiUrl,
-            params,
+            GoogleService.getParams(),
             extendedWord,
             this
         )
@@ -30,6 +26,13 @@ class GoogleService {
 
     getTranslatedWord() {
         return this.service.getTranslatedWord();
+    }
+
+    static getParams(){
+        return {
+            source: Config.getLanguage(),
+            target: Config.getTargetLanguage()
+        }
     }
 }
 

@@ -1,15 +1,13 @@
-import {PopupBuilder} from './core/PopupBuilder.js';
-import {Extension} from './core/Extension.js';
-import {SublemService} from "./services/concrete/SubtitleLemmatizerService.js";
-import {Config, playerControlClass, textItemClass} from './core/config.js'
-import {NetflixPlayer} from "./core/player/Player.js";
-import {MovieIdFinder} from "./services/concrete/MovieIdFinder.js";
-import {TitleExtractor} from "./core/player/TitleExtractor.js";
+import {Extension} from './Extension.js';
+import {SublemService} from "./sublem/SubtitleLemmatizerService.js";
+import {Config, playerControlClass, textItemClass} from './util/config.js'
+import {MovieIdFinder} from "./warmup/MovieIdFinder.js";
+import {TitleExtractor} from "./warmup/TitleExtractor.js";
 
 
 async function fetchScript(id, season, episode) {
-    if (Config.getCurrentSettings().language !== "de"){
-        console.warn("Subtitle will not be fetched, since language is set to '"+Config.getCurrentSettings().language+"'")
+    if (Config.getLanguage() !== "de"){
+        console.warn("Subtitle will not be fetched, since language is set to '"+Config.getLanguageFull()+"'")
         return null
     }
     let service = new SublemService(id, season, episode)
@@ -25,17 +23,12 @@ async function fetchScript(id, season, episode) {
 
 async function fetchInformation() {
     let extractor = new TitleExtractor()
-    let {title, season, episode} = await extractor.extract()
+    let {title, season, episode} = await extractor.extractMovieInfo()
 
     let finder = new MovieIdFinder(title)
-    let id;
-    try {
-        id = await finder.getId()
-        console.warn(`${title} ${id}, season:${season}, episode:${episode}`)
-    } catch (e) {
-        id = Config.getCurrentSettings().default_id
-        console.warn(`DEFAULT ID USED: ${id}, season:${season}, episode:${episode}`)
-    }
+    let id = await finder.getId()
+    console.warn(`${title} ${id}, season:${season}, episode:${episode}`)
+
     return {season, episode, id};
 }
 

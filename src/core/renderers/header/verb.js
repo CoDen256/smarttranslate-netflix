@@ -1,5 +1,5 @@
 import {ExtendedWord, Verb} from "../../../services/entities.js";
-import {select} from "../../Utils.js";
+import {select} from "../../util/Utils.js";
 
 class VerbRenderer {
     constructor(translator, header) {

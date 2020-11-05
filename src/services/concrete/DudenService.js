@@ -1,27 +1,26 @@
 import {WordMeaningService} from '../WordMeaningService.js';
-import {Config} from "../../core/config.js";
+import {Config} from "../../core/util/config.js";
 import {MeaningWord} from "../entities.js";
 
 const dudenUrl = "https://www.duden.de/rechtschreibung/{QUERY}"
 const dudenApi = dudenUrl;
 
-const params = {}
-
 class DudenService {
     constructor(extendedWord) {
-        this.service = null
+        this.service = this.createService(extendedWord)
         this.extendedWord = extendedWord
+    }
 
-        if (!this.isUnsupported()){
-            this.service = new WordMeaningService(
-                dudenApi,
-                params,
-                extendedWord,
-                this)
-        } else {
-            console.warn("DUDEN IS DISABLED")
+    createService(extendedWord){
+        if (this.isUnsupported()){
+            console.warn("DUDEN.DE IS DISABLED")
+            return null
         }
-
+        return new WordMeaningService(
+            dudenApi,
+            DudenService.getParams(),
+            extendedWord,
+            this)
     }
 
     prepare(word) {
@@ -48,15 +47,23 @@ class DudenService {
 
     getMeaningWord() {
         if (this.isUnsupported()){
-            return new MeaningWord(this.extendedWord)
+            return Promise.resolve(new MeaningWord(this.extendedWord))
         }
         return this.service.getMeaningWord();
     }
 
     isUnsupported(){
-        return Config.getCurrentSettings().language !== "de"
+        return Config.getLanguage() !== "de"
+    }
+
+    static getParams(){
+        return {}
+    }
+
+    getLink(){
+        this.service
     }
 
 }
 
-export {DudenService, dudenUrl, params}
+export {DudenService, dudenUrl}

@@ -1,4 +1,4 @@
-import {select} from './Utils.js'
+import {select} from './util/Utils.js'
 import {Translator} from "./Translator.js";
 import {MultitranRenderer} from "./renderers/tab/multitran.js";
 import {GoogleRenderer} from "./renderers/header/google.js";
@@ -71,11 +71,6 @@ class PopupBuilder {
         DudenRenderer.render(this.translator)
         WikiRenderer.render(this.translator)
     }
-
-    fillWiktionary() {
-        select("#tab-wik").querySelector("a").href = "wiktionary.org"
-    }
-
 
     removeTranslationPopup() {
         console.log("Hiding Translation Popup")

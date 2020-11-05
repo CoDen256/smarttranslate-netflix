@@ -4,7 +4,7 @@ function run() {
     var scriptsToPrepend = [];
 
     var mainScript = document.createElement('script');
-    mainScript.src = chrome.extension.getURL('./src/main.js');
+    mainScript.src = chrome.extension.getURL('./src/core/main.js');
     mainScript.setAttribute("type", "module");
     scriptsToPrepend.push(mainScript);
 

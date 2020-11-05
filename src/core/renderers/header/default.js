@@ -1,5 +1,5 @@
 import {ExtendedWord, SimplePartOfSpeech} from "../../../services/entities.js";
-import {select} from "../../Utils.js";
+import {select} from "../../util/Utils.js";
 
 class DefaultRenderer {
     constructor(translator, header) {

@@ -1,8 +1,8 @@
-import {config} from './config.js'
+import {wordEditedId, hoverableWordClass} from './util/config.js'
 import {Translator} from './Translator.js'
-import {joinLemma, replaceWithSpans} from './Utils.js'
-import {PoSConverter} from "./Converter.js";
-import {LTCProvider} from "./player/LTCProvider.js"
+import {joinLemma, replaceWithSpans} from './util/Utils.js'
+import {PoSConverter} from "./sublem/PartOfSpeechConverter.js";
+import {LTCProvider} from "./sublem/LTCProvider.js"
 import {NetflixPlayer} from "./player/Player.js";
 import {NetflixNavigator} from "./player/NetflixNavigator.js";
 import {PopupBuilder} from "./PopupBuilder.js";
@@ -78,13 +78,13 @@ class Extension {
     }
 
     async wrapWordsWithSpans(span) {
-        if (span.id === config.wordEditedId) return false;
+        if (span.id === wordEditedId) return false;
 
         await this.navigator.initialize()
         this.navigator.update(this.player.getCurrentTime())
 
-        span.id = config.wordEditedId
-        span.innerHTML = replaceWithSpans(span.textContent, config.wordEditedId, config.hoverableWordClass) + "<br>";
+        span.id = wordEditedId
+        span.innerHTML = replaceWithSpans(span.textContent, wordEditedId, hoverableWordClass) + "<br>";
 
         const wordHandlerReference = (event) => this.wordClicked(event, this.builder)
 
