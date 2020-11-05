@@ -28,8 +28,6 @@ class WordMeaningService {
     onResult(meaningWord, result) {
         return meaningWord.addMeanings(result)
     }
-
-
 }
 
 export {WordMeaningService};

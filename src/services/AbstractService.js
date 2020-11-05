@@ -1,5 +1,5 @@
 import {Request} from '../core/util/requests.js'
-
+import {URL} from "../core/util/URL.js";
 
 class AbstractService {
     constructor(apiUrl, params, extendedWord, client, concreteService) {
@@ -47,7 +47,6 @@ class AbstractService {
         //console.log(`Getting data for '${prepared}' from ${this.apiUrl}`)
 
         this.params.query = prepared;
-        this.link = URL.replaceAll(this.apiUrl, this.params)
         let api = new Request(this.apiUrl, this.params)
 
         return api.fetchData()
@@ -74,8 +73,8 @@ class AbstractService {
         return input
     }
 
-    getLink(){
-        return this.link
+    getParams(){
+        return this.params
     }
 }
 

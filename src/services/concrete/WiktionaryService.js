@@ -1,6 +1,8 @@
 import {Substantiv} from '../entities.js'
 import {Config} from '../../core/util/config.js'
 import {WordMeaningService} from "../WordMeaningService.js";
+import {create, select} from "../../core/util/Utils.js";
+import {URL} from "../../core/util/URL.js";
 
 const wiktionaryURL = "https://{SOURCE}.wiktionary.org/wiki/{QUERY}";
 const wiktionaryApi = "https://{SOURCE}.wiktionary.org/w/index.php?action=raw&title={QUERY}";
@@ -11,7 +13,7 @@ class WiktionaryService {
     constructor(extendedWord) {
         this.service = new WordMeaningService(
             wiktionaryApi,
-            WiktionaryService.getParams(),
+            WiktionaryService.generateParams(),
             extendedWord,
             this
         )
@@ -70,10 +72,33 @@ class WiktionaryService {
         return meaningWord
     }
 
-    static getParams() {
-        return {source: Config.getTargetLanguage()}
+    static generateParams() {
+        return {source: Config.getLanguage()}
+    }
+
+    getLink(){
+        return URL.replaceAll(wiktionaryURL, this.service.abstractService.getParams())
+    }
+
+    static render(wiktionary) {
+        let tab = select("#tab-wik")
+
+        tab.querySelector("a").href = wiktionary.getLink()
+
+        let content = tab.querySelector(".dictionary-content")
+        content.innerHTML = ""
+        wiktionary.getMeaningWord().then((meaning) => {
+            return meaning.getMeanings()
+        }).then((meanings) => {
+            meanings.forEach((meaning) => {
+                // <li class="dictionary-content-item">
+                let item = create("li", "dictionary-content-item")
+                item.innerHTML = "🞄 " + meaning;
+                content.appendChild(item)
+            })
+        })
     }
 
 }
 
-export {WiktionaryService, wiktionaryURL};
+export {WiktionaryService};

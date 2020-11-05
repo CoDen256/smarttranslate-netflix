@@ -1,5 +1,7 @@
 import {WordContextService} from '../WordContextService.js'
 import {Config} from '../../core/util/config.js'
+import {create, select} from "../../core/util/Utils.js";
+import {URL} from "../../core/util/URL.js";
 
 const glosbeUrl = "https://{SOURCE}.glosbe.com/{SOURCE}/{TARGET}/{QUERY}"
 const glosbeApi = glosbeUrl;
@@ -8,7 +10,7 @@ class GlosbeService {
     constructor(extendedWord) {
         this.service = new WordContextService(
             glosbeApi,
-            GlosbeService.getParams(),
+            GlosbeService.generateParams(),
             extendedWord,
             this
         )
@@ -50,13 +52,43 @@ class GlosbeService {
         return original.textContent.trim().replace(toHighlight.textContent, `{{${toHighlight.textContent}}}`)
     }
 
-    static getParams(){
+    static generateParams(){
         return {
             source: Config.getLanguage(),
             target: Config.getTargetLanguage()
         }
     }
 
+    getLink(){
+        return URL.replaceAll(glosbeUrl, this.service.abstractService.getParams())
+    }
+
+    static render(glosbe) {
+        let tab = select("#tab-glosbe")
+
+        tab.querySelector("a").href = glosbe.getLink()
+
+        let content = tab.querySelector(".dictionary-content")
+        content.innerHTML = ""
+        glosbe.getContextWord().then((context) => {
+            return context.getContexts()
+        }).then((contexts) => {
+            contexts.forEach((context) => {
+                // <li class="dictionary-content-item">
+                let item = create("li", "dictionary-content-item")
+                let sent = this.emphasize(context.sentence)
+                item.innerHTML = "🞄 " + sent + "<br><br>"
+                content.appendChild(item)
+            })
+        })
+    }
+
+    static emphasize(sentence) {
+        return sentence
+            .replace("{{", "<span style='color:yellow'><em><strong>")
+            .replace("}}", "</strong></em></span>");
+    }
+
 }
 
-export {GlosbeService, glosbeUrl}
+export {GlosbeService}

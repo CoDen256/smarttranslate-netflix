@@ -1,6 +1,8 @@
 import {WordMeaningService} from '../WordMeaningService.js';
 import {Config} from "../../core/util/config.js";
 import {MeaningWord} from "../entities.js";
+import {create, select} from "../../core/util/Utils.js";
+import {URL} from "../../core/util/URL.js";
 
 const dudenUrl = "https://www.duden.de/rechtschreibung/{QUERY}"
 const dudenApi = dudenUrl;
@@ -11,14 +13,14 @@ class DudenService {
         this.extendedWord = extendedWord
     }
 
-    createService(extendedWord){
-        if (this.isUnsupported()){
+    createService(extendedWord) {
+        if (this.isUnsupported()) {
             console.warn("DUDEN.DE IS DISABLED")
             return null
         }
         return new WordMeaningService(
             dudenApi,
-            DudenService.getParams(),
+            DudenService.generateParams(),
             extendedWord,
             this)
     }
@@ -46,24 +48,47 @@ class DudenService {
     }
 
     getMeaningWord() {
-        if (this.isUnsupported()){
+        if (this.isUnsupported()) {
             return Promise.resolve(new MeaningWord(this.extendedWord))
         }
         return this.service.getMeaningWord();
     }
 
-    isUnsupported(){
+    isUnsupported() {
         return Config.getLanguage() !== "de"
     }
 
-    static getParams(){
+    static generateParams() {
         return {}
     }
 
-    getLink(){
-        this.service
+    getLink() {
+        if (this.isUnsupported()){
+            return URL.replaceAll(dudenUrl, {query: ""})
+        }
+        return URL.replaceAll(dudenUrl, this.service.abstractService.getParams())
+    }
+
+    static render(duden) {
+        let tab = select("#tab-duden")
+
+        tab.querySelector("a").href = duden.getLink()
+
+        let content = tab.querySelector(".dictionary-content")
+        content.innerHTML = ""
+
+        duden.getMeaningWord()
+            .then(word => word.getMeanings())
+            .then((meanings) => {
+                meanings.forEach((meaning) => {
+                    // <li class="dictionary-content-item">
+                    let item = create("li", "dictionary-content-item")
+                    item.innerHTML = "🞄 " + meaning;
+                    content.appendChild(item)
+                })
+            })
     }
 
 }
 
-export {DudenService, dudenUrl}
+export {DudenService}

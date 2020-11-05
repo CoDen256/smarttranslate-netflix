@@ -1,12 +1,12 @@
 import {select} from './util/Utils.js'
 import {Translator} from "./Translator.js";
-import {MultitranRenderer} from "./renderers/tab/multitran.js";
 import {GoogleRenderer} from "./renderers/header/google.js";
-import {PonsRenderer} from "./renderers/tab/pons.js";
-import {ReversoRenderer} from "./renderers/tab/reverso.js";
-import {GlosbeRenderer} from "./renderers/tab/glosbe.js";
-import {DudenRenderer} from "./renderers/tab/duden.js";
-import {WikiRenderer} from "./renderers/tab/wiktionary.js";
+import {DudenService} from "../services/concrete/DudenService.js";
+import {WiktionaryService} from "../services/concrete/WiktionaryService.js";
+import {GlosbeService} from "../services/concrete/GlosbeService.js";
+import {ReversoService} from "../services/concrete/ReversoService.js";
+import {PonsService} from "../services/concrete/PonsService.js";
+import {MultitranService} from "../services/concrete/MultitranService.js";
 
 class PopupBuilder {
 
@@ -64,12 +64,12 @@ class PopupBuilder {
 
 
     fillTabs() {
-        MultitranRenderer.render(this.translator);
-        PonsRenderer.render(this.translator)
-        ReversoRenderer.render(this.translator)
-        GlosbeRenderer.render(this.translator)
-        DudenRenderer.render(this.translator)
-        WikiRenderer.render(this.translator)
+        MultitranService.render(this.translator.multitran);
+        PonsService.render(this.translator.pons)
+        ReversoService.render(this.translator.reverso)
+        GlosbeService.render(this.translator.glosbe)
+        DudenService.render(this.translator.duden)
+        WiktionaryService.render(this.translator.wiktionary)
     }
 
     removeTranslationPopup() {

@@ -1,5 +1,7 @@
 import {WordTranslationService} from '../WordTranslationService.js'
 import {Config} from '../../core/util/config.js'
+import {create, select} from "../../core/util/Utils.js";
+import {URL} from "../../core/util/URL.js";
 
 const multitranUrl = "https://www.multitran.com/m.exe?l1={SOURCE}&l2={TARGET}&s={QUERY}"
 const multitranApi = multitranUrl
@@ -13,9 +15,10 @@ const multitranConvention = {
 //TODO: different translations je nach WortArt
 class MultitranService {
     constructor(extendedWord) {
+        this.params = MultitranService.generateParams()
         this.service = new WordTranslationService(
             multitranApi,
-            MultitranService.getParams(),
+            MultitranService.generateParams(),
             extendedWord,
             this
         )
@@ -43,13 +46,37 @@ class MultitranService {
         return this.service.getTranslatedWord();
     }
 
-    static getParams(){
+    static generateParams() {
         return {
             source: multitranConvention[Config.getLanguage()],
             target: multitranConvention[Config.getTargetLanguage()]
         }
     }
 
+    getLink() {
+        return URL.replaceAll(multitranUrl, this.service.abstractService.getParams() )
+    }
+
+    static render(multitran) {
+        let tab = select("#tab-multitran")
+
+        tab.querySelector("a").href = multitran.getLink()
+
+        let content = tab.querySelector(".dictionary-content")
+        content.innerHTML = ""
+
+        multitran.getTranslatedWord().then((word) => {
+            return word.getTranslations()[0];
+        }).then((translations) => {
+            translations.forEach((t) => {
+                // <li class="dictionary-content-item">
+                let item = create("li", "dictionary-content-item")
+                item.textContent = t;
+                content.appendChild(item)
+            })
+        })
+    }
+
 }
 
-export {MultitranService, multitranUrl}
+export {MultitranService}

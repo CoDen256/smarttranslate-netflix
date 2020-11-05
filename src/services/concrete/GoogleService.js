@@ -3,14 +3,14 @@ import {WordTranslationService} from '../WordTranslationService.js'
 
 //TODO: MAYBE USE THIS ONE INSTEAD OF API TOO
 const googleURL = "https://translate.google.com/?hl=de#view=home&op=translate&sl={SOURCE}&tl={TARGET}&text={QUERY}"
-const googleApiUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={SOURCE}&tl={TARGET}&dt=t&q={QUERY}";
+const googleApi = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={SOURCE}&tl={TARGET}&dt=t&q={QUERY}";
 
 
 class GoogleService {
     constructor(extendedWord) {
         this.service = new WordTranslationService(
-            googleApiUrl,
-            GoogleService.getParams(),
+            googleApi,
+            GoogleService.generateParams(),
             extendedWord,
             this
         )
@@ -28,12 +28,16 @@ class GoogleService {
         return this.service.getTranslatedWord();
     }
 
-    static getParams(){
+    static generateParams(){
         return {
             source: Config.getLanguage(),
             target: Config.getTargetLanguage()
         }
     }
+
+    getLink(){
+        return URL.replaceAll(googleURL, this.service.abstractService.getParams())
+    }
 }
 
-export {GoogleService, googleURL};
+export {GoogleService};

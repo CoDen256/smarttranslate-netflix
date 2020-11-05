@@ -1,5 +1,7 @@
 import {WordContextService} from '../WordContextService.js'
 import {Config} from '../../core/util/config.js'
+import {create, select} from "../../core/util/Utils.js";
+import {URL} from "../../core/util/URL.js";
 
 
 const reversoUrl = "https://context.reverso.net/translation/{SOURCE_FULL}-{TARGET_FULL}/{QUERY}"
@@ -9,7 +11,7 @@ class ReversoService {
     constructor(extendedWord) {
         this.service = new WordContextService(
             reversoApi,
-            ReversoService.getParams(),
+            ReversoService.generateParams(),
             extendedWord,
             this
         )
@@ -47,14 +49,46 @@ class ReversoService {
         return original.textContent.trim().replace(toHighlight.textContent, `{{${toHighlight.textContent}}}`)
     }
 
-    static getParams() {
+    static generateParams() {
         return {
             sourceFull: Config.getLanguageFull(),
             targetFull: Config.getTargetLanguageFull(),
         }
     }
 
+    getLink(){
+        return URL.replaceAll(reversoUrl, this.service.abstractService.getParams())
+    }
+
+    static render(reverso) {
+        let tab = select("#tab-reverso")
+
+        tab.querySelector("a").href = reverso.getLink()
+
+        let content = tab.querySelector(".dictionary-content")
+
+        content.innerHTML = ""
+        reverso.getContextWord().then((context) => {
+            return context.getContexts()
+        }).then((contexts) => {
+            contexts.forEach((context) => {
+                // <li class="dictionary-content-item">
+                let item = create("li", "dictionary-content-item")
+                let sent = this.emphasize(context.sentence)
+                let translation = this.emphasize(context.translation)
+
+                item.innerHTML = "🞄 " + sent + "<br>🞄 " + translation + "<br><br>"
+                content.appendChild(item)
+            })
+        })
+    }
+
+    static emphasize(sentence) {
+        return sentence
+            .replace("{{", "<span style='color:yellow'><em><strong>")
+            .replace("}}", "</strong></em></span>");
+    }
 }
 
 
-export {ReversoService, reversoUrl}
+export {ReversoService}

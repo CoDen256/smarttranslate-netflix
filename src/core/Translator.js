@@ -38,42 +38,6 @@ class Translator {
         return this.google.getTranslatedWord().then((word) => word.getTranslations().join(", "));
     }
 
-    getMultitranTranslations() {
-        return this.multitran.getTranslatedWord().then((word) => {
-            return word.getTranslations()[0];
-        })
-    }
-
-    getReversoContexts() {
-        return this.reverso.getContextWord().then((context) => {
-            return context.getContexts()
-        })
-    }
-
-    getPonsTranslations() {
-        return this.pons.getTranslatedWord().then((word) => {
-            return word.getTranslations()[0];
-        })
-    }
-
-    getGlosbeContexts() {
-        return this.glosbe.getContextWord().then((context) => {
-            return context.getContexts()
-        })
-    }
-
-    getDudenMeanings() {
-        return this.duden.getMeaningWord().then((meaning) => {
-            return meaning.getMeanings()
-        })
-    }
-
-    getWikiMeanings() {
-        return this.wiktionary.getMeaningWord().then((meaning) => {
-            return meaning.getMeanings()
-        })
-    }
-
     getGender() {
         return this.wiktionary.getMeaningWord().then(meaning => meaning.extendedWord)
             .then(extended => GENDERS[extended.pos.gender])
