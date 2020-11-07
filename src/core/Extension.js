@@ -26,13 +26,14 @@ class Extension {
     }
 
     keyOrMouseDown(event) {
-        if (event.code === "KeyQ" || event.button === 4) {
+        if (event.code === "Escape" || event.button === 4) {
             this.builder.removeTranslationPopup()
             this.player.play()
         }
         if (event.code === "Enter") {
             this.builder.submit()
         }
+        if (PopupBuilder.activated) return
         if (event.code === "KeyA") {
             this.navigator.seekPrev()
         }

@@ -46,7 +46,6 @@ class WordTranslationService {
 
     static displayTranslations(content, translations){
         if (translations.length === 0) {
-            debugger
             displayFailMessage(content);
             return
         }

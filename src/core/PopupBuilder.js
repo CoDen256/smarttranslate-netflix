@@ -3,6 +3,7 @@ import {TranslatorService} from "./TranslatorService.js";
 
 class PopupBuilder {
 
+    static activated = false;
     constructor() {
         this.applyEventListeners();
         window.reloadPopup = this.reload
@@ -61,6 +62,7 @@ class PopupBuilder {
         console.log("Hiding Translation Popup")
         this.setPopupVisibility("hidden")
         this.rendererProvider.disableExtra()
+        PopupBuilder.activated = false
     }
 
     showTranslationPopup() {
@@ -75,6 +77,7 @@ class PopupBuilder {
         console.log("Showing Translation Popup")
         this.setPopupVisibility("visible")
         this.rendererProvider.enableExtra()
+        PopupBuilder.activated = true
     }
 
     setPopupVisibility(visibility) {
@@ -98,6 +101,7 @@ class PopupBuilder {
     submit() {
         this.rendererProvider.submitNew()
     }
+
 }
 
 export {PopupBuilder};
