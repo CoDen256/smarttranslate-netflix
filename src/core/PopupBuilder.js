@@ -95,7 +95,7 @@ class PopupBuilder {
         select(".translation-scrollbar").style.visibility = visibility
     }
 
-    onEnter() {
+    submit() {
         this.rendererProvider.submitNew()
     }
 }

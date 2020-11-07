@@ -3,7 +3,7 @@ import {TranslatorService} from './TranslatorService.js'
 import {joinLemma, replaceWithSpans} from './util/Utils.js'
 import {PoSConverter} from "./sublem/PartOfSpeechConverter.js";
 import {LTCProvider} from "./sublem/LTCProvider.js"
-import {NetflixPlayer} from "./player/Player.js";
+import {NetflixPlayer} from "./player/NetflixPlayer.js";
 import {NetflixNavigator} from "./player/NetflixNavigator.js";
 import {PopupBuilder} from "./PopupBuilder.js";
 
@@ -13,27 +13,31 @@ class Extension {
         this.launched = false;
         this.builder = new PopupBuilder();
         this.player = new NetflixPlayer()
-        this.navigator = new NetflixNavigator();
+        this.navigator = new NetflixNavigator(this.player);
 
         this.subtitleProvider = new LTCProvider(script);
 
-        document.body.addEventListener("keydown", (e) => this.pressed(e))
-        document.body.addEventListener("mousedown", (e) => this.pressed(e))
+        this.addListeners()
     }
 
-    pressed(event) {
+    addListeners(){
+        document.body.addEventListener("keydown", (e) => this.keyOrMouseDown(e))
+        document.body.addEventListener("mousedown", (e) => this.keyOrMouseDown(e))
+    }
+
+    keyOrMouseDown(event) {
         if (event.code === "KeyQ" || event.button === 4) {
             this.builder.removeTranslationPopup()
             this.player.play()
         }
         if (event.code === "Enter") {
-            this.builder.onEnter()
+            this.builder.submit()
         }
         if (event.code === "KeyA") {
-            this.player.seek(this.navigator.previous())
+            this.navigator.seekPrev()
         }
         if (event.code === "KeyD") {
-            this.player.seek(this.navigator.next())
+            this.navigator.seekNext()
         }
     }
 
@@ -80,9 +84,6 @@ class Extension {
     async wrapWordsWithSpans(span) {
         if (span.id === wordEditedId) return false;
 
-        await this.navigator.initialize()
-        this.navigator.update(this.player.getCurrentTime())
-
         span.id = wordEditedId
         span.innerHTML = replaceWithSpans(span.textContent, wordEditedId, hoverableWordClass) + "<br>";
 
@@ -113,14 +114,12 @@ class Extension {
                 return false;
             }
             wait = true;
-            setTimeout(function () {
+            setTimeout(() => {
                 wait = false;
                 try { //TODO: may be add each word to sentece and to TranslatorService as well and only then wrap with spans
                     // TODO: Akkusativ/Dativ adverbs or somtehing else for verbs
                     // TODO: English translations
-                    // TODO: consider the time() at which element was firstly created, to go back to it
                     let spans = targetItem.querySelectorAll('span')
-                    //console.log("[NETFLIX]:", time())
                     spans.forEach(wrapWordsWithSpansReference);
                 } catch (e) {
                     console.log(e)
