@@ -5,23 +5,22 @@ import {MovieIdFinder} from "./warmup/MovieIdFinder.js";
 import {TitleExtractor} from "./warmup/TitleExtractor.js";
 
 
-async function fetchScript(id, season, episode) {
-    if (Config.getLanguage() !== "de"){
-        console.warn("Subtitle will not be fetched, since language is set to '"+Config.getLanguageFull()+"'")
-        return null
-    }
+async function fetchScript() {
+    let {season, episode, id} = await fetchMovieInformation();
+
     let service = new SublemService(id, season, episode)
-    let script = null;
     try {
-        script = await service.getData();
+        let script = await service.getData();
         console.log("Subtitle script is fetched", script)
+        return script;
     } catch (e) {
         console.error("Failed to fetch subtitle script", e)
+        return null;
     }
-    return script;
+
 }
 
-async function fetchInformation() {
+async function fetchMovieInformation() {
     let extractor = new TitleExtractor()
     let {title, season, episode} = await extractor.extractMovieInfo()
 
@@ -36,8 +35,13 @@ async function main() {
     let settings = await Config.getSettings()
     console.log(settings)
 
-    let {season, episode, id} = await fetchInformation(settings);
-    let script = await fetchScript(id, season, episode);
+
+    let script = null;
+    if (Config.getLanguage() !== "de"){
+        console.warn("Script will not be fetched, since language is set to '"+Config.getLanguageFull()+"'")
+    }else {
+        script = await fetchScript();
+    }
 
     let extension = new Extension(script);
     setInterval(function () {

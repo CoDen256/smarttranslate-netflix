@@ -37,6 +37,9 @@ class NetflixPlayer {
     }
 
     getCurrentTime() {
+        if (this.player == null){
+            this.initializePlayer()
+        }
         return this.player.getCurrentTime()
     }
 

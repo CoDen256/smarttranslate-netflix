@@ -13,7 +13,7 @@ class NetflixNavigator {
     fetchSubtitles(resource) {
         console.log("[Navigator] Network Resource:", resource)
         let url = resource.name
-        console.log("[Navigator] GET", url)
+        // console.log("[Navigator] GET", url)
         return fetch(url);
     }
 
