@@ -15,7 +15,6 @@ const multitranConvention = {
 //TODO: different translations je nach WortArt
 class MultitranService {
     constructor(extendedWord) {
-        this.params = MultitranService.generateParams()
         this.service = new WordTranslationService(
             multitranApi,
             MultitranService.generateParams(),

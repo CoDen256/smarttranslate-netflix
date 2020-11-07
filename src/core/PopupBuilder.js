@@ -36,7 +36,8 @@ class PopupBuilder {
             "#button-multi": "#tab-multitran",
             "#button-pons": "#tab-pons",
             "#button-reverso": "#tab-reverso",
-            "#button-glosbe": "#tab-glosbe",
+            "#button-academic": "#tab-academic",
+            // "#button-glosbe": "#tab-glosbe",
             "#button-duden": "#tab-duden",
             "#button-wik": "#tab-wik",
         }

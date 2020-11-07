@@ -27,7 +27,7 @@ class WordTranslationService {
     }
 
     onResult(translatedWord, result) {
-        return translatedWord.addTranslation(result)
+        return translatedWord.addTranslations(result)
     }
 
 
@@ -40,12 +40,13 @@ class WordTranslationService {
         content.innerHTML = ""
 
         translatedWord
-            .then((word) => word.getTranslations()[0])
+            .then((word) => word.getTranslations())
             .then((translations) => WordTranslationService.displayTranslations(content, translations))
     }
 
     static displayTranslations(content, translations){
         if (translations.length === 0) {
+            debugger
             displayFailMessage(content);
             return
         }

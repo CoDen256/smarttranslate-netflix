@@ -6,6 +6,7 @@ import {DudenService} from '../services/concrete/DudenService.js';
 import {GlosbeService} from '../services/concrete/GlosbeService.js';
 import {PonsService} from '../services/concrete/PonsService.js'
 import {Substantiv, Verb} from "../services/entities.js";
+import {AcademicService} from "../services/concrete/AcademicService.js";
 
 let GENDERS = {
     "m": "der",
@@ -29,11 +30,12 @@ class TranslatorService {
         this.reverso = new ReversoService(this.getExtended());
         this.pons = new PonsService(this.getExtended())
         this.duden = new DudenService(this.getExtended())
-        this.glosbe = new GlosbeService(this.getExtended());
+        // this.glosbe = new GlosbeService(this.getExtended());
+        this.academic = new AcademicService(this.getExtended())
 
         this.services.push(
             this.google, this.multitran, this.wiktionary,
-            this.reverso, this.pons, this.duden, this.glosbe
+            this.reverso, this.pons, this.duden, this.academic
         )
     }
 

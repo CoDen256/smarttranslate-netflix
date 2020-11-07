@@ -1,7 +1,7 @@
 class NetflixPlayer {
 
     constructor() {
-        this.player = this.initializePlayer();
+        this.player = null;
     }
 
     initializePlayer() {
@@ -25,22 +25,27 @@ class NetflixPlayer {
     seek(time) {
         if (time == null) return;
         console.log("Seeking to ", time)
-        this.player.seek(time);
+        this.getPLayer().seek(time);
     }
 
     play() {
-        this.player.play()
+        this.getPLayer().play()
     }
 
     pause() {
-        this.player.pause()
+        this.getPLayer().pause()
     }
 
     getCurrentTime() {
+        return this.getPLayer().getCurrentTime()
+    }
+
+
+    getPLayer(){
         if (this.player == null){
-            this.initializePlayer()
+            this.player = this.initializePlayer()
         }
-        return this.player.getCurrentTime()
+        return this.player
     }
 
 
