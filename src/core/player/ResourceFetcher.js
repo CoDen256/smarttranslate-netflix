@@ -1,3 +1,5 @@
+import {onlyUnique} from "../util/Utils.js";
+
 class ResourceFetcher {
     static factor = 10000;
 
@@ -41,9 +43,21 @@ class ResourceFetcher {
 
     toTimeCodes(xml) {
         console.log(xml)
-        return Array.prototype.slice.call(xml.querySelector("div").children)
+        let timeCodes =  Array.prototype.slice.call(xml.querySelector("div").children)
             .map(item => ResourceFetcher.toTimeStamp(item))
+
+        let distinctTimeCodesBegin = []
+        let distinctTimeCodes = []
+        for (let timeCode of timeCodes){
+            if (!distinctTimeCodesBegin.includes(timeCode.begin)){
+                distinctTimeCodesBegin.push(timeCode.begin)
+                distinctTimeCodes.push(timeCode)
+            }
+        }
+        return distinctTimeCodes
     }
+
+
     static toTimeStamp(item){
         let begin = item.attributes["begin"].value.slice(0, -1);
         let end = item.attributes["end"].value.slice(0, -1);

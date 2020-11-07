@@ -24,7 +24,7 @@ class NetflixPlayer {
 
     seek(time) {
         if (time == null) return;
-        console.log("Seeking to ", time)
+        // console.log("Seeking to ", time)
         this.getNetflixPLayer().seek(time);
     }
 
@@ -37,7 +37,7 @@ class NetflixPlayer {
     }
 
     getCurrentTime() {
-        console.log("[Player] time:", this.getNetflixPLayer().getCurrentTime())
+        // console.log("[Player] time:", this.getNetflixPLayer().getCurrentTime())
         return this.getNetflixPLayer().getCurrentTime()
     }
 

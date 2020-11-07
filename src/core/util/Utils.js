@@ -110,7 +110,11 @@ function emphasize(sentence) {
         .replace("}}", "</strong></em></span>");
 }
 
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
 export {
     replaceWithSpans, pixel, toClass, toId, convertToSeconds, timeOfSeconds, joinLemma, computeSimilarity,
-    select, create, waitFor, displayFailMessage, emphasize
+    select, create, waitFor, displayFailMessage, emphasize, onlyUnique
 }

@@ -1,6 +1,7 @@
 import {ResourceFetcher} from "./ResourceFetcher.js";
 
 class NetflixNavigator {
+    static tippingPointPercentage = 0.4
     constructor(player) {
         this.player = player
         this.fetcher = new ResourceFetcher();
@@ -8,14 +9,14 @@ class NetflixNavigator {
     }
 
     seekNext(){
-        console.warn("NEXT "+this.player.getCurrentTime())
+        // console.warn("NEXT "+this.player.getCurrentTime())
         this.fetcher.getSubtitles().then(
             subs => this.seekToNextInSubtitles(subs)
         )
     }
 
     seekPrev(){
-        console.warn("PREV "+this.player.getCurrentTime())
+        // console.warn("PREV "+this.player.getCurrentTime())
         this.fetcher.getSubtitles().then(
             subs => this.seekToPreviousInSubtitles(subs)
         )
@@ -31,10 +32,11 @@ class NetflixNavigator {
 
     nextInSubtitles(original){
         let subtitles = this.copy(original)
+        let currentTime = this.player.getCurrentTime();
         subtitles.sort((a, b) => a.begin - b.begin)
         for (let subtitle of subtitles) {
-            if (this.player.getCurrentTime() < subtitle.begin) {
-                return subtitle
+            if (currentTime < subtitle.begin) {
+                return subtitle.begin
             }
         }
         // noop if no next subtitle
@@ -52,17 +54,22 @@ class NetflixNavigator {
 
     previousInSubtitles(original){
         let subtitles = this.copy(original)
+        let currentTime = this.player.getCurrentTime();
         subtitles.sort((a, b) => b.begin - a.begin)
-        let last = null
-        for (let subtitle of subtitles) {
-            if (subtitle < this.player.getCurrentTime()) {
-                if (last != null) {
-                    return subtitle
+        for (let [index, subtitle] of subtitles.entries()) {
+            if (subtitle.begin < currentTime){
+                // found first subtitle that is earlier than current time
+                let duration = subtitle.end - subtitle.begin
+                let tippingPoint = subtitle.begin + duration * NetflixNavigator.tippingPointPercentage
+                if (currentTime > tippingPoint){
+                    return subtitle.begin
+                }else{
+                    if (index+1 >= subtitles.length) return null
+                    return subtitles[index+1].begin
                 }
-                last = subtitle
             }
         }
-        return subtitles[0]
+        return null
     }
 
     copy(array){
