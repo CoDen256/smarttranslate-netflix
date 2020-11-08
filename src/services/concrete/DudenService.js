@@ -43,8 +43,8 @@ class DudenService {
         // TODO sometimes not parsing meanings (e.g for Pizza)
         let doc = new DOMParser().parseFromString(normalized, 'text/html')
         let meanings = []
-        doc.querySelectorAll(".enumeration__text").forEach((enumText) => {
-            meanings.push(enumText.textContent)
+        doc.querySelectorAll(".enumeration__text").forEach((item) => {
+            meanings.push(item)
         })
         return meanings;
     }

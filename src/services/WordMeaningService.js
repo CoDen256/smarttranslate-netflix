@@ -48,9 +48,9 @@ class WordMeaningService {
             displayFailMessage(content);
             return
         }
-        meanings.forEach((meaning) => {
+        meanings.forEach((meaningItem) => {
             let item = create("li", "dictionary-content-item")
-            item.innerHTML = "🞄 " + meaning;
+            item.innerHTML = meaningItem.innerHTML;
             content.appendChild(item)
         })
 
