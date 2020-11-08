@@ -4,13 +4,14 @@ import {TranslatorService} from "./TranslatorService.js";
 class PopupBuilder {
 
     static activated = false;
-    constructor() {
+
+    static initialize() {
         this.applyEventListeners();
         this.rendererProvider = null
         window.reloadPopup = this.reload
     }
 
-    createTranslationPopup(translator) {
+    static createTranslationPopup(translator) {
         this.removeTranslationPopup()
         this.rendererProvider = translator.getExtended().getHeaderRendererClass();
         let headerRenderer = new this.rendererProvider(translator, select(".translation-header"));
@@ -23,13 +24,12 @@ class PopupBuilder {
         this.activate("#tab-multitran", select("#button-multi"))
     }
 
-    reload(extended) {
-        let popup = new PopupBuilder()
-        popup.createTranslationPopup(new TranslatorService(extended))
+    static reload(extended) {
+        PopupBuilder.createTranslationPopup(new TranslatorService(extended))
     }
 
 
-    applyEventListeners() {
+    static applyEventListeners() {
         select(".close-popup").addEventListener("click", (e) => this.removeTranslationPopup())
         let map = {
             "#button-multi": "#tab-multitran",
@@ -46,7 +46,7 @@ class PopupBuilder {
 
     }
 
-    activate(id, button) {
+    static activate(id, button) {
         document.querySelectorAll(".section-full").forEach(e => e.style.display = "none")
         select(id).style.display = "block"
 
@@ -56,15 +56,15 @@ class PopupBuilder {
         button.className = "active"
     }
 
-    removeTranslationPopup() {
+    static removeTranslationPopup() {
         if (!PopupBuilder.activated) return
         console.log("Hiding Translation Popup")
         this.setPopupVisibility("hidden")
         this.rendererProvider.disableExtra()
-        PopupBuilder.activated = false
+        this.activated = false
     }
 
-    showTranslationPopup() {
+    static showTranslationPopup() {
         let popup = select(".translation-popup")
 
         let clientHeight = window.innerHeight;
@@ -76,28 +76,28 @@ class PopupBuilder {
         console.log("Showing Translation Popup")
         this.setPopupVisibility("visible")
         this.rendererProvider.enableExtra()
-        PopupBuilder.activated = true
+        this.activated = true
     }
 
-    setPopupVisibility(visibility) {
+    static setPopupVisibility(visibility) {
         this.setTranslationPopupVisibility(visibility)
         this.setRowVisibility(visibility)
         this.setScrollBarVisibility(visibility)
     }
 
-    async setTranslationPopupVisibility(visibility) {
+    static async setTranslationPopupVisibility(visibility) {
         select(".translation-popup").style.visibility = visibility
     }
 
-    async setRowVisibility(visibility) {
+    static async setRowVisibility(visibility) {
         select(".tabs-row").style.visibility = visibility
     }
 
-    async setScrollBarVisibility(visibility) {
+    static async setScrollBarVisibility(visibility) {
         select(".translation-scrollbar").style.visibility = visibility
     }
 
-    submit() {
+    static submit() {
         this.rendererProvider.submitNew()
     }
 

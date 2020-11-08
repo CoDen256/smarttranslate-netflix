@@ -11,7 +11,7 @@ class Extension {
     constructor(script) {
         console.log("Extension created")
         this.launched = false;
-        this.builder = new PopupBuilder();
+        PopupBuilder.initialize()
         this.player = new NetflixPlayer()
         this.navigator = new NetflixNavigator(this.player);
 
@@ -27,11 +27,11 @@ class Extension {
 
     keyOrMouseDown(event) {
         if (event.code === "Escape" || event.button === 4) {
-            this.builder.removeTranslationPopup()
+            PopupBuilder.removeTranslationPopup()
             this.player.play()
         }
         if (event.code === "Enter") {
-            this.builder.submit()
+            PopupBuilder.submit()
         }
         if (PopupBuilder.activated) return
         if (event.code === "KeyA") {
@@ -88,7 +88,7 @@ class Extension {
         span.id = wordEditedId
         span.innerHTML = replaceWithSpans(span.textContent, wordEditedId, hoverableWordClass) + "<br>";
 
-        const wordHandlerReference = (event) => this.wordClicked(event, this.builder)
+        const wordHandlerReference = (event) => this.wordClicked(event, PopupBuilder)
 
         span.querySelectorAll('span').forEach((span) => span.addEventListener('click', wordHandlerReference))
     }
