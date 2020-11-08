@@ -19,12 +19,14 @@ class SubstantivRenderer {
     static enableExtra() {
         select("#gender").style.visibility = "visible"
         select("#gender").style.position = "relative"
+        select("#gender-label").style.visibility = "visible"
     }
 
     static disableExtra() {
         select("#gender").style.visibility = "hidden"
         select("#gender").style.position = "absolute"
         select("#gender-label").textContent = "(?)"
+        select("#gender-label").style.visibility = "hidden"
     }
 
     render() {

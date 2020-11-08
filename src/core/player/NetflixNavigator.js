@@ -1,7 +1,7 @@
 import {ResourceFetcher} from "./ResourceFetcher.js";
 
 class NetflixNavigator {
-    static tippingPointPercentage = 0.4
+    static tippingPointPercentage = 0.6
     constructor(player) {
         this.player = player
         this.fetcher = new ResourceFetcher();

@@ -24,10 +24,10 @@ class VerbRenderer {
     }
 
     static disableExtra() {
+        select("#reflex-input").style.position = "absolute"
         select("#reflex-input").style.visibility = "hidden"
         select("#reflex").style.visibility = "hidden"
         select("#reflex-label").style.visibility = "hidden"
-        select("#reflex-input").style.position = "absolute"
     }
 
     render() {

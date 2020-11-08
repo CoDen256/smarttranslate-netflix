@@ -6,14 +6,16 @@ class PopupBuilder {
     static activated = false;
     constructor() {
         this.applyEventListeners();
+        this.rendererProvider = null
         window.reloadPopup = this.reload
     }
 
     createTranslationPopup(translator) {
+        this.removeTranslationPopup()
         this.rendererProvider = translator.getExtended().getHeaderRendererClass();
         let headerRenderer = new this.rendererProvider(translator, select(".translation-header"));
-        this.reloadPopup()
 
+        this.showTranslationPopup()
         // rendering all the stuff
         headerRenderer.render()
         translator.renderAllServices()
@@ -26,10 +28,6 @@ class PopupBuilder {
         popup.createTranslationPopup(new TranslatorService(extended))
     }
 
-    reloadPopup(){
-        this.removeTranslationPopup()
-        this.showTranslationPopup()
-    }
 
     applyEventListeners() {
         select(".close-popup").addEventListener("click", (e) => this.removeTranslationPopup())
@@ -59,6 +57,7 @@ class PopupBuilder {
     }
 
     removeTranslationPopup() {
+        if (!PopupBuilder.activated) return
         console.log("Hiding Translation Popup")
         this.setPopupVisibility("hidden")
         this.rendererProvider.disableExtra()
